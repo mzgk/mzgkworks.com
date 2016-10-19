@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ja-JP">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="keywords" content="Program,Mac,iOS,Web,AWS,Hugo,Books">
+    
+        <meta name="description" content=" プログラマーの備忘録。">
+    
+        <meta name="description" content="Hugo,GitHub Pages,独自ドメインで静的サイトを構築する。GitHub Pagesと独自ドメインの適用。">
+    
+
+    <base href="http://mzgkworks.com">
+    
+    <link rel="stylesheet" href="./css/masamune.css">
+
+    <title>
+        
+        Hugo・GitHub Pages・独自ドメインでブログを構築 : 2
+         | mzgkworks.com
+    </title>
+
+    <meta name="generator" content="Hugo 0.17" />
+</head>
+
+<body>
+    <div class="HeaderContainer">
+        <header class="Header">
+            <div class="Header__head">
+                <h1 class="Header__title"><a href="./index.html">mzgkworks.com</a></h1>
+                <p class="Header__subTitle">Stack the little bets.</p>
+            </div>
+            <nav class="Header__body">
+                <ul class="Navi">
+                    <li class="Navi__item"><a href="./about/about" class="fa fa-smile-o"></a></li>
+                    <li class="Navi__item"><a href="https://github.com/mzgk" target="_blank" rel="noopener noreferrer" class="fa fa-github"></a></li>
+                    <li class="Navi__item"><a href="https://twitter.com/mzgkworks" target="_blank" rel="noopener noreferrer" class="fa fa-twitter"></a></li>
+                    <li class="Navi__item"><a href="#" class="fa fa-rss"></a></li>
+                </ul>
+            </nav>
+        </header>
+    </div>
+
+
+    <div class="ContentsContainer">
+        <main class="MainContainer">
+
+            <article class="PostItem">
+                <div class="PostItem__head">
+                    <div class="PostItem__title">
+                        <h1>
+                            Hugo・GitHub Pages・独自ドメインでブログを構築 : 2
+                            
+                        </h1>
+                    </div>
+                    <div class="PostItem__meta">
+                        <time datetime="2016-08-08">
+                            2016.08.30
+                        </time>
+                        &nbsp;&nbsp;
+                        
+                        <span>[<a href="./categories/setting">Setting</a>]</span>
+                        
+                        
+                        &nbsp;&nbsp;
+                        <span>#<a href="./tags/blog">Blog</a></span>
+                        
+                        &nbsp;&nbsp;
+                        <span>#<a href="./tags/hugo">Hugo</a></span>
+                        
+                    </div>
+                </div>
+
+                <div class="PostItem__body">
+                    
+
+<p>GitHub側の設定と独自ドメインの適用を行う。</p>
+
+<ul>
+<li>GitHubの設定</li>
+<li>独自ドメインの適用</li>
+</ul>
+
+<h2 id="github">GitHub</h2>
+
+<p>このリモートリポジトリの持つ意味は２つ。</p>
+
+<ul>
+<li>ブログ作業環境 : ローカルの作業環境がそのまま。git cloneすればどこでも作業できる</li>
+<li>公開環境 : GitHub Pageを利用した公開環境（masterブランチ/docsディレクトリ）</li>
+</ul>
+
+<h2 id="github-pages">GitHub Pages</h2>
+
+<p>GitHub Pagesの形態として、<strong>ユーザーページ</strong> と <strong>プロジェクトページ</strong> の２つがある。</p>
+
+<ul>
+<li>ユーザーページ : リポジトリ名を「アカウント名.github.io」で作成</li>
+<li>プロジェクトページ : リポジトリ名は任意で、masterブランチにdocsディレクトリを作成する
+
+<ul>
+<li>docsディレクトリ方式は、2016.8に追加された機能</li>
+<li>以前はgh-pagesブランチを作成する必要があった</li>
+</ul></li>
+</ul>
+
+<p>今回は環境ごと管理したかったので、プロジェクトページ形式で作成する。</p>
+
+<h2 id="リモートリポジトリ-github">リモートリポジトリ : GitHub</h2>
+
+<p>任意の名前（今回はサイトと同名のmyblog）でリポジトリを新規作成。<br />
+- Initialize this repository with a README → 未チェック<br />
+- リポジトリのURL : <a href="https://github.com/">https://github.com/</a>&lt;アカウント&gt;/&lt;リポジトリ名&gt;.git</p>
+
+<h2 id="ローカルリポジトリ-mac">ローカルリポジトリ : Mac</h2>
+
+<p>リモートにプッシュを行う。</p>
+
+<pre><code class="language-@bash"># リモートリポジトリの追加
+$ git remote add origin https://github.com/mzgk/myblog.git
+
+# リモートの確認
+$ git remote -v
+masamune       	https://github.com/mzgk/masamune.git (fetch) # テーマ用（subtree）
+masamune       	https://github.com/mzgk/masamune.git (push)
+origin 	https://github.com/mzgk/myblog.git (fetch) # ブログ環境用
+origin 	https://github.com/mzgk/myblog.git (push)
+
+# プッシュ
+$ git push -u origin master
+</code></pre>
+
+<h2 id="独自ドメインの設定">独自ドメインの設定</h2>
+
+<p>ドメインは、ムームードメインで取得済み。<br />
+作業としては、以下。</p>
+
+<ul>
+<li>ムームードメイン側のAレコードにGitHubのアドレスを設定する</li>
+<li>GitHubリポジトリのdocsディレクトリにCNAMEファイルを格納する</li>
+<li>GitHubリポジトリでGitHub Pagesの設定をする</li>
+</ul>
+
+<h2 id="ムームードメイン側の設定-dns設定">ムームードメイン側の設定（DNS設定）</h2>
+
+<p>Aレコードの値は<a href="https://help.github.com/articles/setting-up-an-apex-domain/#configuring-a-records-with-your-dns-provider">GitHubのページ</a>を参照。</p>
+
+<ul>
+<li>ログイン -&gt; ドメイン管理 : ムームーDNS -&gt; ドメインを選択 -&gt; 変更</li>
+<li>カスタム設定のセットアップ情報変更 -&gt; 設定２ -&gt;</li>
+<li>サブドメイン : 未入力</li>
+<li>種別 : A</li>
+<li>内容 : 192.30.252.153</li>
+<li>サブドメイン : 未入力</li>
+<li>種別 : A</li>
+<li>内容 : 192.30.252.154</li>
+</ul>
+
+<p>セットアップ情報変更を押下。</p>
+
+<h2 id="cnameファイル">CNAMEファイル</h2>
+
+<ul>
+<li>ローカルのdocsディレクトリに『CNAME』という名前でファイルを作成</li>
+<li>中身には取得してあるドメイン名を記述（myblog.com）</li>
+</ul>
+
+<h3 id="config-toml">config.toml</h3>
+
+<ul>
+<li>baseurlをGitHub PageのURLから、独自ドメインに変更する</li>
+</ul>
+
+<h3 id="生成-コミット-プッシュ">生成〜コミット〜プッシュ</h3>
+
+<pre><code class="language-@bash"># 公開ファイルを生成
+$ hugo -t masamune
+
+# docsディレクトリにコピー
+$ cp -p -f -R public/* docs
+
+# コミット
+$ git add .
+$ git commit -m &quot;独自ドメインを設定&quot;
+
+# master
+$ git push origin master
+</code></pre>
+
+<h2 id="githubの設定-github-pages">GitHubの設定（GitHub Pages）</h2>
+
+<p>GitHub上で、GitHub Pagesの設定を行う。</p>
+
+<h3 id="source">Source</h3>
+
+<p>作成したリポジトリ → Settings → GitHub Pages → Source<br />
+「master baranch /docs folder」を選択 → Save</p>
+
+<h3 id="custom-domain">Custom domain</h3>
+
+<p>作成したリポジトリ → Settings → GitHub Pages → Custom domain<br />
+ドメインを入力 → Save</p>
+
+<p><br></p>
+
+<p>Saveが完了すると、GitHub Pagesの部分にURLが表示される。<br />
+そのURLがGitHub Pages（今回のブログ）のURLとなる。<br />
+アクセスすると、docsディレクトリ以下のWebページが閲覧できる。</p>
+
+<h2 id="確認">確認</h2>
+
+<p>しばらくしてブラウザから設定したドメインにアクセスし、反映されていることを確認する。</p>
+
+<h3 id="次は-記事の作成から">次は、記事の作成から。</h3>
+
+                </div>
+            </article>
+
+            <nav class="Pagenation">
+                <div class="Pagenation__older">
+                    
+                    <a href="http://mzgkworks.com/post/build-a-blog-in-hugo-1/">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        Hugo・GitHub Pages・独自ドメインでブログを構築 : 1
+                    </a>
+                    
+                </div>
+                <div class="Pagenation__newer">
+                    
+                    <a href="http://mzgkworks.com/post/build-a-blog-in-hugo-3/">
+                        Hugo・GitHub Pages・独自ドメインでブログを構築 : 3
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </a>
+                    
+                </div>
+            </nav>
+
+            <div class="Disqus">
+                
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'mzgkworks-com';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+            </div>
+        </main>
+
+        <aside class="SubContainer">
+    <h1 class="AreaTitle">Products</h1>
+    <div class="SubItem">
+        <a href="./products/products">
+            <i class="fa fa-apple fa-2x" aria-hidden="true"></i>
+        </a>
+    </div>
+
+    <h1 class="AreaTitle">Categories</h1>
+    <div class="SubItem">
+        <ul>
+            
+            <li>
+                <a href="./categories/knowledge/">
+                    knowledge : 6
+                </a>
+            </li>
+            
+            <li>
+                <a href="./categories/setting/">
+                    setting : 10
+                </a>
+            </li>
+            
+            <li>
+                <a href="./categories/usage/">
+                    usage : 14
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+
+    <h1 class="AreaTitle">Tags</h1>
+    <div class="SubItem">
+        <ul>
+            
+            <li>
+                <a href="./tags/apache/">
+                    apache : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/atom/">
+                    atom : 1
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/bash/">
+                    bash : 3
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/blog/">
+                    blog : 5
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/css/">
+                    css : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/http/">
+                    http : 1
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/hugo/">
+                    hugo : 5
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/linux/">
+                    linux : 14
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/mac/">
+                    mac : 4
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/network/">
+                    network : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/sass/">
+                    sass : 1
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</aside>
+
+
+    </div>
+
+    <div class="FooterContainer">
+    <footer class="Footer">
+        <img  class="Footer__head" src="./images/profile.png" alt="profile-image" />
+        <div class="Footer__body">
+            <i class="fa fa-copyright" aria-hidden="true"></i>
+            <span>2016</span>
+            <span><a href="./about/about">mzgk</a></span>
+        </div>
+    </footer>
+</div>
+
+<script src="./js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-82194549-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="ja-JP">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="keywords" content="Program,Mac,iOS,Web,AWS,Hugo,Books">
+    
+        <meta name="description" content=" プログラマーの備忘録。">
+    
+        <meta name="description" content="Hugo,GitHub Pages,独自ドメインで静的サイトを構築する。インストール〜テーマの適用まで。">
+    
+
+    <base href="http://mzgkworks.com">
+    
+    <link rel="stylesheet" href="./css/masamune.css">
+
+    <title>
+        
+        Hugo・GitHub Pages・独自ドメインでブログを構築 : 1
+         | mzgkworks.com
+    </title>
+
+    <meta name="generator" content="Hugo 0.17" />
+</head>
+
+<body>
+    <div class="HeaderContainer">
+        <header class="Header">
+            <div class="Header__head">
+                <h1 class="Header__title"><a href="./index.html">mzgkworks.com</a></h1>
+                <p class="Header__subTitle">Stack the little bets.</p>
+            </div>
+            <nav class="Header__body">
+                <ul class="Navi">
+                    <li class="Navi__item"><a href="./about/about" class="fa fa-smile-o"></a></li>
+                    <li class="Navi__item"><a href="https://github.com/mzgk" target="_blank" rel="noopener noreferrer" class="fa fa-github"></a></li>
+                    <li class="Navi__item"><a href="https://twitter.com/mzgkworks" target="_blank" rel="noopener noreferrer" class="fa fa-twitter"></a></li>
+                    <li class="Navi__item"><a href="#" class="fa fa-rss"></a></li>
+                </ul>
+            </nav>
+        </header>
+    </div>
+
+
+    <div class="ContentsContainer">
+        <main class="MainContainer">
+
+            <article class="PostItem">
+                <div class="PostItem__head">
+                    <div class="PostItem__title">
+                        <h1>
+                            Hugo・GitHub Pages・独自ドメインでブログを構築 : 1
+                            
+                        </h1>
+                    </div>
+                    <div class="PostItem__meta">
+                        <time datetime="2016-08-08">
+                            2016.08.30
+                        </time>
+                        &nbsp;&nbsp;
+                        
+                        <span>[<a href="./categories/setting">Setting</a>]</span>
+                        
+                        
+                        &nbsp;&nbsp;
+                        <span>#<a href="./tags/blog">Blog</a></span>
+                        
+                        &nbsp;&nbsp;
+                        <span>#<a href="./tags/hugo">Hugo</a></span>
+                        
+                    </div>
+                </div>
+
+                <div class="PostItem__body">
+                    
+
+<ul>
+<li>Hugoのインストール</li>
+<li>ブログ環境の構築</li>
+<li>Git管理</li>
+<li>テーマの適用</li>
+<li>公開ファイルの生成</li>
+</ul>
+
+<h2 id="構築環境">構築環境</h2>
+
+<ul>
+<li>OS X 10.11.6</li>
+<li>Homebrew 0.9.9</li>
+<li>Hugo 0.16</li>
+<li><a href="https://github.com/">GitHub</a>はアカウントを作成済み</li>
+<li>ドメインは<a href="https://muumuu-domain.com/">ムームードメイン</a>で取得済み</li>
+</ul>
+
+<h2 id="homebrew">Homebrew</h2>
+
+<p>アップデート（インストールは<a href="http://brew.sh/index_ja.html">公式サイト</a>を参照）。</p>
+
+<pre><code class="language-@bash">$ brew update
+$ brew upgrade
+$ brew cleanup
+$ brew doctor
+</code></pre>
+
+<h2 id="hugo">Hugo</h2>
+
+<p>Homebrew経由でインストールを行う。</p>
+
+<pre><code class="language-@bash">$ brew install hugo
+# 確認
+$ hugo version
+Hugo Static Site Generator v0.16 BuildDate: 2016-06-06T21:37:59+09:00
+</code></pre>
+
+<h2 id="ブログ環境の作成">ブログ環境の作成</h2>
+
+<p>Hugoコマンドを使って、ローカルにブログ作業ディレクトリを作成する。<br />
+今回の例では、Home直下にmyblogディレクトリ（~/myblog）として作成。</p>
+
+<pre><code class="language-@bash"># 環境作成
+$ hugo new site ~/myblog # 任意のディレクトリ名
+Congratulations! Your new Hugo site is created in &quot;&lt;作成された場所&gt;&quot;.
+...
+</code></pre>
+
+<p>サイト名のディレクトリが作成される。</p>
+
+<pre><code class="language-@bash">$ cd ~/myblog
+$ tree -a
+.
+|-- archetypes  # 記事のテンプレートを格納（空）
+|-- config.toml # サイト全体の設定ファイル
+|-- content     # 記事を格納（空）
+|-- data        # データファイルを格納（空）
+|-- layouts     # レイアウトファイルを格納（空）
+|-- static      # 画像等の静的ファイルを格納（空）
+`-- themes      # テーマを格納（空）
+
+6 directories, 1 file
+</code></pre>
+
+<h2 id="github-pages用の公開ディレクトリを追加">GitHub Pages用の公開ディレクトリを追加</h2>
+
+<p>GitHub Pagesのmasterブランチでの公開用に <strong>docs</strong> ディレクトリを追加する。<br />
+Hugoコマンドでの公開ファイル生成後に、publicディレクトリの中身をこのdocsディレクトリにコピーする。</p>
+
+<pre><code class="language-@bash"># GitHub pages用の公開ディレクトリを作成
+$ mkdir docs
+
+$ tree -a
+.
+|-- archetypes
+|-- config.toml
+|-- content
+|-- data
+|-- docs       # 公開用ディレクトリ（GitHub Pages用）
+|-- layouts
+|-- static
+`-- themes
+
+7 directories, 1 file
+</code></pre>
+
+<h2 id="git管理を開始する">Git管理を開始する</h2>
+
+<p>作成された初期状態の環境をGit管理下におく。<br />
+空ディレクトリも管理対象となるように「.gitkeep」の名前で空ファイルを格納しておく。</p>
+
+<pre><code class="language-@bash"># 空ディレクトリに対して.gitkeepファイルを作成しておく
+$ touch archetypes/.gitkeep
+$ touch content/.gitkeep
+...
+.
+|-- archetypes
+|   `-- .gitkeep
+|-- config.toml
+|-- content
+|   `-- .gitkeep
+|-- data
+|   `-- .gitkeep
+|-- docs
+|   `-- .gitkeep
+|-- layouts
+|   `-- .gitkeep
+|-- static
+|   `-- .gitkeep
+`-- themes
+    `-- .gitkeep
+
+7 directories, 8 files
+
+# Git初期化
+$ git init
+
+# コミット
+$ git add .
+$ git commit -m &quot;Initial : 環境作成直後&quot;
+</code></pre>
+
+<h2 id="テーマのインストール">テーマのインストール</h2>
+
+<h3 id="既存のテーマを使う場合">既存のテーマを使う場合</h3>
+
+<p><a href="http://themes.gohugo.io/">公式テーマサイト</a>でテーマを選び、インストールをする。<br />
+インストールしたいテーマを選んだら、テーマのリポジトリを <code>git clone</code> してくる。<br />
+今回はシンプルできれいな『<a href="http://themes.gohugo.io/angels-ladder/">Angel&rsquo;s Ladder</a>』を例に。</p>
+
+<pre><code class="language-@bash"># themesディレクトリに移動
+$ cd themes
+
+# テーマのリポジトリからcloneしてくる
+$ git clone https://github.com/tanksuzuki/angels-ladder
+</code></pre>
+
+<p>もしくは、テーマのリポジトリから.zip形式でダウンロードし、themesディレクトリに解凍する。<br />
+<strong>解凍したディレクトリ名はテーマの名称に変更する（angels-ladder-master → angels-ladder）。</strong></p>
+
+<h3 id="自作テーマの場合">自作テーマの場合</h3>
+
+<p>自作のテーマがGitHub上の別リポジトリに存在する場合。例としてこのサイトのテーマ（masamune）。<br />
+同じように <code>git clone</code> でもいいが、この環境でテーマの改修作業もする場合は <code>git subtree</code> の仕組みを利用する。<br />
+前提として、myblogディレクトリがGit管理下に置かれていること。</p>
+
+<pre><code class="language-@bash"># 環境のトップに移動（ここではmyblogディレクトリ）
+$ cd ~/myblog
+
+# テーマのリポジトリをリモートに追加（リモート名 : masamuneとする）
+$ git remote add masamune &lt;テーマのリポジトリURL&gt;
+
+# テーマmasamuneをsubtreeとして取り込む
+# --prefix=themesディレクトリの下にmasamuneというディレクトリで
+# --squash : 履歴なし
+# リモートリポジトリ名（masamune） master
+$ git subtree add --prefix=themes/masamune --squash masamune master
+git fetch masamune master
+warning: no common commits
+...
+ * branch            master     -&gt; FETCH_HEAD
+ * [new branch]      master     -&gt; masamune/master
+Added dir 'themes/masamune'
+</code></pre>
+
+<p>これで、themesディレクトリの配下にmasamuneディレクトリが作成されて、テーマが配置（インストール）される。</p>
+
+<h2 id="テーマの設定">テーマの設定</h2>
+
+<p>インストールしたテーマに即した設定を『config.toml』に行う。<br />
+内容はテーマのサイトを参照すると記載されている。<br />
+<a href="https://github.com/tanksuzuki/angels-ladder">Angel&rsquo;s Ladder</a>は丁寧に記載されている。</p>
+
+<h2 id="サイトの設定-config-toml">サイトの設定（config.toml）</h2>
+
+<p>サイト自体の設定は『config.toml』に記述する。<br />
+<a href="http://gohugo.io/overview/configuration/">本家サイト</a>に記載されている。<br />
+また、テーマごとに設定する項目が存在するので、テーマの公式サイトを参照すること。</p>
+
+<pre><code class="language-@yaml">baseurl = &quot;GitHub PagesのURL（https://&lt;アカウント&gt;.github.io/&lt;リポジトリ名&gt;）&quot;
+title = &quot;サイトのタイトル&quot;
+theme = &quot;テーマ名&quot; ← 確認・生成時に『-t テーマ名』が不要になる
+languageCode = &quot;ja-JP&quot;
+canonifyurls = true
+hasCJKLanguage = true
+</code></pre>
+
+<h2 id="テーマの確認">テーマの確認</h2>
+
+<p>ローカルサーバーを起動し、テーマが適用されているかブラウザで確認を行う。<br />
+起動したら、ブラウザを立ち上げlocalhost:1313/myblogにアクセスする（起動時に表示される宛先を参照）。<br />
+localhost:1313部分は、<strong>「Web Server is available at」</strong> の部分を参照すること。</p>
+
+<pre><code class="language-@bash"># 環境のトップに移動
+$ cd ~/myblog
+# config.tomlにthemeを設定している場合は、-t masamuneは不要
+$ hugo server -t masamune -D -w
+...
+Web Server is available at http://localhost:1313/ (bind address 127.0.0.1)
+
+# 停止する場合は『Ctrl + c』
+</code></pre>
+
+<h2 id="テーマの確認ができたらコミット">テーマの確認ができたらコミット</h2>
+
+<p>テーマの設定まで確認ができたら、一旦コミットしておく。</p>
+
+<pre><code class="language-@bash">$ git status
+On branch master
+Changes not staged for commit:
+  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)
+  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)
+
+       	modified:   config.toml
+
+no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)
+
+# コミット
+$ git commit -am &quot;テーマの設定&quot;
+</code></pre>
+
+<h2 id="公開ファイルの生成">公開ファイルの生成</h2>
+
+<p>公開用のファイルを生成する（記事なし。テーマ適用のみ）。<br />
+publicディレクトリが作成され、公開用のファイル類が生成される。</p>
+
+<pre><code class="language-@bash"># 環境のトップで行うこと
+$ cd ~/myblog
+
+# 生成（-t テーマ名）
+$ hugo -t masamune
+Started building site
+0 draft content
+0 future content
+0 pages created
+0 non-page files copied
+0 paginator pages created
+0 tags created
+0 categories created
+in 12 ms
+</code></pre>
+
+<h2 id="publicディレクトリの中身をdocsディレクトリにコピー">publicディレクトリの中身をdocsディレクトリにコピー</h2>
+
+<p>GitHub Pagesの機能で公開するため、publicディレクトリの中身をdocsディレクトリにコピーする。<br />
+これは記事作成後の生成時に必須の作業となる。</p>
+
+<pre><code class="language-@bash"># publicディレクトリの中身をdocsディレクトリにコピーする
+# -p : コピー元の情報を引き継ぐ
+# -f : 上書き等の問い合わせをしない
+# -R : ディレクトリも
+$ cp -p -f -R public/* docs
+
+# コミット
+$ git add .
+$ git commit -m &quot;公開用ファイル生成&quot;
+</code></pre>
+
+<h3 id="次回は-githubにリモートリポジトリを作成するところから">次回は、GitHubにリモートリポジトリを作成するところから。</h3>
+
+                </div>
+            </article>
+
+            <nav class="Pagenation">
+                <div class="Pagenation__older">
+                    
+                    <a href="http://mzgkworks.com/post/build-a-blog-in-hugo-0/">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        Hugo・GitHub Pages・独自ドメインでブログを構築 : 0
+                    </a>
+                    
+                </div>
+                <div class="Pagenation__newer">
+                    
+                    <a href="http://mzgkworks.com/post/build-a-blog-in-hugo-2/">
+                        Hugo・GitHub Pages・独自ドメインでブログを構築 : 2
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </a>
+                    
+                </div>
+            </nav>
+
+            <div class="Disqus">
+                
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'mzgkworks-com';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+            </div>
+        </main>
+
+        <aside class="SubContainer">
+    <h1 class="AreaTitle">Products</h1>
+    <div class="SubItem">
+        <a href="./products/products">
+            <i class="fa fa-apple fa-2x" aria-hidden="true"></i>
+        </a>
+    </div>
+
+    <h1 class="AreaTitle">Categories</h1>
+    <div class="SubItem">
+        <ul>
+            
+            <li>
+                <a href="./categories/knowledge/">
+                    knowledge : 6
+                </a>
+            </li>
+            
+            <li>
+                <a href="./categories/setting/">
+                    setting : 10
+                </a>
+            </li>
+            
+            <li>
+                <a href="./categories/usage/">
+                    usage : 14
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+
+    <h1 class="AreaTitle">Tags</h1>
+    <div class="SubItem">
+        <ul>
+            
+            <li>
+                <a href="./tags/apache/">
+                    apache : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/atom/">
+                    atom : 1
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/bash/">
+                    bash : 3
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/blog/">
+                    blog : 5
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/css/">
+                    css : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/http/">
+                    http : 1
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/hugo/">
+                    hugo : 5
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/linux/">
+                    linux : 14
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/mac/">
+                    mac : 4
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/network/">
+                    network : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/sass/">
+                    sass : 1
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</aside>
+
+
+    </div>
+
+    <div class="FooterContainer">
+    <footer class="Footer">
+        <img  class="Footer__head" src="./images/profile.png" alt="profile-image" />
+        <div class="Footer__body">
+            <i class="fa fa-copyright" aria-hidden="true"></i>
+            <span>2016</span>
+            <span><a href="./about/about">mzgk</a></span>
+        </div>
+    </footer>
+</div>
+
+<script src="./js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-82194549-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mzgkworks.com</title>
+    <link>http://mzgkworks.com/tags/mac/index.xml</link>
+    <description>Recent content on mzgkworks.com</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-JP</language>
+    <atom:link href="http://mzgkworks.com/tags/mac/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>MacにSass環境を構築する（Ruby gem）</title>
+      <link>http://mzgkworks.com/post/ruby-gem-install-sass/</link>
+      <pubDate>Tue, 04 Oct 2016 18:57:07 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/ruby-gem-install-sass/</guid>
+      <description>
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;OS X 10.11.6 El Capitan&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;望むこと&#34;&gt;望むこと&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;scssで書いて、動的にcssにコンパイル&lt;/li&gt;
+&lt;li&gt;環境周りのコストを少なく&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;選択肢は&#34;&gt;選択肢は&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;gulp : 使うほどタスクないし、プラグインや設定ファイルなどの初期学習コストが高い&lt;/li&gt;
+&lt;li&gt;npm run : package.jsonが面倒&lt;/li&gt;
+&lt;li&gt;Macなのでrubyがインストール済み
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;$ sudo gem install sass&lt;/code&gt; → sassコマンドか！&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;環境構築&#34;&gt;環境構築&lt;/h2&gt;
+
+&lt;h3 id=&#34;ruby&#34;&gt;Ruby&lt;/h3&gt;
+
+&lt;p&gt;存在確認&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ ruby -v
+ruby 2.3.1p112 (2016-04-26 revision 54768) [x86_64-darwin15]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;gemのアップデート&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo gem update --system
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;sass&#34;&gt;sass&lt;/h3&gt;
+
+&lt;p&gt;存在確認&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sass -v
+-bash: sass: command not found
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;インストール&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo gem install sass
+...
+1 gem installed
+
+$ sass -v
+Sass 3.4.22 (Selective Steve)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;コンパイル&#34;&gt;コンパイル&lt;/h2&gt;
+
+&lt;h3 id=&#34;フォルダ構成&#34;&gt;フォルダ構成&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;.
+|-- css   → ここにコンパイルされたmain.cssが生成される
+`-- scss
+    |-- base
+    |   |-- _reset.scss   → _sanitize.scssを@import
+    |   `-- lib
+    |       `-- _sanitize.scss
+    |-- components
+    |   `-- _component.scss   → いろいろと記述
+    `-- main.scss   → reset,componentのimportのみ
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;コンパイル-1&#34;&gt;コンパイル&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# scssディレクトリ以下のファイル更新を監視し、cssディレクトリへ出力
+$ sass --watch --style expanded scss:css
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;オプション&#34;&gt;オプション&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;watch : ファイルの更新を監視し、更新されたらコンパイル&lt;/li&gt;
+&lt;li&gt;style : 生成されるcssの形式
+
+&lt;ul&gt;
+&lt;li&gt;nested : sassの階層をインデントで残す（デフォルト）&lt;/li&gt;
+&lt;li&gt;expanded : 普通のcss形式&lt;/li&gt;
+&lt;li&gt;compact : セレクタとプロパティが1行形式&lt;/li&gt;
+&lt;li&gt;compressed : 圧縮形式&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;※styleを途中で変更する場合は、一度生成された.cssを削除すること&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>MacからLinux（CentOS7）にSSH公開鍵認証で接続する</title>
+      <link>http://mzgkworks.com/post/mac-linux-ssh-rsa-connection/</link>
+      <pubDate>Fri, 16 Sep 2016 18:32:16 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/mac-linux-ssh-rsa-connection/</guid>
+      <description>
+
+&lt;p&gt;MacからSSHの公開鍵認証でLinux（CentOS7）に接続する方法。&lt;/p&gt;
+
+&lt;h2 id=&#34;linux-公開鍵の設置場所作成&#34;&gt;Linux : 公開鍵の設置場所作成&lt;/h2&gt;
+
+&lt;p&gt;Linux側で公開鍵ファイルを設置する場所を作成しておく。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# ホームディレクトリ直下に.sshディレクトリを作成
+$ mkdir ~/.ssh
+
+# パーミッションを700に変更
+$ chmod 700 ~/.ssh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;mac-公開鍵と秘密鍵の作成&#34;&gt;Mac : 公開鍵と秘密鍵の作成&lt;/h2&gt;
+
+&lt;p&gt;Mac側で &lt;code&gt;$ ssh-keygen&lt;/code&gt;コマンドを使って、公開鍵と秘密鍵ファイルを生成する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# SSH2-rsa形式で作成
+$ ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/Users/[ユーザー名]/.ssh/id_rsa):
+
+# 作成したい場所とファイル名をフルパスで入力する
+# 未入力の場合は、/Users/[ユーザー名]/.ssh/に以下が生成される
+# id_rsa : 秘密鍵
+# id_rsa.pub : 公開鍵
+
+# 任意のパスフレーズを入力する
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+
+# 作成が完了したか確認
+$ ls -la ~/.ssh
+-rw-------   1 xxxx  staff  1766  9 16 17:06 id_rsa
+-rw-r--r--   1 xxxx  staff   402  9 16 17:06 id_rsa.pub
+
+# 公開鍵ファイルのパーミッションを変更（所有者のみrw）
+$ chmod 600 ~/.ssh/id_rsa.pub
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;mac-ssh接続の設定&#34;&gt;Mac : SSH接続の設定&lt;/h2&gt;
+
+&lt;p&gt;SSH設定ファイル（~/.ssh/Config）に接続情報を追加する。&lt;br /&gt;
+ssh接続時にHOSTに設定した引数で接続ができるようになる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;HOST 任意の名前（sshコマンドの引数として入力する）
+  HostName 接続先LinuxのIP
+  User Linuxログインユーザー名
+  Port Linux側SSHポート番号
+  IdentityFile Mac内の秘密鍵ファイルのフルパス
+  ServerAliveInterval 60 # 60秒ごとに接続先にmsg送信
+  # これは接続が切れないようにするため
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;公開鍵ファイルの転送&#34;&gt;公開鍵ファイルの転送&lt;/h2&gt;
+
+&lt;p&gt;Macから接続先のLinuxに&lt;code&gt;$ scp&lt;/code&gt;コマンドを使って、公開鍵ファイルを転送する。&lt;br /&gt;
+その際に、公開鍵ファイルの名前を「authorized_keys」に変更する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ scp -P [SSHポート番号] [公開鍵フルパス] [ユーザー名]@[LinuxのIP]:~/.ssh/authorized_keys
+xxx@xxx&#39;s password: # Linuxのユーザーパスワード
+id_rsa.pub                                                                    100%  402     0.4KB/s   00:00
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;接続&#34;&gt;接続&lt;/h2&gt;
+
+&lt;p&gt;Mac側から接続。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ ssh [HOSTに定義した名前]
+
+# 秘密鍵を作成した際のパスフレーズ入力のダイアログが表示される
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;linux-sshパスワード認証を禁止する&#34;&gt;Linux : SSHパスワード認証を禁止する&lt;/h2&gt;
+
+&lt;p&gt;SSHサーバーの設定を変更し、パスワード認証を無効にする。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo vi /etc/ssh/sshd_config
+
+PassswordAuthentication yes → noに変更
+
+# SSHサービスの設定を再読み込みする
+$ sudo systemctl reload sshd.service
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Macでシンボリックリンクを活用する : ln -s</title>
+      <link>http://mzgkworks.com/post/mac-symbolic-link/</link>
+      <pubDate>Mon, 12 Sep 2016 19:00:43 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/mac-symbolic-link/</guid>
+      <description>
+
+&lt;p&gt;Macで使えるシンボリックリンクの操作メモ。&lt;br /&gt;
+ディレクトリやファイルを別の場所で管理したいが、ディレクトリ構成上の制約がある時とかに便利。&lt;/p&gt;
+
+&lt;h2 id=&#34;シンボリックリンク&#34;&gt;シンボリックリンク&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;元ファイル・ディレクトリと同様の操作ができる&lt;/li&gt;
+&lt;li&gt;エイリアスを違って &lt;code&gt;$ cd&lt;/code&gt; も可能&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;作成&#34;&gt;作成&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;絶対パス&lt;/strong&gt; が重要。&lt;br /&gt;
+&lt;code&gt;$ ln -s 元ファイル・ディレクトリの絶対パス リンク作成先のパス&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# ~/dotsfiles/.editorconfigファイルのシンボリックリンクを
+# ホームディレクトリに作成する
+$ ln -s ~/dotsfiles/.editorconfig ~
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;確認&#34;&gt;確認&lt;/h2&gt;
+
+&lt;p&gt;こんな感じで作成される。&lt;br /&gt;
+ファイル種類の「l」はシンボリックリンクを表す。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ ls -la ~
+...
+lrwxr-xr-x    1 usr  staff     35  9 12 18:29 .editorconfig -&amp;gt; /Users/usr/dotsfiles/.editorconfig
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;削除&#34;&gt;削除&lt;/h2&gt;
+
+&lt;p&gt;作成されたシンボリックリンクを削除する。&lt;br /&gt;
+&lt;code&gt;$ unlink シンボリックリンクのパス&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 削除
+$ unlink ~/.editorconfig
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Atom（vim-mode-plus）で、ノーマルモード移行時に日本語オフにする方法。</title>
+      <link>http://mzgkworks.com/post/atom-vim-normalmode-with-eisuu/</link>
+      <pubDate>Thu, 01 Sep 2016 15:34:24 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/atom-vim-normalmode-with-eisuu/</guid>
+      <description>
+
+&lt;p&gt;Atomにvim-mode-plusをインストールして使っているが、ノーマルモードに移行する時に日本語入力モードを引きずったままになるのが面倒。&lt;br /&gt;
+ノーマルモードになった時には、自動で英数入力モードになって、そのままカーソル移動とかしたい。&lt;/p&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;OS X 10.11.6&lt;/li&gt;
+&lt;li&gt;Atom 1.10.0&lt;/li&gt;
+&lt;li&gt;karabiner 10.21.0&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;方法&#34;&gt;方法&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://pqrs.org/osx/karabiner/index.html.ja&#34;&gt;Karabiner&lt;/a&gt;をMacにインストールする&lt;/li&gt;
+&lt;li&gt;private.xmlに設定を書く&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;設定方法&#34;&gt;設定方法&lt;/h2&gt;
+
+&lt;p&gt;設定の追加方法は、Karabiner公式サイトのマニュアルを参照のこと。&lt;br /&gt;
+&lt;a href=&#34;https://pqrs.org/osx/karabiner/document.html.ja#privatexml&#34;&gt;https://pqrs.org/osx/karabiner/document.html.ja#privatexml&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;private-xml&#34;&gt;private.xml&lt;/h3&gt;
+
+&lt;p&gt;記述する内容は以下。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@xml&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt;
+&amp;lt;root&amp;gt;
+    &amp;lt;appdef&amp;gt;
+        &amp;lt;appname&amp;gt;ATOM&amp;lt;/appname&amp;gt;
+        &amp;lt;equal&amp;gt;com.github.atom&amp;lt;/equal&amp;gt;
+    &amp;lt;/appdef&amp;gt;
+    &amp;lt;item&amp;gt;
+        &amp;lt;name&amp;gt;Atom Into NormalMode With Eisuu&amp;lt;/name&amp;gt;
+        &amp;lt;identifier&amp;gt;private.app_atom_into_normalmode_with_eisuu&amp;lt;/identifier&amp;gt;
+        &amp;lt;only&amp;gt;ATOM&amp;lt;/only&amp;gt;
+        &amp;lt;autogen&amp;gt;
+            --KeyToKey--
+            KeyCode::ESCAPE,
+            KeyCode::ESCAPE, KeyCode::JIS_EISUU
+        &amp;lt;/autogen&amp;gt;
+        &amp;lt;autogen&amp;gt;
+            --KeyToKey--
+            KeyCode::BRACKET_LEFT, VK_CONTROL,
+            KeyCode::ESCAPE, KeyCode::JIS_EISUU
+        &amp;lt;/autogen&amp;gt;
+        &amp;lt;autogen&amp;gt;
+            --KeyToKey--
+            KeyCode::C, VK_CONTROL,
+            KeyCode::ESCAPE, KeyCode::JIS_EISUU
+        &amp;lt;/autogen&amp;gt;
+    &amp;lt;/item&amp;gt;
+&amp;lt;/root&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;おまけ&#34;&gt;おまけ&lt;/h2&gt;
+
+&lt;p&gt;Karabinerの設定で、jklhでの移動を他アプリでも使えるようにする方法。&lt;br /&gt;
+&lt;code&gt;s + jklh&lt;/code&gt; でカーソル移動ができるようになる。&lt;br /&gt;
+公式サイトのマニュアルにあった。&lt;br /&gt;
+&lt;a href=&#34;https://pqrs.org/osx/karabiner/gallery.html.ja#simple-vi-mode-v2&#34;&gt;Simple Vi Mode v2&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

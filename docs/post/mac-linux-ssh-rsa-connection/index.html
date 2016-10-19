@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ja-JP">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="keywords" content="Program,Mac,iOS,Web,AWS,Hugo,Books">
+    
+        <meta name="description" content=" プログラマーの備忘録。">
+    
+        <meta name="description" content="">
+    
+
+    <base href="http://mzgkworks.com">
+    
+    <link rel="stylesheet" href="./css/masamune.css">
+
+    <title>
+        
+        MacからLinux（CentOS7）にSSH公開鍵認証で接続する
+         | mzgkworks.com
+    </title>
+
+    <meta name="generator" content="Hugo 0.17" />
+</head>
+
+<body>
+    <div class="HeaderContainer">
+        <header class="Header">
+            <div class="Header__head">
+                <h1 class="Header__title"><a href="./index.html">mzgkworks.com</a></h1>
+                <p class="Header__subTitle">Stack the little bets.</p>
+            </div>
+            <nav class="Header__body">
+                <ul class="Navi">
+                    <li class="Navi__item"><a href="./about/about" class="fa fa-smile-o"></a></li>
+                    <li class="Navi__item"><a href="https://github.com/mzgk" target="_blank" rel="noopener noreferrer" class="fa fa-github"></a></li>
+                    <li class="Navi__item"><a href="https://twitter.com/mzgkworks" target="_blank" rel="noopener noreferrer" class="fa fa-twitter"></a></li>
+                    <li class="Navi__item"><a href="#" class="fa fa-rss"></a></li>
+                </ul>
+            </nav>
+        </header>
+    </div>
+
+
+    <div class="ContentsContainer">
+        <main class="MainContainer">
+
+            <article class="PostItem">
+                <div class="PostItem__head">
+                    <div class="PostItem__title">
+                        <h1>
+                            MacからLinux（CentOS7）にSSH公開鍵認証で接続する
+                            
+                        </h1>
+                    </div>
+                    <div class="PostItem__meta">
+                        <time datetime="2016-09-09">
+                            2016.09.16
+                        </time>
+                        &nbsp;&nbsp;
+                        
+                        <span>[<a href="./categories/setting">Setting</a>]</span>
+                        
+                        
+                        &nbsp;&nbsp;
+                        <span>#<a href="./tags/mac">Mac</a></span>
+                        
+                        &nbsp;&nbsp;
+                        <span>#<a href="./tags/linux">Linux</a></span>
+                        
+                    </div>
+                </div>
+
+                <div class="PostItem__body">
+                    
+
+<p>MacからSSHの公開鍵認証でLinux（CentOS7）に接続する方法。</p>
+
+<h2 id="linux-公開鍵の設置場所作成">Linux : 公開鍵の設置場所作成</h2>
+
+<p>Linux側で公開鍵ファイルを設置する場所を作成しておく。</p>
+
+<pre><code class="language-@bash"># ホームディレクトリ直下に.sshディレクトリを作成
+$ mkdir ~/.ssh
+
+# パーミッションを700に変更
+$ chmod 700 ~/.ssh
+</code></pre>
+
+<h2 id="mac-公開鍵と秘密鍵の作成">Mac : 公開鍵と秘密鍵の作成</h2>
+
+<p>Mac側で <code>$ ssh-keygen</code>コマンドを使って、公開鍵と秘密鍵ファイルを生成する。</p>
+
+<pre><code class="language-@bash"># SSH2-rsa形式で作成
+$ ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/Users/[ユーザー名]/.ssh/id_rsa):
+
+# 作成したい場所とファイル名をフルパスで入力する
+# 未入力の場合は、/Users/[ユーザー名]/.ssh/に以下が生成される
+# id_rsa : 秘密鍵
+# id_rsa.pub : 公開鍵
+
+# 任意のパスフレーズを入力する
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+
+# 作成が完了したか確認
+$ ls -la ~/.ssh
+-rw-------   1 xxxx  staff  1766  9 16 17:06 id_rsa
+-rw-r--r--   1 xxxx  staff   402  9 16 17:06 id_rsa.pub
+
+# 公開鍵ファイルのパーミッションを変更（所有者のみrw）
+$ chmod 600 ~/.ssh/id_rsa.pub
+
+</code></pre>
+
+<h2 id="mac-ssh接続の設定">Mac : SSH接続の設定</h2>
+
+<p>SSH設定ファイル（~/.ssh/Config）に接続情報を追加する。<br />
+ssh接続時にHOSTに設定した引数で接続ができるようになる。</p>
+
+<pre><code class="language-@bash">HOST 任意の名前（sshコマンドの引数として入力する）
+  HostName 接続先LinuxのIP
+  User Linuxログインユーザー名
+  Port Linux側SSHポート番号
+  IdentityFile Mac内の秘密鍵ファイルのフルパス
+  ServerAliveInterval 60 # 60秒ごとに接続先にmsg送信
+  # これは接続が切れないようにするため
+</code></pre>
+
+<h2 id="公開鍵ファイルの転送">公開鍵ファイルの転送</h2>
+
+<p>Macから接続先のLinuxに<code>$ scp</code>コマンドを使って、公開鍵ファイルを転送する。<br />
+その際に、公開鍵ファイルの名前を「authorized_keys」に変更する。</p>
+
+<pre><code class="language-@bash">$ scp -P [SSHポート番号] [公開鍵フルパス] [ユーザー名]@[LinuxのIP]:~/.ssh/authorized_keys
+xxx@xxx's password: # Linuxのユーザーパスワード
+id_rsa.pub                                                                    100%  402     0.4KB/s   00:00
+</code></pre>
+
+<h2 id="接続">接続</h2>
+
+<p>Mac側から接続。</p>
+
+<pre><code class="language-@bash">$ ssh [HOSTに定義した名前]
+
+# 秘密鍵を作成した際のパスフレーズ入力のダイアログが表示される
+</code></pre>
+
+<h2 id="linux-sshパスワード認証を禁止する">Linux : SSHパスワード認証を禁止する</h2>
+
+<p>SSHサーバーの設定を変更し、パスワード認証を無効にする。</p>
+
+<pre><code class="language-@bash">$ sudo vi /etc/ssh/sshd_config
+
+PassswordAuthentication yes → noに変更
+
+# SSHサービスの設定を再読み込みする
+$ sudo systemctl reload sshd.service
+</code></pre>
+
+                </div>
+            </article>
+
+            <nav class="Pagenation">
+                <div class="Pagenation__older">
+                    
+                    <a href="http://mzgkworks.com/post/linux-login-user-management/">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        Linuxでのログインユーザの確認や制御の方法
+                    </a>
+                    
+                </div>
+                <div class="Pagenation__newer">
+                    
+                    <a href="http://mzgkworks.com/post/css-applying-priority/">
+                        CSSの適用優先度の考え方
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </a>
+                    
+                </div>
+            </nav>
+
+            <div class="Disqus">
+                
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'mzgkworks-com';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+            </div>
+        </main>
+
+        <aside class="SubContainer">
+    <h1 class="AreaTitle">Products</h1>
+    <div class="SubItem">
+        <a href="./products/products">
+            <i class="fa fa-apple fa-2x" aria-hidden="true"></i>
+        </a>
+    </div>
+
+    <h1 class="AreaTitle">Categories</h1>
+    <div class="SubItem">
+        <ul>
+            
+            <li>
+                <a href="./categories/knowledge/">
+                    knowledge : 6
+                </a>
+            </li>
+            
+            <li>
+                <a href="./categories/setting/">
+                    setting : 10
+                </a>
+            </li>
+            
+            <li>
+                <a href="./categories/usage/">
+                    usage : 14
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+
+    <h1 class="AreaTitle">Tags</h1>
+    <div class="SubItem">
+        <ul>
+            
+            <li>
+                <a href="./tags/apache/">
+                    apache : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/atom/">
+                    atom : 1
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/bash/">
+                    bash : 3
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/blog/">
+                    blog : 5
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/css/">
+                    css : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/http/">
+                    http : 1
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/hugo/">
+                    hugo : 5
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/linux/">
+                    linux : 14
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/mac/">
+                    mac : 4
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/network/">
+                    network : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/sass/">
+                    sass : 1
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</aside>
+
+
+    </div>
+
+    <div class="FooterContainer">
+    <footer class="Footer">
+        <img  class="Footer__head" src="./images/profile.png" alt="profile-image" />
+        <div class="Footer__body">
+            <i class="fa fa-copyright" aria-hidden="true"></i>
+            <span>2016</span>
+            <span><a href="./about/about">mzgk</a></span>
+        </div>
+    </footer>
+</div>
+
+<script src="./js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-82194549-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+</body>
+</html>
+

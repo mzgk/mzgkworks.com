@@ -1,0 +1,1276 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mzgkworks.com</title>
+    <link>http://mzgkworks.com/categories/setting/index.xml</link>
+    <description>Recent content on mzgkworks.com</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-JP</language>
+    <atom:link href="http://mzgkworks.com/categories/setting/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>MacにSass環境を構築する（Ruby gem）</title>
+      <link>http://mzgkworks.com/post/ruby-gem-install-sass/</link>
+      <pubDate>Tue, 04 Oct 2016 18:57:07 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/ruby-gem-install-sass/</guid>
+      <description>
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;OS X 10.11.6 El Capitan&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;望むこと&#34;&gt;望むこと&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;scssで書いて、動的にcssにコンパイル&lt;/li&gt;
+&lt;li&gt;環境周りのコストを少なく&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;選択肢は&#34;&gt;選択肢は&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;gulp : 使うほどタスクないし、プラグインや設定ファイルなどの初期学習コストが高い&lt;/li&gt;
+&lt;li&gt;npm run : package.jsonが面倒&lt;/li&gt;
+&lt;li&gt;Macなのでrubyがインストール済み
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;$ sudo gem install sass&lt;/code&gt; → sassコマンドか！&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;環境構築&#34;&gt;環境構築&lt;/h2&gt;
+
+&lt;h3 id=&#34;ruby&#34;&gt;Ruby&lt;/h3&gt;
+
+&lt;p&gt;存在確認&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ ruby -v
+ruby 2.3.1p112 (2016-04-26 revision 54768) [x86_64-darwin15]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;gemのアップデート&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo gem update --system
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;sass&#34;&gt;sass&lt;/h3&gt;
+
+&lt;p&gt;存在確認&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sass -v
+-bash: sass: command not found
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;インストール&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo gem install sass
+...
+1 gem installed
+
+$ sass -v
+Sass 3.4.22 (Selective Steve)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;コンパイル&#34;&gt;コンパイル&lt;/h2&gt;
+
+&lt;h3 id=&#34;フォルダ構成&#34;&gt;フォルダ構成&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;.
+|-- css   → ここにコンパイルされたmain.cssが生成される
+`-- scss
+    |-- base
+    |   |-- _reset.scss   → _sanitize.scssを@import
+    |   `-- lib
+    |       `-- _sanitize.scss
+    |-- components
+    |   `-- _component.scss   → いろいろと記述
+    `-- main.scss   → reset,componentのimportのみ
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;コンパイル-1&#34;&gt;コンパイル&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# scssディレクトリ以下のファイル更新を監視し、cssディレクトリへ出力
+$ sass --watch --style expanded scss:css
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;オプション&#34;&gt;オプション&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;watch : ファイルの更新を監視し、更新されたらコンパイル&lt;/li&gt;
+&lt;li&gt;style : 生成されるcssの形式
+
+&lt;ul&gt;
+&lt;li&gt;nested : sassの階層をインデントで残す（デフォルト）&lt;/li&gt;
+&lt;li&gt;expanded : 普通のcss形式&lt;/li&gt;
+&lt;li&gt;compact : セレクタとプロパティが1行形式&lt;/li&gt;
+&lt;li&gt;compressed : 圧縮形式&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;※styleを途中で変更する場合は、一度生成された.cssを削除すること&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>MacからLinux（CentOS7）にSSH公開鍵認証で接続する</title>
+      <link>http://mzgkworks.com/post/mac-linux-ssh-rsa-connection/</link>
+      <pubDate>Fri, 16 Sep 2016 18:32:16 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/mac-linux-ssh-rsa-connection/</guid>
+      <description>
+
+&lt;p&gt;MacからSSHの公開鍵認証でLinux（CentOS7）に接続する方法。&lt;/p&gt;
+
+&lt;h2 id=&#34;linux-公開鍵の設置場所作成&#34;&gt;Linux : 公開鍵の設置場所作成&lt;/h2&gt;
+
+&lt;p&gt;Linux側で公開鍵ファイルを設置する場所を作成しておく。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# ホームディレクトリ直下に.sshディレクトリを作成
+$ mkdir ~/.ssh
+
+# パーミッションを700に変更
+$ chmod 700 ~/.ssh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;mac-公開鍵と秘密鍵の作成&#34;&gt;Mac : 公開鍵と秘密鍵の作成&lt;/h2&gt;
+
+&lt;p&gt;Mac側で &lt;code&gt;$ ssh-keygen&lt;/code&gt;コマンドを使って、公開鍵と秘密鍵ファイルを生成する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# SSH2-rsa形式で作成
+$ ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/Users/[ユーザー名]/.ssh/id_rsa):
+
+# 作成したい場所とファイル名をフルパスで入力する
+# 未入力の場合は、/Users/[ユーザー名]/.ssh/に以下が生成される
+# id_rsa : 秘密鍵
+# id_rsa.pub : 公開鍵
+
+# 任意のパスフレーズを入力する
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+
+# 作成が完了したか確認
+$ ls -la ~/.ssh
+-rw-------   1 xxxx  staff  1766  9 16 17:06 id_rsa
+-rw-r--r--   1 xxxx  staff   402  9 16 17:06 id_rsa.pub
+
+# 公開鍵ファイルのパーミッションを変更（所有者のみrw）
+$ chmod 600 ~/.ssh/id_rsa.pub
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;mac-ssh接続の設定&#34;&gt;Mac : SSH接続の設定&lt;/h2&gt;
+
+&lt;p&gt;SSH設定ファイル（~/.ssh/Config）に接続情報を追加する。&lt;br /&gt;
+ssh接続時にHOSTに設定した引数で接続ができるようになる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;HOST 任意の名前（sshコマンドの引数として入力する）
+  HostName 接続先LinuxのIP
+  User Linuxログインユーザー名
+  Port Linux側SSHポート番号
+  IdentityFile Mac内の秘密鍵ファイルのフルパス
+  ServerAliveInterval 60 # 60秒ごとに接続先にmsg送信
+  # これは接続が切れないようにするため
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;公開鍵ファイルの転送&#34;&gt;公開鍵ファイルの転送&lt;/h2&gt;
+
+&lt;p&gt;Macから接続先のLinuxに&lt;code&gt;$ scp&lt;/code&gt;コマンドを使って、公開鍵ファイルを転送する。&lt;br /&gt;
+その際に、公開鍵ファイルの名前を「authorized_keys」に変更する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ scp -P [SSHポート番号] [公開鍵フルパス] [ユーザー名]@[LinuxのIP]:~/.ssh/authorized_keys
+xxx@xxx&#39;s password: # Linuxのユーザーパスワード
+id_rsa.pub                                                                    100%  402     0.4KB/s   00:00
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;接続&#34;&gt;接続&lt;/h2&gt;
+
+&lt;p&gt;Mac側から接続。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ ssh [HOSTに定義した名前]
+
+# 秘密鍵を作成した際のパスフレーズ入力のダイアログが表示される
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;linux-sshパスワード認証を禁止する&#34;&gt;Linux : SSHパスワード認証を禁止する&lt;/h2&gt;
+
+&lt;p&gt;SSHサーバーの設定を変更し、パスワード認証を無効にする。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo vi /etc/ssh/sshd_config
+
+PassswordAuthentication yes → noに変更
+
+# SSHサービスの設定を再読み込みする
+$ sudo systemctl reload sshd.service
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>ApacheにBasic認証を設定する</title>
+      <link>http://mzgkworks.com/post/apache-basic-auth/</link>
+      <pubDate>Mon, 12 Sep 2016 16:28:46 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/apache-basic-auth/</guid>
+      <description>
+
+&lt;p&gt;CentOS7・Apacheで基本認証（Basic認証）を設定する方法。&lt;br /&gt;
+基本認証は、あらかじめApacheにユーザー名とパスワードを登録しておき、特定のディレクトリ以下にアクセスがあれば認証を求めるという仕組み。&lt;/p&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Apache : Apache/2.4.6 (CentOS)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;基本認証とダイジェスト認証&#34;&gt;基本認証とダイジェスト認証&lt;/h2&gt;
+
+&lt;p&gt;ユーザー名・パスワードの入力を戻る方法としては、以下の２種類が存在する。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;基本認証 : ユーザー・パスワードのデータを平文で送信&lt;/li&gt;
+&lt;li&gt;ダイジェスト認証 : MD5で暗号化して送信&lt;/li&gt;
+&lt;li&gt;安全性 : ダイジェスト認証　＞　基本認証&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;基本認証の追加&#34;&gt;基本認証の追加&lt;/h2&gt;
+
+&lt;h3 id=&#34;登録ファイルの作成&#34;&gt;登録ファイルの作成&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;htpasswd -c ファイル名 ユーザー&lt;/code&gt;コマンドで、ユーザーとパスワードを登録するファイルを作成する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 登録するファイルを作成する
+$ sudo htpasswd -c /etc/httpd/conf.d/htpasswd webuser
+New Password:
+...
+Adding password for user webuser
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;権限変更&#34;&gt;権限変更&lt;/h3&gt;
+
+&lt;p&gt;作成された登録ファイルの権限をapacheユーザー・グループのみアクセス可能なように変更する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 所有権
+$ sudo chown apache:apache /etc/httpd/conf.d/htpasswd
+
+# アクセス権
+$ sudo chmod 600 /etc/httpd/conf.d/htpasswd
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;認証ディレクトリの設定&#34;&gt;認証ディレクトリの設定&lt;/h3&gt;
+
+&lt;p&gt;基本認証を適用するディレクトリの設定を行う。&lt;br /&gt;
+設定を記述するファイルのファイル名は任意。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo vi /etc/httpd/conf.d/auth.conf
+
+# 以下を追加（適用するディレクトリがドキュメントルートの場合）
+&amp;lt;Directory &amp;quot;/var/www/http&amp;quot;&amp;gt;
+  AuthType Basic
+  AuthName &amp;quot;Private Aera&amp;quot;
+  AuthUserFile /etc/httpd/conf.d/htpasswd
+  Require valid-user
+&amp;lt;/Directory&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;設定内容&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;ディレクティブ&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;AuthType&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;BASICを指定すると基本認証&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;AuthName&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;認証名（認証ウィンドウの表示）&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;AuthUserFile&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;パスワードファイル名&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;Require&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;認証ユーザー（valid-user : ファイルに書かれた全ユーザー）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&#34;apache設定ファイルの再読み込み&#34;&gt;Apache設定ファイルの再読み込み&lt;/h3&gt;
+
+&lt;p&gt;Apacheをリロードして、設定ファイルを再読み込みさせる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo systemctl reload hhtpd.service
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;urlアクセス時&#34;&gt;URLアクセス時&lt;/h3&gt;
+
+&lt;p&gt;これで、アクセス時に「ユーザー」「パスワード」を求めるダイアログが表示される。&lt;br /&gt;
+認証が成功した場合に、アクセスしたページが表示される。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CentOS 7へのWebサーバー（Apache）のインストールと基本設定</title>
+      <link>http://mzgkworks.com/post/centos7-apache-install/</link>
+      <pubDate>Mon, 12 Sep 2016 15:42:13 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/centos7-apache-install/</guid>
+      <description>
+
+&lt;p&gt;CentOS7への、Webサーバー（Apache）のインストールから設定まで。&lt;/p&gt;
+
+&lt;h2 id=&#34;apacheのインストール&#34;&gt;Apacheのインストール&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;$ yum&lt;/code&gt;コマンドを使用して関連あるパッケージを含めてインストールを行う。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo yum install httpd
+[sudo] password for centuser:
+...
+インストール:
+  httpd.x86_64 0:2.4.6-40.el7.centos.4
+...
+完了しました!
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ドキュメントルート&#34;&gt;ドキュメントルート&lt;/h2&gt;
+
+&lt;p&gt;Webで公開するトップディレクトリ。&lt;br /&gt;
+デフォルトでは、「/var/www/html/」。&lt;br /&gt;
+「/etc/httpd/conf/httpd.conf」ファイルからでも確認ができる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# ドキュメントルートを確認（L119付近）
+$ sudo vi /etc/httpd/conf/httpd.conf
+...
+#
+# DocumentRoot: The directory out of which you will serve your
+# documents. By default, all requests are taken from this directory, but
+# symbolic links and aliases may be used to point to other locations.
+#
+DocumentRoot &amp;quot;/var/www/html&amp;quot;
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;設定ファイル-etc-httpd-conf-httpd-conf&#34;&gt;設定ファイル（/etc/httpd/conf/httpd.conf）&lt;/h2&gt;
+
+&lt;p&gt;Apacheのメイン設定ファイル。&lt;/p&gt;
+
+&lt;p&gt;主なディレクティブ&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;ディレクティブ&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;デフォルト&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;ServerRoot&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;設定ファイル等を配置するトップディレクトリ&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;/etc/httpd&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;Listen&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Apacheが待ち受けるポート番号&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;80&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;User&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Apacheの実行ユーザー&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;apache&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;Group&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Apacheの実行グループ&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;apache&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;ServerAdmin&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Apacheの管理者&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;root@localhost&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;ServerName&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Webサーバー名&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;#ServerName www.example.com:80&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;DocumentRoot&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ドキュメントルート&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;/var/www/html&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;DirectoryIndex&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;インデックスファイル名&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;index.html&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&#34;serverroot&#34;&gt;ServerRoot&lt;/h3&gt;
+
+&lt;p&gt;設定ファイル等を配置するトップディレクトリ。&lt;br /&gt;
+httpd.confファイル内で相対パスを指定すると、このディレクトリが起点となる。&lt;/p&gt;
+
+&lt;h3 id=&#34;listen&#34;&gt;Listen&lt;/h3&gt;
+
+&lt;p&gt;Apacheが待ち受けるポート番号。&lt;/p&gt;
+
+&lt;h3 id=&#34;user-group&#34;&gt;User/Group&lt;/h3&gt;
+
+&lt;p&gt;Apacheの実行ユーザーとグルー。&lt;br /&gt;
+Apacheが扱うコンテンツは、ここで指定されているユーザー・グループが利用できるアクセス権が必要。&lt;/p&gt;
+
+&lt;h3 id=&#34;serveradmin&#34;&gt;ServerAdmin&lt;/h3&gt;
+
+&lt;p&gt;Apacheが稼働しているサーバーの管理者のメールアドレス。&lt;/p&gt;
+
+&lt;h3 id=&#34;servername&#34;&gt;ServerName&lt;/h3&gt;
+
+&lt;p&gt;Webサーバーの名前。&lt;br /&gt;
+デフォルトではコメントアウトされているので、解除して設定すること。&lt;br /&gt;
+:80のようにポート番号を指定できるが、省略してもよい。&lt;/p&gt;
+
+&lt;h3 id=&#34;documentroot&#34;&gt;DocumentRoot&lt;/h3&gt;
+
+&lt;p&gt;ドキュメントルートを &lt;strong&gt;絶対パス&lt;/strong&gt; で設定する。&lt;br /&gt;
+このディレクトリ以下には、User/Groupディレクティブで指定したユーザー・グループがアクセスできる必要がある。&lt;/p&gt;
+
+&lt;h3 id=&#34;directoryindex&#34;&gt;DirectoryIndex&lt;/h3&gt;
+
+&lt;p&gt;URLでファイル名まで指定されなかったときに、表示するファイル名を指定する。&lt;/p&gt;
+
+&lt;h2 id=&#34;httpd-confファイルの構文チェック&#34;&gt;httpd.confファイルの構文チェック&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;$ httpd -t&lt;/code&gt; コマンドで構文チェックをすることができる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# /etc/httpd/conf/httpd.confファイルのチェック
+$ httpd -t
+Syntax OK
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;apacheの起動-自動起動設定&#34;&gt;Apacheの起動・自動起動設定&lt;/h2&gt;
+
+&lt;p&gt;Apacheの起動と、次回からのシステム起動時に自動起動させる設定。&lt;br /&gt;
+Apacheを起動すると、複数のhttpdプロセスが生成される。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 起動
+$ sudo systemctl start httpd.service
+
+# 自動起動設定
+$ sudo systemctl enable httpd.service
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ファイヤウォールの設定&#34;&gt;ファイヤウォールの設定&lt;/h2&gt;
+
+&lt;p&gt;ファイヤウォールの設定を変更し、80番ポート（http）へのアクセスを許可させる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 設定
+$ sudo firewall-cmd --permanent --add-service=http
+
+# 更新
+$ sudo firewall-cmd --reload
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ログ&#34;&gt;ログ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;アクセスログ : /var/log/httpd/access_log&lt;/li&gt;
+&lt;li&gt;エラーログ : /var/log/httpd/error_log&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# アクセスログ
+$ sudo less /var/log/httpd/access_log
+
+# エラーログ
+$ sudo less /var/log/httpd/error_log
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CentOS 7でSSHのポート番号を変更する（SELinux・firewalld）</title>
+      <link>http://mzgkworks.com/post/cetos7-ssh-port-change/</link>
+      <pubDate>Mon, 05 Sep 2016 17:26:03 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/cetos7-ssh-port-change/</guid>
+      <description>
+
+&lt;p&gt;CentOS 7でSSHのポート番号を変更する方法のメモ。&lt;br /&gt;
+CentOS 7から、ファイヤウォールの設定が &lt;strong&gt;iptables → firewalld&lt;/strong&gt; に変更となった。&lt;br /&gt;
+SELinuxが有効で、iptables → firewalld（FireWall）での内容。&lt;br /&gt;
+ポート番号は例。&lt;/p&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;さくらVPS&lt;/li&gt;
+&lt;li&gt;CentOS 7&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;ssh設定ファイル&#34;&gt;SSH設定ファイル&lt;/h2&gt;
+
+&lt;p&gt;SSHサーバーの設定ファイル &lt;code&gt;/etc/ssh/sshd_config&lt;/code&gt; を変更する。&lt;br /&gt;
+rootユーザーに切替えて操作（切替え後の$は#に読替え）。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# rootユーザーに切り替え
+$ su -
+
+$ vi /etc/ssh/sshd_config
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;変更場所&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;変更前&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;変更後&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;L17&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;#Port 22&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Port 10055&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;L49&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;#PermitRootLogin yes&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;PermitRootLogin no&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&#34;selinux&#34;&gt;SELinux&lt;/h2&gt;
+
+&lt;p&gt;SELinuxの設定変更コマンドをインストールする。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 存在確認
+$ rpm -q policycoreutils-python
+
+# インストール
+$ yum -y install policycoreutils-python
+
+# SSHポート（10055）の許可
+$ semanage port -a -t ssh_port_t -p tcp 10055
+
+# 確認
+$ semanage port -l | grep ssh
+ssh_port_t                     tcp      10055, 22
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;firewall&#34;&gt;FireWall&lt;/h2&gt;
+
+&lt;p&gt;外部から10055ポートへのアクセスを許可する。&lt;br /&gt;
+ひな形からコピーして編集を行う。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# コピー
+$ cp /usr/lib/firewalld/services/ssh.xml /etc/firewalld/services/
+
+# viで編集
+$ vi /etc/firewalld/services/ssh.xml
+
+&amp;lt;port protocol=&amp;quot;tcp&amp;quot; port=&amp;quot;22&amp;quot;/&amp;gt;
+↓
+&amp;lt;port protocol=&amp;quot;tcp&amp;quot; port=&amp;quot;10055&amp;quot;/&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;反映&#34;&gt;反映&lt;/h2&gt;
+
+&lt;p&gt;FireWallとSELinuxに変更を反映する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# FireWall
+$ firewall-cmd --reload
+
+# SSHサーバー再起動
+$ systemctl restart sshd.service
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;クライアントからの接続&#34;&gt;クライアントからの接続&lt;/h2&gt;
+
+&lt;p&gt;MacのTerminal.appから接続する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ ssh -p 10055 ユーザー名@IPアドレス
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以上&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Hugo・GitHub Pages・独自ドメインでブログを構築 : 4</title>
+      <link>http://mzgkworks.com/post/build-a-blog-in-hugo-4/</link>
+      <pubDate>Tue, 30 Aug 2016 15:20:03 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/build-a-blog-in-hugo-4/</guid>
+      <description>
+
+&lt;p&gt;手順通りにコマンドを叩いていくのが面倒なので、スクリプトにまとめる。&lt;br /&gt;
+~/.bash_profile または ~/.bash_rcに記述しておく。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;記事作成〜確認&lt;/li&gt;
+&lt;li&gt;コミット〜公開&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;記事ファイルの作成-確認&#34;&gt;記事ファイルの作成〜確認&lt;/h2&gt;
+
+&lt;p&gt;記事ファイルを作成しATOMで起動〜ローカルサーバ起動し確認ができる環境までを用意する。&lt;br /&gt;
+-t テーマ名は、config.tomlに設定しているので省略している。&lt;br /&gt;
+&lt;code&gt;$ hugow ファイル名&lt;/code&gt; で実行する（ファイル名はprefixとして日時が自動挿入される）。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# $ hugow ファイル名
+# フロー : ファイル作成 → Chrome起動 → ローカルサーバ起動
+function hugow() {
+  echo -e &amp;quot;\033[0;32m***ファイル作成・Chrome起動・サーバ起動***\033[0m&amp;quot;
+  # 作業ディレクトリに移動（自分の環境に合わせる）
+  command cd ~/Develop/Web/mzgkworks.com
+  # content/post/YYYYMMDDHHMM_引数.md を作成し、ATOMを起動
+  command hugo new post/$(date +%Y%m%d%H%M)_$*.md --editor=&amp;quot;atom&amp;quot;
+  # chromeを起動しローカルホストを表示（確認用）
+  command open -a &amp;quot;/Applications/Google Chrome.app&amp;quot; http://localhost:1313
+  # ローカルサーバーを起動（ライブリロード）
+  command hugo server -D -w
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;コミット-公開-プッシュ&#34;&gt;コミット〜公開（プッシュ）&lt;/h2&gt;
+
+&lt;p&gt;コミット〜プッッシュして公開までを行う。&lt;br /&gt;
+&lt;code&gt;$ hugop コミットメッセージ&lt;/code&gt; で実行する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# $ hugop コミットメッセージ
+# フロー : コミット → プッシュ
+function hugop() {
+  echo -e &amp;quot;\033[0;32m***add -&amp;gt; commit -&amp;gt; push***\033[0m&amp;quot;
+  # 作業ディレクトリに移動
+  command cd ~/Develop/Web/mzgkworks.com
+  # ファイル生成
+  command hugo
+  # public → docsディレクトリにコピー
+  command cp -p -f -R public/* docs
+  # add
+  command git add .
+  # 引数（途中の空白文字可）をメッセージにしてcommit
+  command git commit -m &amp;quot;$*&amp;quot;
+  # push master
+  command git push origin master
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;以上&#34;&gt;以上&lt;/h3&gt;
+
+&lt;p&gt;GitHub Pagesがmasterブランチのdocsディレクトリで使えるようになったので、かなり楽になった。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Hugo・GitHub Pages・独自ドメインでブログを構築 : 3</title>
+      <link>http://mzgkworks.com/post/build-a-blog-in-hugo-3/</link>
+      <pubDate>Tue, 30 Aug 2016 15:08:35 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/build-a-blog-in-hugo-3/</guid>
+      <description>
+
+&lt;ul&gt;
+&lt;li&gt;記事の作成&lt;/li&gt;
+&lt;li&gt;公開ファイルの生成&lt;/li&gt;
+&lt;li&gt;公開&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;記事の作成準備&#34;&gt;記事の作成準備&lt;/h2&gt;
+
+&lt;p&gt;記事作成時の雛形となるファイル（default.md）を「archetypes」ディレクトリに作成する。&lt;br /&gt;
+テーマをインストールしている場合は、「themes/テーマ名/archetypes」にdefault.mdが存在する場合があるので「archetypes」ディレクトリにコピーする。&lt;br /&gt;
+項目はテーマに対応するので、テーマのサイトを参照し設定すること。以下は主な項目例。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@toml&#34;&gt;+++
+draft = true         # 作成中（作成後にfalseにする）
+date = &amp;quot;now()&amp;quot;    # 作成日時が入る
+categories = [&amp;quot;&amp;quot;] # カテゴリーを入れる
+tags = [&amp;quot;&amp;quot;, &amp;quot;&amp;quot;]   # タグを入れる
+title = &amp;quot;&amp;quot;       # 記事のタイトル（ファイル名が入るので変更する）
+description = &amp;quot;&amp;quot;  # 説明
+slug = &amp;quot;&amp;quot; # URLになる（指定しない場合は、URLがファイル名になる）
++++
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;記事の作成&#34;&gt;記事の作成&lt;/h2&gt;
+
+&lt;p&gt;環境のトップでhugoコマンドを実行し、ファイルを作成する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 環境のトップに移動（ここではmyblogディレクトリ）
+$ cd ~/myblog
+
+# 記事ファイルを作成
+# --editor=&amp;quot;atom&amp;quot;をつけるとATOMで開いてくれる
+$ hugo new post/ファイル名.md
+
+# content/post/にファイルが作成される
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;記事を書く&#34;&gt;記事を書く&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ヘッダー部分（+++ 〜 +++）を設定する&lt;/li&gt;
+&lt;li&gt;２つ目の+++の下から記事をMarkdownで書いていく&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;確認-ライブリロード&#34;&gt;確認（ライブリロード）&lt;/h2&gt;
+
+&lt;p&gt;Hugoのローカルサーバを起動し、ブラウザで確認しながら書くことができる。&lt;br /&gt;
+アドレスは&lt;a href=&#34;http://localhost:1313/&#34;&gt;http://localhost:1313/&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# ローカルサーバを起動
+# -t : テーマ
+# -D : draft=trueの記事も表示する
+# -w : ライブリロードを有効にする
+$ hugo server -t masamune -D -w
+
+# 停止はCtrl+c
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;公開ファイルの生成&#34;&gt;公開ファイルの生成&lt;/h2&gt;
+
+&lt;p&gt;記事を書き終わり確認ができたら、ヘッダ部分の &lt;strong&gt;draft=true → false&lt;/strong&gt; に変更する。&lt;br /&gt;
+公開ファイルを生成し、docsディレクトリにコピーを行う。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# draft=true → falseに変更して保存
+
+# 生成（publicディレクトリに出力される）
+$ hugo -t masamune
+
+# docsディレクトリにコピーする
+$ cp -p -f -R public/* docs
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;公開&#34;&gt;公開&lt;/h2&gt;
+
+&lt;p&gt;GitHubにプッシュし、公開する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# コミット
+$ git add .
+$ git commit -m &amp;quot;コミットメッセージ&amp;quot;
+
+# プッシュ
+$ git push origin master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;次回は一連の作業をまとめてスクリプト化する方法&#34;&gt;次回は一連の作業をまとめてスクリプト化する方法&lt;/h3&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Hugo・GitHub Pages・独自ドメインでブログを構築 : 2</title>
+      <link>http://mzgkworks.com/post/build-a-blog-in-hugo-2/</link>
+      <pubDate>Tue, 30 Aug 2016 14:45:11 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/build-a-blog-in-hugo-2/</guid>
+      <description>
+
+&lt;p&gt;GitHub側の設定と独自ドメインの適用を行う。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;GitHubの設定&lt;/li&gt;
+&lt;li&gt;独自ドメインの適用&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;github&#34;&gt;GitHub&lt;/h2&gt;
+
+&lt;p&gt;このリモートリポジトリの持つ意味は２つ。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ブログ作業環境 : ローカルの作業環境がそのまま。git cloneすればどこでも作業できる&lt;/li&gt;
+&lt;li&gt;公開環境 : GitHub Pageを利用した公開環境（masterブランチ/docsディレクトリ）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;github-pages&#34;&gt;GitHub Pages&lt;/h2&gt;
+
+&lt;p&gt;GitHub Pagesの形態として、&lt;strong&gt;ユーザーページ&lt;/strong&gt; と &lt;strong&gt;プロジェクトページ&lt;/strong&gt; の２つがある。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ユーザーページ : リポジトリ名を「アカウント名.github.io」で作成&lt;/li&gt;
+&lt;li&gt;プロジェクトページ : リポジトリ名は任意で、masterブランチにdocsディレクトリを作成する
+
+&lt;ul&gt;
+&lt;li&gt;docsディレクトリ方式は、2016.8に追加された機能&lt;/li&gt;
+&lt;li&gt;以前はgh-pagesブランチを作成する必要があった&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;今回は環境ごと管理したかったので、プロジェクトページ形式で作成する。&lt;/p&gt;
+
+&lt;h2 id=&#34;リモートリポジトリ-github&#34;&gt;リモートリポジトリ : GitHub&lt;/h2&gt;
+
+&lt;p&gt;任意の名前（今回はサイトと同名のmyblog）でリポジトリを新規作成。&lt;br /&gt;
+- Initialize this repository with a README → 未チェック&lt;br /&gt;
+- リポジトリのURL : &lt;a href=&#34;https://github.com/&#34;&gt;https://github.com/&lt;/a&gt;&amp;lt;アカウント&amp;gt;/&amp;lt;リポジトリ名&amp;gt;.git&lt;/p&gt;
+
+&lt;h2 id=&#34;ローカルリポジトリ-mac&#34;&gt;ローカルリポジトリ : Mac&lt;/h2&gt;
+
+&lt;p&gt;リモートにプッシュを行う。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# リモートリポジトリの追加
+$ git remote add origin https://github.com/mzgk/myblog.git
+
+# リモートの確認
+$ git remote -v
+masamune       	https://github.com/mzgk/masamune.git (fetch) # テーマ用（subtree）
+masamune       	https://github.com/mzgk/masamune.git (push)
+origin 	https://github.com/mzgk/myblog.git (fetch) # ブログ環境用
+origin 	https://github.com/mzgk/myblog.git (push)
+
+# プッシュ
+$ git push -u origin master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;独自ドメインの設定&#34;&gt;独自ドメインの設定&lt;/h2&gt;
+
+&lt;p&gt;ドメインは、ムームードメインで取得済み。&lt;br /&gt;
+作業としては、以下。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ムームードメイン側のAレコードにGitHubのアドレスを設定する&lt;/li&gt;
+&lt;li&gt;GitHubリポジトリのdocsディレクトリにCNAMEファイルを格納する&lt;/li&gt;
+&lt;li&gt;GitHubリポジトリでGitHub Pagesの設定をする&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;ムームードメイン側の設定-dns設定&#34;&gt;ムームードメイン側の設定（DNS設定）&lt;/h2&gt;
+
+&lt;p&gt;Aレコードの値は&lt;a href=&#34;https://help.github.com/articles/setting-up-an-apex-domain/#configuring-a-records-with-your-dns-provider&#34;&gt;GitHubのページ&lt;/a&gt;を参照。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ログイン -&amp;gt; ドメイン管理 : ムームーDNS -&amp;gt; ドメインを選択 -&amp;gt; 変更&lt;/li&gt;
+&lt;li&gt;カスタム設定のセットアップ情報変更 -&amp;gt; 設定２ -&amp;gt;&lt;/li&gt;
+&lt;li&gt;サブドメイン : 未入力&lt;/li&gt;
+&lt;li&gt;種別 : A&lt;/li&gt;
+&lt;li&gt;内容 : 192.30.252.153&lt;/li&gt;
+&lt;li&gt;サブドメイン : 未入力&lt;/li&gt;
+&lt;li&gt;種別 : A&lt;/li&gt;
+&lt;li&gt;内容 : 192.30.252.154&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;セットアップ情報変更を押下。&lt;/p&gt;
+
+&lt;h2 id=&#34;cnameファイル&#34;&gt;CNAMEファイル&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ローカルのdocsディレクトリに『CNAME』という名前でファイルを作成&lt;/li&gt;
+&lt;li&gt;中身には取得してあるドメイン名を記述（myblog.com）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;config-toml&#34;&gt;config.toml&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;baseurlをGitHub PageのURLから、独自ドメインに変更する&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;生成-コミット-プッシュ&#34;&gt;生成〜コミット〜プッシュ&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 公開ファイルを生成
+$ hugo -t masamune
+
+# docsディレクトリにコピー
+$ cp -p -f -R public/* docs
+
+# コミット
+$ git add .
+$ git commit -m &amp;quot;独自ドメインを設定&amp;quot;
+
+# master
+$ git push origin master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;githubの設定-github-pages&#34;&gt;GitHubの設定（GitHub Pages）&lt;/h2&gt;
+
+&lt;p&gt;GitHub上で、GitHub Pagesの設定を行う。&lt;/p&gt;
+
+&lt;h3 id=&#34;source&#34;&gt;Source&lt;/h3&gt;
+
+&lt;p&gt;作成したリポジトリ → Settings → GitHub Pages → Source&lt;br /&gt;
+「master baranch /docs folder」を選択 → Save&lt;/p&gt;
+
+&lt;h3 id=&#34;custom-domain&#34;&gt;Custom domain&lt;/h3&gt;
+
+&lt;p&gt;作成したリポジトリ → Settings → GitHub Pages → Custom domain&lt;br /&gt;
+ドメインを入力 → Save&lt;/p&gt;
+
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+
+&lt;p&gt;Saveが完了すると、GitHub Pagesの部分にURLが表示される。&lt;br /&gt;
+そのURLがGitHub Pages（今回のブログ）のURLとなる。&lt;br /&gt;
+アクセスすると、docsディレクトリ以下のWebページが閲覧できる。&lt;/p&gt;
+
+&lt;h2 id=&#34;確認&#34;&gt;確認&lt;/h2&gt;
+
+&lt;p&gt;しばらくしてブラウザから設定したドメインにアクセスし、反映されていることを確認する。&lt;/p&gt;
+
+&lt;h3 id=&#34;次は-記事の作成から&#34;&gt;次は、記事の作成から。&lt;/h3&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Hugo・GitHub Pages・独自ドメインでブログを構築 : 1</title>
+      <link>http://mzgkworks.com/post/build-a-blog-in-hugo-1/</link>
+      <pubDate>Tue, 30 Aug 2016 14:20:11 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/build-a-blog-in-hugo-1/</guid>
+      <description>
+
+&lt;ul&gt;
+&lt;li&gt;Hugoのインストール&lt;/li&gt;
+&lt;li&gt;ブログ環境の構築&lt;/li&gt;
+&lt;li&gt;Git管理&lt;/li&gt;
+&lt;li&gt;テーマの適用&lt;/li&gt;
+&lt;li&gt;公開ファイルの生成&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;構築環境&#34;&gt;構築環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;OS X 10.11.6&lt;/li&gt;
+&lt;li&gt;Homebrew 0.9.9&lt;/li&gt;
+&lt;li&gt;Hugo 0.16&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/&#34;&gt;GitHub&lt;/a&gt;はアカウントを作成済み&lt;/li&gt;
+&lt;li&gt;ドメインは&lt;a href=&#34;https://muumuu-domain.com/&#34;&gt;ムームードメイン&lt;/a&gt;で取得済み&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;homebrew&#34;&gt;Homebrew&lt;/h2&gt;
+
+&lt;p&gt;アップデート（インストールは&lt;a href=&#34;http://brew.sh/index_ja.html&#34;&gt;公式サイト&lt;/a&gt;を参照）。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ brew update
+$ brew upgrade
+$ brew cleanup
+$ brew doctor
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;hugo&#34;&gt;Hugo&lt;/h2&gt;
+
+&lt;p&gt;Homebrew経由でインストールを行う。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ brew install hugo
+# 確認
+$ hugo version
+Hugo Static Site Generator v0.16 BuildDate: 2016-06-06T21:37:59+09:00
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ブログ環境の作成&#34;&gt;ブログ環境の作成&lt;/h2&gt;
+
+&lt;p&gt;Hugoコマンドを使って、ローカルにブログ作業ディレクトリを作成する。&lt;br /&gt;
+今回の例では、Home直下にmyblogディレクトリ（~/myblog）として作成。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 環境作成
+$ hugo new site ~/myblog # 任意のディレクトリ名
+Congratulations! Your new Hugo site is created in &amp;quot;&amp;lt;作成された場所&amp;gt;&amp;quot;.
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;サイト名のディレクトリが作成される。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ cd ~/myblog
+$ tree -a
+.
+|-- archetypes  # 記事のテンプレートを格納（空）
+|-- config.toml # サイト全体の設定ファイル
+|-- content     # 記事を格納（空）
+|-- data        # データファイルを格納（空）
+|-- layouts     # レイアウトファイルを格納（空）
+|-- static      # 画像等の静的ファイルを格納（空）
+`-- themes      # テーマを格納（空）
+
+6 directories, 1 file
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;github-pages用の公開ディレクトリを追加&#34;&gt;GitHub Pages用の公開ディレクトリを追加&lt;/h2&gt;
+
+&lt;p&gt;GitHub Pagesのmasterブランチでの公開用に &lt;strong&gt;docs&lt;/strong&gt; ディレクトリを追加する。&lt;br /&gt;
+Hugoコマンドでの公開ファイル生成後に、publicディレクトリの中身をこのdocsディレクトリにコピーする。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# GitHub pages用の公開ディレクトリを作成
+$ mkdir docs
+
+$ tree -a
+.
+|-- archetypes
+|-- config.toml
+|-- content
+|-- data
+|-- docs       # 公開用ディレクトリ（GitHub Pages用）
+|-- layouts
+|-- static
+`-- themes
+
+7 directories, 1 file
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;git管理を開始する&#34;&gt;Git管理を開始する&lt;/h2&gt;
+
+&lt;p&gt;作成された初期状態の環境をGit管理下におく。&lt;br /&gt;
+空ディレクトリも管理対象となるように「.gitkeep」の名前で空ファイルを格納しておく。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 空ディレクトリに対して.gitkeepファイルを作成しておく
+$ touch archetypes/.gitkeep
+$ touch content/.gitkeep
+...
+.
+|-- archetypes
+|   `-- .gitkeep
+|-- config.toml
+|-- content
+|   `-- .gitkeep
+|-- data
+|   `-- .gitkeep
+|-- docs
+|   `-- .gitkeep
+|-- layouts
+|   `-- .gitkeep
+|-- static
+|   `-- .gitkeep
+`-- themes
+    `-- .gitkeep
+
+7 directories, 8 files
+
+# Git初期化
+$ git init
+
+# コミット
+$ git add .
+$ git commit -m &amp;quot;Initial : 環境作成直後&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;テーマのインストール&#34;&gt;テーマのインストール&lt;/h2&gt;
+
+&lt;h3 id=&#34;既存のテーマを使う場合&#34;&gt;既存のテーマを使う場合&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://themes.gohugo.io/&#34;&gt;公式テーマサイト&lt;/a&gt;でテーマを選び、インストールをする。&lt;br /&gt;
+インストールしたいテーマを選んだら、テーマのリポジトリを &lt;code&gt;git clone&lt;/code&gt; してくる。&lt;br /&gt;
+今回はシンプルできれいな『&lt;a href=&#34;http://themes.gohugo.io/angels-ladder/&#34;&gt;Angel&amp;rsquo;s Ladder&lt;/a&gt;』を例に。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# themesディレクトリに移動
+$ cd themes
+
+# テーマのリポジトリからcloneしてくる
+$ git clone https://github.com/tanksuzuki/angels-ladder
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;もしくは、テーマのリポジトリから.zip形式でダウンロードし、themesディレクトリに解凍する。&lt;br /&gt;
+&lt;strong&gt;解凍したディレクトリ名はテーマの名称に変更する（angels-ladder-master → angels-ladder）。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;自作テーマの場合&#34;&gt;自作テーマの場合&lt;/h3&gt;
+
+&lt;p&gt;自作のテーマがGitHub上の別リポジトリに存在する場合。例としてこのサイトのテーマ（masamune）。&lt;br /&gt;
+同じように &lt;code&gt;git clone&lt;/code&gt; でもいいが、この環境でテーマの改修作業もする場合は &lt;code&gt;git subtree&lt;/code&gt; の仕組みを利用する。&lt;br /&gt;
+前提として、myblogディレクトリがGit管理下に置かれていること。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 環境のトップに移動（ここではmyblogディレクトリ）
+$ cd ~/myblog
+
+# テーマのリポジトリをリモートに追加（リモート名 : masamuneとする）
+$ git remote add masamune &amp;lt;テーマのリポジトリURL&amp;gt;
+
+# テーマmasamuneをsubtreeとして取り込む
+# --prefix=themesディレクトリの下にmasamuneというディレクトリで
+# --squash : 履歴なし
+# リモートリポジトリ名（masamune） master
+$ git subtree add --prefix=themes/masamune --squash masamune master
+git fetch masamune master
+warning: no common commits
+...
+ * branch            master     -&amp;gt; FETCH_HEAD
+ * [new branch]      master     -&amp;gt; masamune/master
+Added dir &#39;themes/masamune&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで、themesディレクトリの配下にmasamuneディレクトリが作成されて、テーマが配置（インストール）される。&lt;/p&gt;
+
+&lt;h2 id=&#34;テーマの設定&#34;&gt;テーマの設定&lt;/h2&gt;
+
+&lt;p&gt;インストールしたテーマに即した設定を『config.toml』に行う。&lt;br /&gt;
+内容はテーマのサイトを参照すると記載されている。&lt;br /&gt;
+&lt;a href=&#34;https://github.com/tanksuzuki/angels-ladder&#34;&gt;Angel&amp;rsquo;s Ladder&lt;/a&gt;は丁寧に記載されている。&lt;/p&gt;
+
+&lt;h2 id=&#34;サイトの設定-config-toml&#34;&gt;サイトの設定（config.toml）&lt;/h2&gt;
+
+&lt;p&gt;サイト自体の設定は『config.toml』に記述する。&lt;br /&gt;
+&lt;a href=&#34;http://gohugo.io/overview/configuration/&#34;&gt;本家サイト&lt;/a&gt;に記載されている。&lt;br /&gt;
+また、テーマごとに設定する項目が存在するので、テーマの公式サイトを参照すること。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@yaml&#34;&gt;baseurl = &amp;quot;GitHub PagesのURL（https://&amp;lt;アカウント&amp;gt;.github.io/&amp;lt;リポジトリ名&amp;gt;）&amp;quot;
+title = &amp;quot;サイトのタイトル&amp;quot;
+theme = &amp;quot;テーマ名&amp;quot; ← 確認・生成時に『-t テーマ名』が不要になる
+languageCode = &amp;quot;ja-JP&amp;quot;
+canonifyurls = true
+hasCJKLanguage = true
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;テーマの確認&#34;&gt;テーマの確認&lt;/h2&gt;
+
+&lt;p&gt;ローカルサーバーを起動し、テーマが適用されているかブラウザで確認を行う。&lt;br /&gt;
+起動したら、ブラウザを立ち上げlocalhost:1313/myblogにアクセスする（起動時に表示される宛先を参照）。&lt;br /&gt;
+localhost:1313部分は、&lt;strong&gt;「Web Server is available at」&lt;/strong&gt; の部分を参照すること。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 環境のトップに移動
+$ cd ~/myblog
+# config.tomlにthemeを設定している場合は、-t masamuneは不要
+$ hugo server -t masamune -D -w
+...
+Web Server is available at http://localhost:1313/ (bind address 127.0.0.1)
+
+# 停止する場合は『Ctrl + c』
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;テーマの確認ができたらコミット&#34;&gt;テーマの確認ができたらコミット&lt;/h2&gt;
+
+&lt;p&gt;テーマの設定まで確認ができたら、一旦コミットしておく。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ git status
+On branch master
+Changes not staged for commit:
+  (use &amp;quot;git add &amp;lt;file&amp;gt;...&amp;quot; to update what will be committed)
+  (use &amp;quot;git checkout -- &amp;lt;file&amp;gt;...&amp;quot; to discard changes in working directory)
+
+       	modified:   config.toml
+
+no changes added to commit (use &amp;quot;git add&amp;quot; and/or &amp;quot;git commit -a&amp;quot;)
+
+# コミット
+$ git commit -am &amp;quot;テーマの設定&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;公開ファイルの生成&#34;&gt;公開ファイルの生成&lt;/h2&gt;
+
+&lt;p&gt;公開用のファイルを生成する（記事なし。テーマ適用のみ）。&lt;br /&gt;
+publicディレクトリが作成され、公開用のファイル類が生成される。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 環境のトップで行うこと
+$ cd ~/myblog
+
+# 生成（-t テーマ名）
+$ hugo -t masamune
+Started building site
+0 draft content
+0 future content
+0 pages created
+0 non-page files copied
+0 paginator pages created
+0 tags created
+0 categories created
+in 12 ms
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;publicディレクトリの中身をdocsディレクトリにコピー&#34;&gt;publicディレクトリの中身をdocsディレクトリにコピー&lt;/h2&gt;
+
+&lt;p&gt;GitHub Pagesの機能で公開するため、publicディレクトリの中身をdocsディレクトリにコピーする。&lt;br /&gt;
+これは記事作成後の生成時に必須の作業となる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# publicディレクトリの中身をdocsディレクトリにコピーする
+# -p : コピー元の情報を引き継ぐ
+# -f : 上書き等の問い合わせをしない
+# -R : ディレクトリも
+$ cp -p -f -R public/* docs
+
+# コミット
+$ git add .
+$ git commit -m &amp;quot;公開用ファイル生成&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;次回は-githubにリモートリポジトリを作成するところから&#34;&gt;次回は、GitHubにリモートリポジトリを作成するところから。&lt;/h3&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Hugo・GitHub Pages・独自ドメインでブログを構築 : 0</title>
+      <link>http://mzgkworks.com/post/build-a-blog-in-hugo-0/</link>
+      <pubDate>Tue, 30 Aug 2016 13:58:05 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/build-a-blog-in-hugo-0/</guid>
+      <description>
+
+&lt;h2 id=&#34;望むこと&#34;&gt;望むこと&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;静的なWebサイト
+
+&lt;ul&gt;
+&lt;li&gt;動的にするほどのコンテンツはないし、WordPressだといろいろ面倒&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;記事はエディタを使ってMarkdown形式で作成し、テキストファイル（.md）として残したい
+
+&lt;ul&gt;
+&lt;li&gt;DBにデータとして保存されているとかだと取り回しが面倒&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;ブログ環境と作成した記事のファイルは、GitHub（or Bitbucket）で管理したい
+
+&lt;ul&gt;
+&lt;li&gt;マシンが変わっても &lt;code&gt;$ git clone&lt;/code&gt; 一発で環境構築ができる&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;独自ドメイン
+
+&lt;ul&gt;
+&lt;li&gt;バックのシステムが変わってもURLを変えたくない&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;サーバーの運用を軽くしたい
+
+&lt;ul&gt;
+&lt;li&gt;VPSとかS3とか契約や運用が面倒（勉強にはなるけど、アプトプットに集中したい）&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;そうなると&#34;&gt;そうなると&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;GitHubにGitHub Pages（プロジェクト版）の機能があるじゃないか！&lt;/li&gt;
+&lt;li&gt;Gitの一連の流れ（add → commit → push）だけで、FTPとか使わずにいける！&lt;/li&gt;
+&lt;li&gt;2016.8の新機能でmasterブランチ/docsディレクトリでもいける
+
+&lt;ul&gt;
+&lt;li&gt;前はgh-pagesブランチが必要&lt;/li&gt;
+&lt;li&gt;１リポジトリで管理運用とかsubtree運用が少し面倒だった&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;独自ドメインも適用できる&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;ブログ遍歴&#34;&gt;ブログ遍歴&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;d.hatena → WordPress → Octopress → hatenaBlog&lt;/li&gt;
+&lt;li&gt;hatenaは手軽でいいが、ブラウザでの作業とファイルの管理は自前&lt;/li&gt;
+&lt;li&gt;WordPressは書いたものがDB格納・機能過剰・WordPress自体の管理運用が面倒&lt;/li&gt;
+&lt;li&gt;Octopressは、Macクリーンインストール等での環境維持が面倒だった&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;次はインストールから&#34;&gt;次はインストールから&lt;/h3&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

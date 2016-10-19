@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ja-JP">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="keywords" content="Program,Mac,iOS,Web,AWS,Hugo,Books">
+    
+        <meta name="description" content=" プログラマーの備忘録。">
+    
+        <meta name="description" content="CentOS 7でSSHのポート番号を変更する方法。SELinux・firewalld対応。">
+    
+
+    <base href="http://mzgkworks.com">
+    
+    <link rel="stylesheet" href="./css/masamune.css">
+
+    <title>
+        
+        CentOS 7でSSHのポート番号を変更する（SELinux・firewalld）
+         | mzgkworks.com
+    </title>
+
+    <meta name="generator" content="Hugo 0.17" />
+</head>
+
+<body>
+    <div class="HeaderContainer">
+        <header class="Header">
+            <div class="Header__head">
+                <h1 class="Header__title"><a href="./index.html">mzgkworks.com</a></h1>
+                <p class="Header__subTitle">Stack the little bets.</p>
+            </div>
+            <nav class="Header__body">
+                <ul class="Navi">
+                    <li class="Navi__item"><a href="./about/about" class="fa fa-smile-o"></a></li>
+                    <li class="Navi__item"><a href="https://github.com/mzgk" target="_blank" rel="noopener noreferrer" class="fa fa-github"></a></li>
+                    <li class="Navi__item"><a href="https://twitter.com/mzgkworks" target="_blank" rel="noopener noreferrer" class="fa fa-twitter"></a></li>
+                    <li class="Navi__item"><a href="#" class="fa fa-rss"></a></li>
+                </ul>
+            </nav>
+        </header>
+    </div>
+
+
+    <div class="ContentsContainer">
+        <main class="MainContainer">
+
+            <article class="PostItem">
+                <div class="PostItem__head">
+                    <div class="PostItem__title">
+                        <h1>
+                            CentOS 7でSSHのポート番号を変更する（SELinux・firewalld）
+                            
+                        </h1>
+                    </div>
+                    <div class="PostItem__meta">
+                        <time datetime="2016-09-09">
+                            2016.09.05
+                        </time>
+                        &nbsp;&nbsp;
+                        
+                        <span>[<a href="./categories/setting">Setting</a>]</span>
+                        
+                        
+                        &nbsp;&nbsp;
+                        <span>#<a href="./tags/linux">Linux</a></span>
+                        
+                    </div>
+                </div>
+
+                <div class="PostItem__body">
+                    
+
+<p>CentOS 7でSSHのポート番号を変更する方法のメモ。<br />
+CentOS 7から、ファイヤウォールの設定が <strong>iptables → firewalld</strong> に変更となった。<br />
+SELinuxが有効で、iptables → firewalld（FireWall）での内容。<br />
+ポート番号は例。</p>
+
+<h2 id="環境">環境</h2>
+
+<ul>
+<li>さくらVPS</li>
+<li>CentOS 7</li>
+</ul>
+
+<h2 id="ssh設定ファイル">SSH設定ファイル</h2>
+
+<p>SSHサーバーの設定ファイル <code>/etc/ssh/sshd_config</code> を変更する。<br />
+rootユーザーに切替えて操作（切替え後の$は#に読替え）。</p>
+
+<pre><code class="language-@bash"># rootユーザーに切り替え
+$ su -
+
+$ vi /etc/ssh/sshd_config
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th align="left">変更場所</th>
+<th align="left">変更前</th>
+<th align="left">変更後</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">L17</td>
+<td align="left">#Port 22</td>
+<td align="left">Port 10055</td>
+</tr>
+
+<tr>
+<td align="left">L49</td>
+<td align="left">#PermitRootLogin yes</td>
+<td align="left">PermitRootLogin no</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="selinux">SELinux</h2>
+
+<p>SELinuxの設定変更コマンドをインストールする。</p>
+
+<pre><code class="language-@bash"># 存在確認
+$ rpm -q policycoreutils-python
+
+# インストール
+$ yum -y install policycoreutils-python
+
+# SSHポート（10055）の許可
+$ semanage port -a -t ssh_port_t -p tcp 10055
+
+# 確認
+$ semanage port -l | grep ssh
+ssh_port_t                     tcp      10055, 22
+</code></pre>
+
+<h2 id="firewall">FireWall</h2>
+
+<p>外部から10055ポートへのアクセスを許可する。<br />
+ひな形からコピーして編集を行う。</p>
+
+<pre><code class="language-@bash"># コピー
+$ cp /usr/lib/firewalld/services/ssh.xml /etc/firewalld/services/
+
+# viで編集
+$ vi /etc/firewalld/services/ssh.xml
+
+&lt;port protocol=&quot;tcp&quot; port=&quot;22&quot;/&gt;
+↓
+&lt;port protocol=&quot;tcp&quot; port=&quot;10055&quot;/&gt;
+</code></pre>
+
+<h2 id="反映">反映</h2>
+
+<p>FireWallとSELinuxに変更を反映する。</p>
+
+<pre><code class="language-@bash"># FireWall
+$ firewall-cmd --reload
+
+# SSHサーバー再起動
+$ systemctl restart sshd.service
+</code></pre>
+
+<h2 id="クライアントからの接続">クライアントからの接続</h2>
+
+<p>MacのTerminal.appから接続する。</p>
+
+<pre><code class="language-@bash">$ ssh -p 10055 ユーザー名@IPアドレス
+</code></pre>
+
+<p>以上</p>
+
+                </div>
+            </article>
+
+            <nav class="Pagenation">
+                <div class="Pagenation__older">
+                    
+                    <a href="http://mzgkworks.com/post/http-request-response/">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        HTTPのリクエストとレスポンスのメモ
+                    </a>
+                    
+                </div>
+                <div class="Pagenation__newer">
+                    
+                    <a href="http://mzgkworks.com/post/shell-command-basic/">
+                        シェルでコマンドを打つ際の基本的な機能
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </a>
+                    
+                </div>
+            </nav>
+
+            <div class="Disqus">
+                
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'mzgkworks-com';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+            </div>
+        </main>
+
+        <aside class="SubContainer">
+    <h1 class="AreaTitle">Products</h1>
+    <div class="SubItem">
+        <a href="./products/products">
+            <i class="fa fa-apple fa-2x" aria-hidden="true"></i>
+        </a>
+    </div>
+
+    <h1 class="AreaTitle">Categories</h1>
+    <div class="SubItem">
+        <ul>
+            
+            <li>
+                <a href="./categories/knowledge/">
+                    knowledge : 6
+                </a>
+            </li>
+            
+            <li>
+                <a href="./categories/setting/">
+                    setting : 10
+                </a>
+            </li>
+            
+            <li>
+                <a href="./categories/usage/">
+                    usage : 14
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+
+    <h1 class="AreaTitle">Tags</h1>
+    <div class="SubItem">
+        <ul>
+            
+            <li>
+                <a href="./tags/apache/">
+                    apache : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/atom/">
+                    atom : 1
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/bash/">
+                    bash : 3
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/blog/">
+                    blog : 5
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/css/">
+                    css : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/http/">
+                    http : 1
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/hugo/">
+                    hugo : 5
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/linux/">
+                    linux : 14
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/mac/">
+                    mac : 4
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/network/">
+                    network : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/sass/">
+                    sass : 1
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</aside>
+
+
+    </div>
+
+    <div class="FooterContainer">
+    <footer class="Footer">
+        <img  class="Footer__head" src="./images/profile.png" alt="profile-image" />
+        <div class="Footer__body">
+            <i class="fa fa-copyright" aria-hidden="true"></i>
+            <span>2016</span>
+            <span><a href="./about/about">mzgk</a></span>
+        </div>
+    </footer>
+</div>
+
+<script src="./js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-82194549-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+</body>
+</html>
+

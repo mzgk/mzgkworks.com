@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mzgkworks.com</title>
+    <link>http://mzgkworks.com/tags/atom/index.xml</link>
+    <description>Recent content on mzgkworks.com</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-JP</language>
+    <atom:link href="http://mzgkworks.com/tags/atom/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Atom（vim-mode-plus）で、ノーマルモード移行時に日本語オフにする方法。</title>
+      <link>http://mzgkworks.com/post/atom-vim-normalmode-with-eisuu/</link>
+      <pubDate>Thu, 01 Sep 2016 15:34:24 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/atom-vim-normalmode-with-eisuu/</guid>
+      <description>
+
+&lt;p&gt;Atomにvim-mode-plusをインストールして使っているが、ノーマルモードに移行する時に日本語入力モードを引きずったままになるのが面倒。&lt;br /&gt;
+ノーマルモードになった時には、自動で英数入力モードになって、そのままカーソル移動とかしたい。&lt;/p&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;OS X 10.11.6&lt;/li&gt;
+&lt;li&gt;Atom 1.10.0&lt;/li&gt;
+&lt;li&gt;karabiner 10.21.0&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;方法&#34;&gt;方法&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://pqrs.org/osx/karabiner/index.html.ja&#34;&gt;Karabiner&lt;/a&gt;をMacにインストールする&lt;/li&gt;
+&lt;li&gt;private.xmlに設定を書く&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;設定方法&#34;&gt;設定方法&lt;/h2&gt;
+
+&lt;p&gt;設定の追加方法は、Karabiner公式サイトのマニュアルを参照のこと。&lt;br /&gt;
+&lt;a href=&#34;https://pqrs.org/osx/karabiner/document.html.ja#privatexml&#34;&gt;https://pqrs.org/osx/karabiner/document.html.ja#privatexml&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;private-xml&#34;&gt;private.xml&lt;/h3&gt;
+
+&lt;p&gt;記述する内容は以下。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@xml&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt;
+&amp;lt;root&amp;gt;
+    &amp;lt;appdef&amp;gt;
+        &amp;lt;appname&amp;gt;ATOM&amp;lt;/appname&amp;gt;
+        &amp;lt;equal&amp;gt;com.github.atom&amp;lt;/equal&amp;gt;
+    &amp;lt;/appdef&amp;gt;
+    &amp;lt;item&amp;gt;
+        &amp;lt;name&amp;gt;Atom Into NormalMode With Eisuu&amp;lt;/name&amp;gt;
+        &amp;lt;identifier&amp;gt;private.app_atom_into_normalmode_with_eisuu&amp;lt;/identifier&amp;gt;
+        &amp;lt;only&amp;gt;ATOM&amp;lt;/only&amp;gt;
+        &amp;lt;autogen&amp;gt;
+            --KeyToKey--
+            KeyCode::ESCAPE,
+            KeyCode::ESCAPE, KeyCode::JIS_EISUU
+        &amp;lt;/autogen&amp;gt;
+        &amp;lt;autogen&amp;gt;
+            --KeyToKey--
+            KeyCode::BRACKET_LEFT, VK_CONTROL,
+            KeyCode::ESCAPE, KeyCode::JIS_EISUU
+        &amp;lt;/autogen&amp;gt;
+        &amp;lt;autogen&amp;gt;
+            --KeyToKey--
+            KeyCode::C, VK_CONTROL,
+            KeyCode::ESCAPE, KeyCode::JIS_EISUU
+        &amp;lt;/autogen&amp;gt;
+    &amp;lt;/item&amp;gt;
+&amp;lt;/root&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;おまけ&#34;&gt;おまけ&lt;/h2&gt;
+
+&lt;p&gt;Karabinerの設定で、jklhでの移動を他アプリでも使えるようにする方法。&lt;br /&gt;
+&lt;code&gt;s + jklh&lt;/code&gt; でカーソル移動ができるようになる。&lt;br /&gt;
+公式サイトのマニュアルにあった。&lt;br /&gt;
+&lt;a href=&#34;https://pqrs.org/osx/karabiner/gallery.html.ja#simple-vi-mode-v2&#34;&gt;Simple Vi Mode v2&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
