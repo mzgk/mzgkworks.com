@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode }}">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    {{ with .Site.Params.meta.keywords }}<meta name="keywords" content="{{.}}">{{ end }}
+    {{ $isHomePage := eq .Title .Site.Title }}
+        <meta name="description" content=" {{ .Site.Params.meta.description }}">
+    {{ if eq $isHomePage false }}
+        <meta name="description" content="{{ .Description }}">
+    {{ end }}
+
+    <base href="{{ .Site.BaseURL }}">
+    {{ if .RSSlink }}
+        <link href="{{ . }}" rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" />
+        <link href="{{ . }}" rel="feed" type="application/rss+xml" title="{{ .Site.Title }}" />
+    {{ end }}
+    <link rel="stylesheet" href="./css/masamune.css">
+
+    <title>
+        {{ $isHomePage := eq .Title .Site.Title }}
+        {{ .Title }}
+        {{ if eq $isHomePage false }} | {{ .Site.Title }}{{ end }}
+    </title>
+
+    {{ .Hugo.Generator }}
+</head>
+
+<body>
+    <div class="HeaderContainer">
+        <header class="Header">
+            <div class="Header__head">
+                <h1 class="Header__title"><a href="./index.html">{{ .Site.Title }}</a></h1>
+                <p class="Header__subTitle">{{ .Site.Params.subTitle }}</p>
+            </div>
+            <nav class="Header__body">
+                <ul class="Navi">
+                    <li class="Navi__item"><a href="./about/about" class="fa fa-smile-o"></a></li>
+                    <li class="Navi__item"><a href="{{ .Site.Params.social.github }}" target="_blank" rel="noopener noreferrer" class="fa fa-github"></a></li>
+                    <li class="Navi__item"><a href="{{ .Site.Params.social.twitter }}" target="_blank" rel="noopener noreferrer" class="fa fa-twitter"></a></li>
+                    <li class="Navi__item"><a href="#" class="fa fa-rss"></a></li>
+                </ul>
+            </nav>
+        </header>
+    </div>
