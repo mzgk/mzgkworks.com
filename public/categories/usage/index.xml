@@ -1,0 +1,1858 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mzgkworks.com</title>
+    <link>http://mzgkworks.com/categories/usage/index.xml</link>
+    <description>Recent content on mzgkworks.com</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-JP</language>
+    <atom:link href="http://mzgkworks.com/categories/usage/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Linuxでのログインユーザの確認や制御の方法</title>
+      <link>http://mzgkworks.com/post/linux-login-user-management/</link>
+      <pubDate>Fri, 16 Sep 2016 16:21:06 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-login-user-management/</guid>
+      <description>
+
+&lt;p&gt;Linuxにはrootユーザーが必ず存在するため、外部からのログインは一般ユーザーのみに限定し、rootユーザーを禁止する。&lt;/p&gt;
+
+&lt;h2 id=&#34;sshでのrootログインの禁止&#34;&gt;SSHでのrootログインの禁止&lt;/h2&gt;
+
+&lt;p&gt;/etc/ssh/sshd_configファイルを以下に変更。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;PermitRootLogin no
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ログイン可能なユーザーを限定&#34;&gt;ログイン可能なユーザーを限定&lt;/h2&gt;
+
+&lt;p&gt;/etc/ssh/sshd_configファイルに以下を追記。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# AllowUsers [ユーザー名]
+AllowUsers centuser
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;おまけ-sshポートの変更&#34;&gt;（おまけ）SSHポートの変更&lt;/h2&gt;
+
+&lt;p&gt;/etc/ssh/sshd_configファイルを以下に変更。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# Port [ポート番号]
+Port 10022
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;変更後はsshサーバーの再起動&#34;&gt;変更後はSSHサーバーの再起動&lt;/h2&gt;
+
+&lt;p&gt;設定ファイルの変更後は、SSKサーバーを再起動させる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo systemctl restart sshd.service
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;過去のログイン情報を確認する&#34;&gt;過去のログイン情報を確認する&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;$ last&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ last
+centuser pts/0        219.118.174.90   Fri Sep 16 15:59   still logged in
+centuser pts/0        219.118.174.90   Fri Sep 16 15:54 - 15:54  (00:00)
+centuser pts/1        219.118.174.90   Thu Sep 15 19:20 - 19:35  (00:15)
+centuser pts/0        219.118.174.90   Thu Sep 15 16:06 - 21:01  (04:54)
+centuser pts/1        219.118.174.90   Tue Sep 13 17:34 - 19:50  (02:16)
+centuser pts/0        219.118.174.90   Tue Sep 13 16:57 - 19:08  (02:11)
+reboot   system boot  3.10.0-327.28.3. Tue Sep 13 16:56 - 16:16 (2+23:19)
+centuser pts/0        219.118.174.90   Tue Sep 13 16:48 - 16:56  (00:07)
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ユーザーごとの最終ログインを確認する&#34;&gt;ユーザーごとの最終ログインを確認する&lt;/h2&gt;
+
+&lt;p&gt;ユーザーごとの最終ログインを表示することによって、覚えのないユーザーのログインを発見できる。&lt;br /&gt;
+&lt;code&gt;$ lastlog&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ lastlog
+ユーザ名         ポート   場所             最近のログイン
+root             pts/0                     金  9月 16 15:54:17 +0900 2016
+bin                                        **一度もログインしていません**
+...
+centuser         pts/0    219.118.174.90   金  9月 16 15:59:23 +0900 2016
+apache                                     **一度もログインしていません**
+mysql                                      **一度もログインしていません**
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Linuxで開いているポートを確認する方法</title>
+      <link>http://mzgkworks.com/post/linux-port-confirm/</link>
+      <pubDate>Thu, 15 Sep 2016 19:08:29 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-port-confirm/</guid>
+      <description>
+
+&lt;p&gt;開いているポートの確認方法。&lt;br /&gt;
+&lt;br&gt;
+ポートはサービス（ソフトウェア）が使用し、そのポートを通る通信をFireWallが監視（制御）している。&lt;br /&gt;
+なので、サービスの登録（ソフトのインストール）をするとポートが使用され、FireWallでそのポートを開放してやると、外部との通信が可能になる。&lt;/p&gt;
+
+&lt;h2 id=&#34;netstat-ss&#34;&gt;netstat（ss）&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;$ netstat&lt;/code&gt;　または &lt;code&gt;$ ss&lt;/code&gt;コマンドで、現在開いているポートを一覧表示することができる。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;オプション&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;-l&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Listenしているポートのみ表示&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;-t&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;TCPを表示&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;-u&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;UDPを表示&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;-n&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ポートやホストを数値で表示&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;-p&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ポートを開いているプロセスを表示（sudo）&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;-4&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;IPv4のみ&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;-6&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;IPv6のみ&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 開いているポートと使用しているプロセス（IPv4）
+$ sudo netstat -ltup4
+sudo netstat -ltup4
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 0.0.0.0:mysql           0.0.0.0:*               LISTEN      2015/mysqld
+tcp        0      0 localhost:smtp          0.0.0.0:*               LISTEN      2282/master
+tcp        0      0 0.0.0.0:10022           0.0.0.0:*               LISTEN      1274/sshd
+udp        0      0 localhost:323           0.0.0.0:*                           658/chronyd
+
+# 上記を数値で
+sudo netstat -ltunp4
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 0.0.0.0:3306            0.0.0.0:*               LISTEN      2015/mysqld
+tcp        0      0 127.0.0.1:25            0.0.0.0:*               LISTEN      2282/master
+tcp        0      0 0.0.0.0:10022           0.0.0.0:*               LISTEN      1274/sshd
+udp        0      0 127.0.0.1:323           0.0.0.0:*                           658/chronyd
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;例えば&#34;&gt;例えば&lt;/h2&gt;
+
+&lt;p&gt;例えばhttps通信を許可してやるには、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;mod_sslをインストール
+
+&lt;ul&gt;
+&lt;li&gt;$ sudo yum install mod_ssl&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;SSLの設定
+
+&lt;ul&gt;
+&lt;li&gt;/etc/httpd/conf.d/sl.conf&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Apaceを再起動する
+
+&lt;ul&gt;
+&lt;li&gt;$ sudo systemctl restart httpd&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;ポート状態を確認する
+
+&lt;ul&gt;
+&lt;li&gt;$ sudo netstat -ltupn&lt;/li&gt;
+&lt;li&gt;443がLISTEN状態になっているか？&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;FireWallにサービスの許可を追加
+
+&lt;ul&gt;
+&lt;li&gt;$ sudo firewall-cmd &amp;ndash;add-service=https&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;関連&#34;&gt;関連&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://mzgkworks.com/post/network-protocol-ipadress/&#34;&gt;ネットワークの基礎知識（プロトコル・IPアドレス・サブネットマスク・ポート）&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CentOS7のsystemctlコマンドの使い方</title>
+      <link>http://mzgkworks.com/post/centos7-systemctl-service/</link>
+      <pubDate>Thu, 15 Sep 2016 18:57:14 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/centos7-systemctl-service/</guid>
+      <description>
+
+&lt;p&gt;CentOS 7のsystemdサービス管理のメモ。&lt;br /&gt;
+サービスの稼働状態や自動起動設定の確認・操作。　　&lt;/p&gt;
+
+&lt;h2 id=&#34;unitの状態&#34;&gt;UNITの状態&lt;/h2&gt;
+
+&lt;h3 id=&#34;確認-一覧&#34;&gt;確認 : 一覧&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ systemctl list-unit&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;ACTIVE, SUBが実行状態を表している。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# UNITのタイプがServiceのみを確認
+$ systemctl list-units -t service
+UNIT                 LOAD   ACTIVE SUB     DESCRIPTION
+auditd.service       loaded active running Security Auditing Service
+chronyd.service      loaded active running NTP client/server
+...
+● kdump.service      loaded failed failed  Crash recovery kernel arming
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;確認-個別&#34;&gt;確認 : 個別&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ systemctl is-active [UNIT名]&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ systemctl is-active yum-cron
+active
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;確認-個別詳細&#34;&gt;確認 : 個別詳細&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ systemctl status [UNIT名]&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ systemctl status yum-cron
+● yum-cron.service - Run automatic yum updates as a cron job
+   Loaded: loaded (/usr/lib/systemd/system/yum-cron.service; enabled; vendor preset: disabled)
+   Active: active (exited) since 火 2016-09-13 16:56:49 JST; 2 days ago
+  Process: 644 ExecStart=/bin/touch /var/lock/subsys/yum-cron (code=exited, status=0/SUCCESS)
+ Main PID: 644 (code=exited, status=0/SUCCESS)
+   CGroup: /system.slice/yum-cron.service
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;操作-起動-停止-再起動-強制終了&#34;&gt;操作（起動・停止・再起動・強制終了）&lt;/h3&gt;
+
+&lt;p&gt;UNITの操作。&lt;br /&gt;
+&lt;code&gt;$ sudo systemctl [UNITコマンド] [UNIT名]&lt;/code&gt;&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;UNITコマンド&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;start&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;起動させる&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;stop&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;停止させる&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;restart&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;再起動させる&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;kill&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;強制終了させる&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&#34;自動起動設定&#34;&gt;自動起動設定&lt;/h2&gt;
+
+&lt;h3 id=&#34;確認-一覧-1&#34;&gt;確認 : 一覧&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ systemctl list-unit-files&lt;/code&gt;&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;STATE&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;enabled&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;自動起動 : 有効&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;disabled&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;自動起動 : 無効&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;static&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;自動起動 : 設定不可&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# UNITのタイプがServiceのみを確認
+$ systemctl list-unit-files -t service
+UNIT FILE                                   STATE
+arp-ethers.service                          disabled
+auditd.service                              enabled
+chrony-dnssrv@.service                      static
+dbus-org.freedesktop.hostname1.service      static
+...
+
+# grepへパイプで繋いで「enabled」のみを表示させる
+$ systemctl list-unit-files -t service | grep enabled
+UNIT FILE                                   STATE
+auditd.service                              enabled
+chronyd.service                             enabled
+...
+tuned.service                               enabled
+yum-cron.service                            enabled
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;確認-個別-1&#34;&gt;確認 : 個別&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ sudo systemctl is-enabled [Unit名]&lt;/code&gt;&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;状態&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;enabled&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;自動起動が有効&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;disabled&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;自動起動が無効&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# yum-cronの状態確認
+$ sudo systemctl is-active yum-cron
+enabled
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;操作-有効化-無効化&#34;&gt;操作（有効化・無効化）&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ sudo systemctl [UNITコマンド] [UNIT名]&lt;/code&gt;&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;UNITコマンド&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;enable&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;自動起動 : 有効化&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;disable&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;自動起動 : 無効化&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Macでシンボリックリンクを活用する : ln -s</title>
+      <link>http://mzgkworks.com/post/mac-symbolic-link/</link>
+      <pubDate>Mon, 12 Sep 2016 19:00:43 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/mac-symbolic-link/</guid>
+      <description>
+
+&lt;p&gt;Macで使えるシンボリックリンクの操作メモ。&lt;br /&gt;
+ディレクトリやファイルを別の場所で管理したいが、ディレクトリ構成上の制約がある時とかに便利。&lt;/p&gt;
+
+&lt;h2 id=&#34;シンボリックリンク&#34;&gt;シンボリックリンク&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;元ファイル・ディレクトリと同様の操作ができる&lt;/li&gt;
+&lt;li&gt;エイリアスを違って &lt;code&gt;$ cd&lt;/code&gt; も可能&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;作成&#34;&gt;作成&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;絶対パス&lt;/strong&gt; が重要。&lt;br /&gt;
+&lt;code&gt;$ ln -s 元ファイル・ディレクトリの絶対パス リンク作成先のパス&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# ~/dotsfiles/.editorconfigファイルのシンボリックリンクを
+# ホームディレクトリに作成する
+$ ln -s ~/dotsfiles/.editorconfig ~
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;確認&#34;&gt;確認&lt;/h2&gt;
+
+&lt;p&gt;こんな感じで作成される。&lt;br /&gt;
+ファイル種類の「l」はシンボリックリンクを表す。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ ls -la ~
+...
+lrwxr-xr-x    1 usr  staff     35  9 12 18:29 .editorconfig -&amp;gt; /Users/usr/dotsfiles/.editorconfig
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;削除&#34;&gt;削除&lt;/h2&gt;
+
+&lt;p&gt;作成されたシンボリックリンクを削除する。&lt;br /&gt;
+&lt;code&gt;$ unlink シンボリックリンクのパス&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 削除
+$ unlink ~/.editorconfig
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Linux（CentOS7）のサービス操作（systemctlコマンド）</title>
+      <link>http://mzgkworks.com/post/linux-service-systemctl/</link>
+      <pubDate>Fri, 09 Sep 2016 17:35:24 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-service-systemctl/</guid>
+      <description>
+
+&lt;h2 id=&#34;サービスの管理&#34;&gt;サービスの管理&lt;/h2&gt;
+
+&lt;p&gt;サービス : OSから切り離し可能な、何らかの役割を持ったサブシステム。&lt;br /&gt;
+&lt;code&gt;$ systemctl サブコマンド サービス名&lt;/code&gt; で操作を行う。&lt;br /&gt;
+CentOS 6までだと &lt;code&gt;$ service&lt;/code&gt; コマンド。&lt;/p&gt;
+
+&lt;h3 id=&#34;主なサブコマンド&#34;&gt;主なサブコマンド&lt;/h3&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;サブコマンド&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;start&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;サービスを開始する&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;stop&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;サービスを停止する&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;restart&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;サービスを再起動する&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;enable&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;システム起動時にサービスを自動開始する&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;disable&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;システム起動時にサービスが自動開始しないようにする&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;status&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;サービスの状態を表示する&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&#34;主なサービス&#34;&gt;主なサービス&lt;/h3&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;サービス名&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;firewalld.service&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ファイヤーウォールサービス&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;crond.service&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;スケジュール処理サービス&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;cups.service&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;印刷サービス&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;postfix.service&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Postfix（メール）サービス&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;rsyslog.service&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;システムログサービス&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;sshd.service&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;SSHサーバー&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;httpd.service&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Webサーバー&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# postfixサービスの状態を確認
+$ systemctl status postfix.service
+● postfix.service - Postfix Mail Transport Agent
+   Loaded: loaded (/usr/lib/systemd/system/postfix.service; enabled; vendor preset: disabled)
+   Active: active (running) since 金 2016-09-09 16:17:13 JST; 1h 12min ago
+...
+...
+
+# postfixサービスを停止
+sudo systemctl stop postfix.service
+[sudo] password for centuser:
+
+# 確認
+systemctl status postfix.service
+● postfix.service - Postfix Mail Transport Agent
+   Loaded: loaded (/usr/lib/systemd/system/postfix.service; enabled; vendor preset: disabled)
+   Active: inactive (dead) since 金 2016-09-09 17:31:09 JST; 17s ago
+...
+
+# 開始
+# postfixサービスを停止
+sudo systemctl start postfix.service
+[sudo] password for centuser:
+
+# 確認
+systemctl status postfix.service
+● postfix.service - Postfix Mail Transport Agent
+   Loaded: loaded (/usr/lib/systemd/system/postfix.service; enabled; vendor preset: disabled)
+   Active: active (running) since 金 2016-09-09 17:32:26 JST; 33s ago
+...
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Linuxでシステムの状態を確認する方法（uptime・df・free・ps）</title>
+      <link>http://mzgkworks.com/post/linux-check-system-status/</link>
+      <pubDate>Fri, 09 Sep 2016 17:06:23 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-check-system-status/</guid>
+      <description>
+
+&lt;h2 id=&#34;システム負荷の確認&#34;&gt;システム負荷の確認&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;uptime&lt;/code&gt; コマンドを使用して、システム負荷を確認することができる。&lt;br /&gt;
+「load average:」部分が１分、５分、１５分の平均負荷を表す。&lt;br /&gt;
+この数値がCPU数（コア数）以下であれば、CPU処理待ちなく特に問題ない状態。&lt;br /&gt;
+オーバーが一時的ではなく継続しているようなら、処理見直し or スケールアップを検討。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ uptime
+# 現在時刻・稼働時間・ログインユーザー数・１分、５分、１５分の平均負荷
+ 16:19:01 up 2 min,  1 user,  load average: 0.09, 0.08, 0.04
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ディスクの使用状況&#34;&gt;ディスクの使用状況&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;$ df -h&lt;/code&gt; コマンドを使用して、ディスクの使用状況を確認することができる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# -h : サイズを見やすくしてくれる
+# tmpfs : この文字列がつくものは仮想ファイルシステムなので無視してよい
+$ df -h
+ファイルシス                            サイズ  使用  残り 使用% マウント位置
+/dev/mapper/centos_xxx-root    50G  1.4G   49G    3% /  # ← /ディレクトリ
+devtmpfs                                  486M     0  486M    0% /dev
+tmpfs                                     497M     0  497M    0% /dev/shm
+tmpfs                                     497M  6.6M  490M    2% /run
+tmpfs                                     497M     0  497M    0% /sys/fs/cgroup
+/dev/vda1                                 497M  126M  371M   26% /boot
+/dev/mapper/centos_xxx-home    48G   33M   48G    1% /home  # ← /homeディレクトリ
+tmpfs                                     100M     0  100M    0% /run/user/1000
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;メモリとスワップの確認&#34;&gt;メモリとスワップの確認&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;$ free -h&lt;/code&gt; コマンドを使用して、メモリとスワップの使用状況が確認できる。&lt;br /&gt;
+スワップが常態で使われているような場合、メモリが不足していると考えられる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ free -h
+              total        used        free      shared  buff/cache   available
+Mem:           992M         85M        786M        6.5M        121M        777M
+Swap:          2.0G          0B        2.0G
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;項目&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;total&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;合計&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;used&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;利用中&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;free&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;未使用&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;shared&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;仮想的な共有メモリ&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;buff/cache&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;バッファ及びキャッシュ&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;available&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;アプリケーション起動時にスワップなしで使えるメモリ&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;メモリとディスクのアクセス速度の差を小さくするための仕組みとして、バッファとキャッシュがある。&lt;/p&gt;
+
+&lt;h3 id=&#34;バッファ&#34;&gt;バッファ&lt;/h3&gt;
+
+&lt;p&gt;ディスクへデータを書き込む際に、いったんメモリ上のバッファ領域に書き込んだ時点で書き込み完了とし、後からバックグランドで実際にディスクへ書き込みを行う。&lt;/p&gt;
+
+&lt;h3 id=&#34;キャッシュ&#34;&gt;キャッシュ&lt;/h3&gt;
+
+&lt;p&gt;ディスクからいったん読み出したデータをメモリ上のキャッシュ領域に残しておき、同じデータが再度アクセスされた場合はメモリ上のデータを利用する。&lt;/p&gt;
+
+&lt;h2 id=&#34;実行中のプロセスを確認&#34;&gt;実行中のプロセスを確認&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;$ ps aux&lt;/code&gt; コマンドで現在実行中のプログラム（プロセス）の確認ができる。&lt;br /&gt;
+&lt;code&gt;| less&lt;/code&gt; コマンドへパイプしたり、&lt;code&gt;| grep 検索名&lt;/code&gt; コマンドへパイプして確認する。&lt;br /&gt;
+&lt;strong&gt;オプションには「-」をつけない&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# sshdを含むプロセスを表示する
+# ユーザー・プロセスID・CPU占有率・メモリ占有率・仮想メモリ使用サイズ・物理メモリ使用サイズ
+# 端末・状態・開始・稼働時間・コマンド
+$ ps aux | grep sshd
+root      1268  0.0  0.3  82560  3600 ?        Ss   16:17   0:00 /usr/sbin/sshd -D
+root      2408  0.0  0.4 140788  5004 ?        Ss   16:17   0:00 sshd: centuser [priv]
+centuser  2412  0.0  0.2 140788  2148 ?        S    16:17   0:00 sshd: centuser@pts/0
+centuser  2446  0.0  0.0 112668   980 pts/0    S+   16:46   0:00 grep --color=auto sshd
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;プロセスの操作&#34;&gt;プロセスの操作&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;$ kill&lt;/code&gt; コマンドで、不要なプロセスであったりエラーで終了しないプロセスを停止することができる。&lt;br /&gt;
+TEAMを送ってもプロセスが反応しない場合は、KILLシグナルを送る。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;シグナルID&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;シグナル名&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;動作&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;9&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;KILL&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;強制終了&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;15&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;TERM&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;終了&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;18&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;CONT&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;再開&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;19&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;STOP&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;一時停止&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# kill シグナルID プロセスID
+$ kill -15 2412
+
+# kill -s  シグナル名 プロセスID
+$ kill -s KILL 2412
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Linuxのパッケージ管理システム（YUM）</title>
+      <link>http://mzgkworks.com/post/linux-package-management-yum/</link>
+      <pubDate>Fri, 09 Sep 2016 15:51:31 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-package-management-yum/</guid>
+      <description>
+
+&lt;h2 id=&#34;パッケージ&#34;&gt;パッケージ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Linuxでは「パッケージ」という単位でソフトウェアを管理している&lt;/li&gt;
+&lt;li&gt;実行プログラム・設定ファイル・ドキュメントなどが格納されている&lt;/li&gt;
+&lt;li&gt;形式はディストリビューションによって複数存在するが、互換性はない
+
+&lt;ul&gt;
+&lt;li&gt;RPM : Red Hat系（RHEL、CentOS、Fedora、openSUSEなど）&lt;/li&gt;
+&lt;li&gt;deb : Debian系（Debian GNU/Linux、Ubuntuなど）&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;パッケージ間で依存関係がある&lt;/li&gt;
+&lt;li&gt;手動で依存関係を管理するのは大変なので、通常は「パッケージ管理システム」を使う
+
+&lt;ul&gt;
+&lt;li&gt;RPM系 : YUM&lt;/li&gt;
+&lt;li&gt;deb系 : APT&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;yum&#34;&gt;YUM&lt;/h2&gt;
+
+&lt;p&gt;CentOSのRPMパッケージを管理するパッケージ管理システム。&lt;br /&gt;
+主な機能としては&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;面倒な依存関係等を制御&lt;/li&gt;
+&lt;li&gt;パッケージをインターネット上で検索&lt;/li&gt;
+&lt;li&gt;必要なパッケージをインターネット上から自動でダウンロード&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;yumコマンド&#34;&gt;yumコマンド&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ sudo yum サブコマンド パッケージ名&lt;/code&gt;&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;サブコマンド&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;update&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;システム全体をアップデートする&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;install パッケージ名&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;指定したパッケージをインストールする&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;remove パッケージ名&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;指定したパッケージをアンインストールする&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;update パッケージ名&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;指定パッケージをアップデートする&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;list&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;パッケージを一覧表示する（未インストールも含む）&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;info パッケージ名&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;指定したパッケージの情報を表示する&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;search &amp;ldquo;キーワード&amp;rdquo;&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;指定したキーワードでパッケージを検索する&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&#34;システムの自動アップデート&#34;&gt;システムの自動アップデート&lt;/h2&gt;
+
+&lt;p&gt;yumコマンドを使ったアップデートを自動で行う設定。&lt;br /&gt;
+「yum-cron」というパッケージを使用する。&lt;/p&gt;
+
+&lt;h3 id=&#34;インストール&#34;&gt;インストール&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo yum install yum-cron
+[sudo] password for centuser:
+...
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;設定&#34;&gt;設定&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;/etc/yum/yun-cron.conf&lt;/code&gt; ファイルの編集を行う。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;自動更新する内容
+
+&lt;ul&gt;
+&lt;li&gt;全部・セキュリティーのみなど&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;自動更新するか
+
+&lt;ul&gt;
+&lt;li&gt;する・しない&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;[commands]
+#  What kind of update to use:
+# default                            = yum upgrade
+# security                           = yum --security upgrade
+# security-severity:Critical         = yum --sec-severity=Critical upgrade
+# minimal                            = yum --bugfix update-minimal
+# minimal-security                   = yum --security update-minimal
+# minimal-security-severity:Critical =  --sec-severity=Critical update-minimal
+update_cmd = default  # ← 範囲を指定（default 〜 minimal-security-severity:Critical）
+
+...
+...
+
+# Whether updates should be applied when they are available.  Note
+# that download_updates must also be yes for the update to be applied.
+apply_updates = no    # ← yes / no : するしない
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;実行と次回自動起動&#34;&gt;実行と次回自動起動&lt;/h3&gt;
+
+&lt;p&gt;yum-cronサービスの起動と、次回からのシステム起動時に自動起動するように設定する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# yum-cron.serviceの起動
+$ sudo systemctl start yum-cron.service
+
+# システム起動時の自動起動設定
+$ sudo systemctl enable yum-cron.service
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Linuxでrootユーザーへの切替えやroot権限で実行する方法</title>
+      <link>http://mzgkworks.com/post/linux-su-sudo/</link>
+      <pubDate>Fri, 09 Sep 2016 14:39:27 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-su-sudo/</guid>
+      <description>
+
+&lt;h2 id=&#34;rootユーザーに切り替える&#34;&gt;rootユーザーに切り替える&lt;/h2&gt;
+
+&lt;p&gt;ログイン中のユーザーをrootユーザーに切り替える。&lt;br /&gt;
+管理者のパスワードが必要。&lt;br /&gt;
+&lt;strong&gt;オプション「-」をつけると、カレントディレクトリもrootユーザーのホームディレクトリになる。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 一般ユーザー
+[centuser@centos7 ~] $ pwd
+/home/centuser
+
+# rootユーザーに切り替え
+[centuser@centos7 ~] $ su -   # オプション「-」つき
+Password: # 管理者のパスワード
+[root@centos7 ~] #
+[root@centos7 ~] # pwd
+/root     # rootユーザーのホームディレクトリに移動している
+
+# 元のユーザーに戻る
+[root@centos7 ~] # exit
+logout
+[centuser@centos7 ~] $
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;管理者権限でコマンドを実行する&#34;&gt;管理者権限でコマンドを実行する&lt;/h2&gt;
+
+&lt;p&gt;ユーザーの切り替えを行わずに、コマンド実行時のみ管理者権限で実行する。&lt;br /&gt;
+管理者のパスワードは不要。&lt;br /&gt;
+あらかじめ設定が必要。&lt;/p&gt;
+
+&lt;h3 id=&#34;設定&#34;&gt;設定&lt;/h3&gt;
+
+&lt;p&gt;設定ファイル「/etc/sudoers」にユーザーを追加する。&lt;br /&gt;
+rootユーザーで実行する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ visudo
+...
+...
+## Read drop-in files from /etc/sudoers.d (the # here does not mean a comment)
+#includedir /etc/sudoers.d
+
+# 以下を追加する（centuser : sudoを許可したいユーザー）
+# ユーザー名 ホスト名=(実行ユーザー名) 許可するコマンド
+centuser ALL=(ALL) ALL
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;sudo&#34;&gt;sudo&lt;/h3&gt;
+
+&lt;p&gt;実行したいコマンドの前につけて使用する。&lt;br /&gt;
+求められるパスワードは、sudoコマンドを実行したユーザーのコマンド。&lt;br /&gt;
+パスワードが認証されると「５分間」は、再入力が不要となる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 一般ユーザーでは使用できなかったvisudoコマンドを実行する
+$ sudo visudo
+[sudo] password for centuser: # 実行したユーザーのパスワード
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CentOS 7でのネットワーク設定・確認方法</title>
+      <link>http://mzgkworks.com/post/linux-centos7-network-setting/</link>
+      <pubDate>Thu, 08 Sep 2016 18:45:54 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-centos7-network-setting/</guid>
+      <description>
+
+&lt;h2 id=&#34;ネットワークインターフェース&#34;&gt;ネットワークインターフェース&lt;/h2&gt;
+
+&lt;p&gt;CentOS 7では、ネットワークの処理を「NetworkManager」というサービスが担っている。&lt;br /&gt;
+NetworkManagerは &lt;code&gt;nmcli&lt;/code&gt;コマンドで管理をする。&lt;/p&gt;
+
+&lt;h3 id=&#34;ネットワークインターフェースの一覧表示&#34;&gt;ネットワークインターフェースの一覧表示&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ nmcli device&lt;/code&gt;で確認できる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ nmcli device
+デバイス  タイプ    状態      接続
+eth0      ethernet  接続済み  System eth0
+eth1      ethernet  切断済み  --
+eth2      ethernet  切断済み  --
+lo        loopback  管理無し  --
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;詳細表示&#34;&gt;詳細表示&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ nmcli device show デバイス&lt;/code&gt;で確認できる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# eth0を詳細表示
+$ nmcli device show eth0
+GENERAL.デバイス:                        eth0
+GENERAL.タイプ:                         ethernet
+GENERAL.ハードウェアアドレス:               xx:xx:xx:xx:xx:xx
+GENERAL.MTU:                          1500
+GENERAL.状態:                          100 (接続済み)
+GENERAL.接続:                          System eth0
+GENERAL.CON パス:                      /xxx/NetworkManager/xxx
+WIRED-PROPERTIES.キャリア:              オン
+IP4.アドレス[1]:                        xxx.xx.xx.xxx/23 #IPアドレス
+IP4.ゲートウェイ:                        xxx.xx.xx.x #デフォルトゲートウェイ
+IP4.DNS[1]:                           xxx.xx.xx.xxx #DNSサーバー１
+IP4.DNS[2]:                           xxx.xx.xx.xxx #DNSサーバー２
+IP6.アドレス[1]:                        xx:xx:xx:xx:xx:xx/64
+IP6.アドレス[2]:                        xx:xx:xx:xx:xx:xx/64
+IP6.ゲートウェイ:                        xx::xx
+IP6.DNS[1]:                           xx:xx:::xx
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;他には&#34;&gt;他には&lt;/h3&gt;
+
+&lt;p&gt;以下でもネットワークインターフェースの確認が可能。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;$ ifconfig&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;$ ip addr&lt;/code&gt;（CentOS 7ではこちらが推奨）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;ホスト名の確認-変更&#34;&gt;ホスト名の確認・変更&lt;/h2&gt;
+
+&lt;p&gt;ホスト名の確認と変更をする方法。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ファイル : /etc/sysconfig/network&lt;/li&gt;
+&lt;li&gt;ファイル（CnetOS 7） : /etc/hostname&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 確認
+$ hostname
+centos7.sample.com
+
+# 変更（root権限が必要）
+$ nmcli general hostname 変更後のホスト名
+#または
+$ hostnamectl set-hostname 変更後のホスト名
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ipアドレスの設定&#34;&gt;IPアドレスの設定&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;VPSではしないこと。&lt;/strong&gt;&lt;br /&gt;
+&lt;code&gt;# nmcli connection modify &amp;quot;ネットワークインターフェース名&amp;quot; ipv4.address IPアドレス/サブネットマスクビット数&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 固定IP（root権限）
+$ nmcli connection modify &amp;quot;System eth0&amp;quot; ipv4.address 192.168.0.10/24
+
+# DHCP（root権限）
+$ nmcli c modify &amp;quot;System eth0&amp;quot; ipv4.address auto
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;デフォルトdnsサーバーの設定&#34;&gt;デフォルトDNSサーバーの設定&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;# nmcli connection modify &amp;quot;ネットワークインターフェース名&amp;quot; ipv4.dns IPアドレス&lt;/code&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ファイル : /etc/resolv.conf&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# Google提供のDNSサーバー8.8.8.8と8.8.4.4に変更（root権限）
+$ nmcli connection modify &amp;quot;System eth0&amp;quot; ipv4.dns &amp;quot;8.8.8.8 8.8.4.4&amp;quot;
+
+# 設定を反映
+$ systemctl restart NetworkManager
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>パーミッションの操作方法（記号と数値）</title>
+      <link>http://mzgkworks.com/post/linux-permission-operation/</link>
+      <pubDate>Wed, 07 Sep 2016 19:35:21 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-permission-operation/</guid>
+      <description>
+
+&lt;h2 id=&#34;所有者と所有グループ&#34;&gt;所有者と所有グループ&lt;/h2&gt;
+
+&lt;p&gt;基本的にファイルやディレクトリを作成したユーザーが所有者となる。&lt;br /&gt;
+所有グループは、ユーザーを作成した際に同じ名前で作成される。&lt;/p&gt;
+
+&lt;h3 id=&#34;確認&#34;&gt;確認&lt;/h3&gt;
+
+&lt;p&gt;ファイルやディレクトリの所有者を確認する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# ファイルモード・リンク数・所有者・所有グループ・サイズ・最終更新日・名前
+$ ls -l
+-rw-rw-r--. 1 couser couser 0  9月  7 18:40 A.txt
+drwxrwxr-x. 2 couser couser 6  9月  7 18:40 Sample
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;所有者の変更&#34;&gt;所有者の変更&lt;/h3&gt;
+
+&lt;p&gt;rootユーザーのみ変更操作が行える。&lt;br /&gt;
+ディレクトリの場合は、&lt;code&gt;-R&lt;/code&gt;オプションを指定する。&lt;br /&gt;
+指定しない場合、ディレクトリ配下には変更が適用されない。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# ファイルの所有者をtesterAに変更
+$ chown testerA A.txt
+
+# ファイルの所有者とグループ（tester）を変更
+$ chown testerA:tester A.txt
+
+# グループだけ変更（所有者を省略すればよい）
+$ chown :tester A.txt
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;アクセス権&#34;&gt;アクセス権&lt;/h2&gt;
+
+&lt;p&gt;「読み取り : r」「書き込み : w」「実行 : x」の３種類。&lt;br /&gt;
+「所有者」「所有グループ」「その他」それぞれに対して設定できる。&lt;br /&gt;
+&lt;code&gt;$ ls -l&lt;/code&gt;で表示されたファイルモード部分で確認可能。&lt;br /&gt;
+並び順は、「所有者rwx」「所有グループrwx」「その他rwx」。&lt;/p&gt;
+
+&lt;h3 id=&#34;アクセス権-1&#34;&gt;アクセス権&lt;/h3&gt;
+
+&lt;p&gt;アルファベットと数値で表す。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;アクセス権&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;アルファベット&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;数値&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;読み取り&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;r&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;4&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;書き込み&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;w&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;実行&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;x&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&#34;ファイルのアクセス権&#34;&gt;ファイルのアクセス権&lt;/h3&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;アクセス権&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;読み取り&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ファイルの内容をcat等で読むことができる&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;書き込み&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ファイルの内容を変更できる&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;実行&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ファイルを実行できる&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&#34;ディレクトリのアクセス権&#34;&gt;ディレクトリのアクセス権&lt;/h3&gt;
+
+&lt;p&gt;基本的には実行権は付与するのが普通なので、「rwx」「r-x」「&amp;ndash;x」のどれか。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;アクセス権&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;読み取り&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ファイルの一覧を表示できる&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;書き込み&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ファイルの作成や削除ができる&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;実行&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ディレクトリ内のファイルにアクセスできる&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&#34;アクセス権の変更&#34;&gt;アクセス権の変更&lt;/h2&gt;
+
+&lt;p&gt;変更ができるのは、所有者とrootユーザーのみ。&lt;br /&gt;
+記号を使うか、数値で指定することができる。&lt;br /&gt;
+ディレクトリの場合は&lt;code&gt;-R&lt;/code&gt;を指定することで、配下まで適用される。&lt;/p&gt;
+
+&lt;h3 id=&#34;アクセス権記号&#34;&gt;アクセス権記号&lt;/h3&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;記号&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;操作対象&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;u&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;所有者&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;操作対象&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;g&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;所有グループ&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;操作対象&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;o&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;その他&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;操作対象&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;a&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;全ユーザー&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;操作&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;+&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;権限追加&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;操作&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;-&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;権限削除&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;操作&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;=&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;権限指定&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;アクセス権&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;r&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;読み取り&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;アクセス権&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;w&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;書き込み&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;アクセス権&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;x&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;実行&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&#34;記号方式&#34;&gt;記号方式&lt;/h3&gt;
+
+&lt;p&gt;現在のアクセス権を基準に、権限の追加や削除をする場合に有効。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 所有グループとその他に書き込み権を追加
+$ chmod uo+w sample.txt
+
+# その他から書き込み権を削除
+$ chmod o-w sample.txt
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;数値方式&#34;&gt;数値方式&lt;/h3&gt;
+
+&lt;p&gt;元のアクセス権がどうであっても、指定した数値のアクセス権に変更される。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 所有者:rw- グループ:r-- その他:r--
+$ chmod 644 sample.txt
+
+# 所有者:rwx グループ:r-x その他:r-x
+$ chmod 755 sample.txt
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>bashでの圧縮と展開（zip, gz, bz2, xz, tar）</title>
+      <link>http://mzgkworks.com/post/bash-zip-unzip/</link>
+      <pubDate>Wed, 07 Sep 2016 17:18:07 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/bash-zip-unzip/</guid>
+      <description>
+
+&lt;h2 id=&#34;圧縮と展開&#34;&gt;圧縮と展開&lt;/h2&gt;
+
+&lt;p&gt;よく使われる拡張子とコマンド。&lt;br /&gt;
+圧縮率 : .zip &amp;lt; .gz &amp;lt; .bz2 &amp;lt; .xz&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;拡張子&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;圧縮コマンド&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;展開コマンド&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;.zip&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;zip&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;unzip&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;.gz&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;gzip&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;gunzip&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;.bz2&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;bzip2&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;bunzip2&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;.xz&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;xz&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;xz -d&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&#34;ファイルの圧縮と展開&#34;&gt;ファイルの圧縮と展開&lt;/h2&gt;
+
+&lt;p&gt;基本的な使い方のみ。&lt;br /&gt;
+zipのみ &lt;code&gt;-r&lt;/code&gt;指定で書庫を作らずにディレクトリごと圧縮が可能。&lt;/p&gt;
+
+&lt;h3 id=&#34;zip&#34;&gt;zip&lt;/h3&gt;
+
+&lt;p&gt;zipは圧縮後のファイル名を指定したり、ディレクトリごとの圧縮を行う。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# archive.zipという名前で、A.txtとB.txtを圧縮
+# 圧縮したファイルは残る
+$ zip archive A.txt B.txt
+$ ls
+archive.zip  A.txt  B.txt
+
+# ディレクトリごと圧縮する
+$ zip -r archive A_Dir
+
+# workディレクトリ（なければ作成）に展開する
+$ unzip -d work archive.zip
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;gz-bz2-xz&#34;&gt;gz, bz2, xz&lt;/h3&gt;
+
+&lt;p&gt;元ファイルは残らない。ディレクトリの圧縮には書庫作成が必要。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# .gz
+$ gzip A.txt  # A.txt.gzで圧縮される
+$ gunzip A.txt.gz
+
+# .bz2
+$ bzip2 A.txt  # A.txt.bz2で圧縮される
+$ bunzip2 A.txt.bz2
+
+# .xz
+$ xz A.txt  # A.txt.xzで圧縮される
+$ xz -d A.txt.xz
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ディレクトリの圧縮と展開&#34;&gt;ディレクトリの圧縮と展開&lt;/h2&gt;
+
+&lt;p&gt;ディレクトリを圧縮する際の手順は、&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;tarコマンドで、複数ファイルを１つのファイルにまとめたアーカイブ（書庫）を作成&lt;/li&gt;
+&lt;li&gt;作成したアーカイブを圧縮する&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;tarコマンドの主なオプション&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;オプション&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;- c&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;アーカイブを作成&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;-x&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;アーカイブを展開&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;-f アーカイブ名&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;アーカイブ名&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;-v&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;詳細表示&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;-z&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;gzip圧縮を行う&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;-j&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;bzip2圧縮を行う&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;-J&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;xz圧縮を行う&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# /etc/postfixディレクトリのアーカイブをカレントディレクトリに作成する
+# .tarまで指定すること
+$ tar -cvf test.tar /etc/postfix  # test.tarが作成される（作成元は残る）
+# test.tarを展開する
+$ tar -xvf test.tar
+
+# アーカイブ作成と同時に.gzで圧縮する
+$ tar -czvf test.tar.gz /etc/postfix  # test.tar.gzが作成される
+# test.tar.gzを展開する（ファイルと違い、test.tar.gzは残る）
+$ tar -xzvf test.tar.gz
+
+# アーカイブ作成と同時に.bz2で圧縮する
+$ tar -cjvf test.tar.bz2 /etc/postfix  # test.tar.bz2が作成される
+# test.tar.bz2を展開する
+$ tar -xjvf test.tar.gz
+
+# アーカイブ作成と同時に.xzで圧縮する
+$ tar -cJvf test.tar.xz /etc/postfix  # test.tar.xzが作成される
+# test.tar.xzを展開する
+$ tar -xJvf test.tar.gz
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>bashでディレクトリ・ファイルのコピー・移動・削除を行う</title>
+      <link>http://mzgkworks.com/post/bash-directory-operation/</link>
+      <pubDate>Wed, 07 Sep 2016 17:09:45 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/bash-directory-operation/</guid>
+      <description>
+
+&lt;h2 id=&#34;cd-ディレクトリ移動&#34;&gt;cd : ディレクトリ移動&lt;/h2&gt;
+
+&lt;p&gt;引数で指定したディレクトリへ移動する。&lt;br /&gt;
+他に便利な使い方としては、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 引数なし : ホームディレクトリに移動
+$ cd
+
+# - : １つ前の作業ディレクトリへ移動
+# ２つのディレクトリを交互に操作する際に便利
+$ cd -
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;コピー&#34;&gt;コピー&lt;/h2&gt;
+
+&lt;p&gt;ファイルまたはディレクトリをコピーする。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# A.txtをB.txtの名前でコピーする
+$ cp A.txt B.txt
+
+# DirディレクトリにA.txtの名前でコピーする。
+# Dir部分を「.」にすると、カレントディレクトリを表す。
+$ cp A.txt Dir
+
+# A.txtをDirディレクトリにB.txtとしてコピーする。
+$ cp A.txt Dir/B.txt
+
+# ディレクトリをコピーする際には「-r」が必要
+# A_DirディレクトリをB_Dirディレクトリ配下にコピー
+$ cp -r A_Dir B_Dir
+
+# A_DirディレクトリをB_Dirディレクトリ配下にC_Dirディレクトリとしてコピー
+# B_Dir配下にC_Dirが存在していない場合
+$ cp -r A_Dir B_Dir/C_Dir
+
+# A_Dirディレクトリの中身だけを、B_Dir配下にコピーする
+$ cp -r A_Dir/ B_Dir
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;移動とリネーム&#34;&gt;移動とリネーム&lt;/h2&gt;
+
+&lt;p&gt;移動とリネームを行う。ファイルとディレクトリは同様に実行可能。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# A.txtをB.txtにリネームする（同じディレクトリ内）
+$ mv A.txt B.txt
+
+# A.txtをA_Dirディレクトリに移動する
+$ mv A.txt A_Dir
+
+# A.txtをA_DirディレクトリにB.txtとして移動する
+$ mv A.txt A_Dir/B.txt
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ディレクトリの作成&#34;&gt;ディレクトリの作成&lt;/h2&gt;
+
+&lt;p&gt;ディレクトリを作成する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 単独
+$ mkdir A_Dir
+
+# 複数階層分
+$ mkdir -p A_Dir/B_Dir
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;削除&#34;&gt;削除&lt;/h2&gt;
+
+&lt;p&gt;ファイルとディレクトリの削除。&lt;br /&gt;
+&lt;strong&gt;ゴミ箱はない。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 確認つきでファイルを削除する（yで削除）
+$ rm -i A.txt
+
+# ディレクトリの中身ごと削除する
+$ rm -r A_Dir
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>シェルでコマンドを打つ際の基本的な機能</title>
+      <link>http://mzgkworks.com/post/shell-command-basic/</link>
+      <pubDate>Tue, 06 Sep 2016 18:50:36 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/shell-command-basic/</guid>
+      <description>
+
+&lt;p&gt;bashでコマンドを打つ際の基本的な操作のメモ。&lt;/p&gt;
+
+&lt;h2 id=&#34;入力&#34;&gt;入力&lt;/h2&gt;
+
+&lt;h3 id=&#34;補完-コマンド-ファイル名&#34;&gt;補完（コマンド・ファイル名）&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;tabキー : 補完&lt;/li&gt;
+&lt;li&gt;tabキー２回 : 候補の一覧を表示&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;履歴&#34;&gt;履歴&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Ctrl + P or ↑ : 新しいものから、古いものへ&lt;/li&gt;
+&lt;li&gt;Ctrl + N or ↓ : 古いものから、新しいものへ&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;インクリメンタル検索&#34;&gt;インクリメンタル検索&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Ctrl + P : 開始&lt;/li&gt;
+&lt;li&gt;Ctrl + C : 終了&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;パイプ&#34;&gt;パイプ&lt;/h2&gt;
+
+&lt;p&gt;コマンドの結果を別のコマンドへ渡す。&lt;br /&gt;
+結果が膨大で画面がスクロールしてしまう時に、lessコマンドに渡して１ページづつ確認するなど。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# ファイル一覧と行数・単語数・バイト数を表示するコマンドを連携し
+# ファイル数を数える
+$ ls | wc -l
+
+# /etcディレクトリのファイル一覧をlessコマンドで１ページづつ表示
+$ ls -l /etc | less
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;リダイレクト&#34;&gt;リダイレクト&lt;/h2&gt;
+
+&lt;p&gt;コマンドの出力結果をファイルに出力する。&lt;br /&gt;
+もしくはファイルの内容をコマンドに送る。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;リダイレクト&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;内容&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;&amp;gt;&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;出力（上書き）&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;&amp;gt;&amp;gt;&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;出力（追加）&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;&amp;lt;&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;入力&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;&amp;lt;&amp;lt;&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;終端文字列の指定&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# &amp;gt; : 上書き
+$ date &amp;gt; today.txt
+
+# &amp;gt;&amp;gt; : 末尾に追加
+$ date &amp;gt;&amp;gt; today.txt
+
+# &amp;lt; : sample.txtの中身から&amp;quot;Linux&amp;quot;を検索
+$ grep &amp;quot;Linux&amp;quot; &amp;lt; sample.txt
+
+# &amp;lt;&amp;lt; : 入力終端文字列を指定し、複数行のファイルを作成する
+$ cat &amp;lt;&amp;lt; _END_ &amp;gt; result.txt
+&amp;gt; test1
+&amp;gt; test2
+&amp;gt; _END_
+
+$ cat result.txt
+test1
+test2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;標準エラー出力のみをファイルへ&#34;&gt;標準エラー出力のみをファイルへ&lt;/h3&gt;
+
+&lt;p&gt;処理の記録からエラーメッセージだけを除外する時など。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 通常
+$ ls -l today.txt nofile.txt
+ls: nofile.txt: No such file or directory
+-rw-r--r--  1 mzgk  staff  96  9  6 18:23 today.txt
+
+# エラーのみerror.txtへ
+$ ls -l today.txt nofile.txt 2&amp;gt; error.txt
+-rw-r--r--  1 mzgk  staff  96  9  6 18:23 today.txt
+
+# error.txtの中身
+$ cat error.txt
+ls: nofile.txt: No such file or directory
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;連結&#34;&gt;連結&lt;/h2&gt;
+
+&lt;p&gt;複数のコマンドを連結して使う場合。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;連結&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;内容&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;;&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;コマンド１の実行後、コマンド２を実行する&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;&amp;amp;&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;コマンド１の完了を待たず、コマンド２を実行する&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;&amp;amp;&amp;amp;&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;コマンド１が正常終了したなら、コマンド２を実行する&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;&amp;#124;&amp;#124;&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;コマンド１が失敗した場合、コマンド２を実行する&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&#34;メタキャラクタ&#34;&gt;メタキャラクタ&lt;/h2&gt;
+
+&lt;p&gt;ファイル名の指定などに利用する特殊な文字。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;メタキャラクタ&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;*&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;０文字以上の任意の文字列&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;?&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;任意の１文字&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;[]&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;[]内の任意の１文字&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# *.txt : .txt全て
+$ ls *.txt
+
+# 201?.txt : 201+１文字の.txt
+$ ls 201?.txt
+2016.txt  201a.txt
+
+# 201??.txt : 201+２文字の.txt
+20160.txt  201ab.txt
+
+# [ab]*.txt : aまたはbで始まる.txt
+$ ls [ab]*.txt
+a1.txt  a200.txt  aA.txt  b.txt  bcd.txt
+
+# [1-3].txt : 1〜3の範囲の.txt
+$ ls [1-3].txt
+1.txt  2.txt  3.txt
+
+# *[24]*.txt : ファイル名に2か4が含まれる.txt
+$ ls *[24]*.txt
+2.txt  a2.txt a4bc.txt
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Atom（vim-mode-plus）で、ノーマルモード移行時に日本語オフにする方法。</title>
+      <link>http://mzgkworks.com/post/atom-vim-normalmode-with-eisuu/</link>
+      <pubDate>Thu, 01 Sep 2016 15:34:24 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/atom-vim-normalmode-with-eisuu/</guid>
+      <description>
+
+&lt;p&gt;Atomにvim-mode-plusをインストールして使っているが、ノーマルモードに移行する時に日本語入力モードを引きずったままになるのが面倒。&lt;br /&gt;
+ノーマルモードになった時には、自動で英数入力モードになって、そのままカーソル移動とかしたい。&lt;/p&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;OS X 10.11.6&lt;/li&gt;
+&lt;li&gt;Atom 1.10.0&lt;/li&gt;
+&lt;li&gt;karabiner 10.21.0&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;方法&#34;&gt;方法&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://pqrs.org/osx/karabiner/index.html.ja&#34;&gt;Karabiner&lt;/a&gt;をMacにインストールする&lt;/li&gt;
+&lt;li&gt;private.xmlに設定を書く&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;設定方法&#34;&gt;設定方法&lt;/h2&gt;
+
+&lt;p&gt;設定の追加方法は、Karabiner公式サイトのマニュアルを参照のこと。&lt;br /&gt;
+&lt;a href=&#34;https://pqrs.org/osx/karabiner/document.html.ja#privatexml&#34;&gt;https://pqrs.org/osx/karabiner/document.html.ja#privatexml&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;private-xml&#34;&gt;private.xml&lt;/h3&gt;
+
+&lt;p&gt;記述する内容は以下。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@xml&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt;
+&amp;lt;root&amp;gt;
+    &amp;lt;appdef&amp;gt;
+        &amp;lt;appname&amp;gt;ATOM&amp;lt;/appname&amp;gt;
+        &amp;lt;equal&amp;gt;com.github.atom&amp;lt;/equal&amp;gt;
+    &amp;lt;/appdef&amp;gt;
+    &amp;lt;item&amp;gt;
+        &amp;lt;name&amp;gt;Atom Into NormalMode With Eisuu&amp;lt;/name&amp;gt;
+        &amp;lt;identifier&amp;gt;private.app_atom_into_normalmode_with_eisuu&amp;lt;/identifier&amp;gt;
+        &amp;lt;only&amp;gt;ATOM&amp;lt;/only&amp;gt;
+        &amp;lt;autogen&amp;gt;
+            --KeyToKey--
+            KeyCode::ESCAPE,
+            KeyCode::ESCAPE, KeyCode::JIS_EISUU
+        &amp;lt;/autogen&amp;gt;
+        &amp;lt;autogen&amp;gt;
+            --KeyToKey--
+            KeyCode::BRACKET_LEFT, VK_CONTROL,
+            KeyCode::ESCAPE, KeyCode::JIS_EISUU
+        &amp;lt;/autogen&amp;gt;
+        &amp;lt;autogen&amp;gt;
+            --KeyToKey--
+            KeyCode::C, VK_CONTROL,
+            KeyCode::ESCAPE, KeyCode::JIS_EISUU
+        &amp;lt;/autogen&amp;gt;
+    &amp;lt;/item&amp;gt;
+&amp;lt;/root&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;おまけ&#34;&gt;おまけ&lt;/h2&gt;
+
+&lt;p&gt;Karabinerの設定で、jklhでの移動を他アプリでも使えるようにする方法。&lt;br /&gt;
+&lt;code&gt;s + jklh&lt;/code&gt; でカーソル移動ができるようになる。&lt;br /&gt;
+公式サイトのマニュアルにあった。&lt;br /&gt;
+&lt;a href=&#34;https://pqrs.org/osx/karabiner/gallery.html.ja#simple-vi-mode-v2&#34;&gt;Simple Vi Mode v2&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

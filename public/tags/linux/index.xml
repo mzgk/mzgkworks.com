@@ -1,0 +1,1967 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mzgkworks.com</title>
+    <link>http://mzgkworks.com/tags/linux/index.xml</link>
+    <description>Recent content on mzgkworks.com</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-JP</language>
+    <atom:link href="http://mzgkworks.com/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>MacからLinux（CentOS7）にSSH公開鍵認証で接続する</title>
+      <link>http://mzgkworks.com/post/mac-linux-ssh-rsa-connection/</link>
+      <pubDate>Fri, 16 Sep 2016 18:32:16 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/mac-linux-ssh-rsa-connection/</guid>
+      <description>
+
+&lt;p&gt;MacからSSHの公開鍵認証でLinux（CentOS7）に接続する方法。&lt;/p&gt;
+
+&lt;h2 id=&#34;linux-公開鍵の設置場所作成&#34;&gt;Linux : 公開鍵の設置場所作成&lt;/h2&gt;
+
+&lt;p&gt;Linux側で公開鍵ファイルを設置する場所を作成しておく。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# ホームディレクトリ直下に.sshディレクトリを作成
+$ mkdir ~/.ssh
+
+# パーミッションを700に変更
+$ chmod 700 ~/.ssh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;mac-公開鍵と秘密鍵の作成&#34;&gt;Mac : 公開鍵と秘密鍵の作成&lt;/h2&gt;
+
+&lt;p&gt;Mac側で &lt;code&gt;$ ssh-keygen&lt;/code&gt;コマンドを使って、公開鍵と秘密鍵ファイルを生成する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# SSH2-rsa形式で作成
+$ ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/Users/[ユーザー名]/.ssh/id_rsa):
+
+# 作成したい場所とファイル名をフルパスで入力する
+# 未入力の場合は、/Users/[ユーザー名]/.ssh/に以下が生成される
+# id_rsa : 秘密鍵
+# id_rsa.pub : 公開鍵
+
+# 任意のパスフレーズを入力する
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+
+# 作成が完了したか確認
+$ ls -la ~/.ssh
+-rw-------   1 xxxx  staff  1766  9 16 17:06 id_rsa
+-rw-r--r--   1 xxxx  staff   402  9 16 17:06 id_rsa.pub
+
+# 公開鍵ファイルのパーミッションを変更（所有者のみrw）
+$ chmod 600 ~/.ssh/id_rsa.pub
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;mac-ssh接続の設定&#34;&gt;Mac : SSH接続の設定&lt;/h2&gt;
+
+&lt;p&gt;SSH設定ファイル（~/.ssh/Config）に接続情報を追加する。&lt;br /&gt;
+ssh接続時にHOSTに設定した引数で接続ができるようになる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;HOST 任意の名前（sshコマンドの引数として入力する）
+  HostName 接続先LinuxのIP
+  User Linuxログインユーザー名
+  Port Linux側SSHポート番号
+  IdentityFile Mac内の秘密鍵ファイルのフルパス
+  ServerAliveInterval 60 # 60秒ごとに接続先にmsg送信
+  # これは接続が切れないようにするため
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;公開鍵ファイルの転送&#34;&gt;公開鍵ファイルの転送&lt;/h2&gt;
+
+&lt;p&gt;Macから接続先のLinuxに&lt;code&gt;$ scp&lt;/code&gt;コマンドを使って、公開鍵ファイルを転送する。&lt;br /&gt;
+その際に、公開鍵ファイルの名前を「authorized_keys」に変更する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ scp -P [SSHポート番号] [公開鍵フルパス] [ユーザー名]@[LinuxのIP]:~/.ssh/authorized_keys
+xxx@xxx&#39;s password: # Linuxのユーザーパスワード
+id_rsa.pub                                                                    100%  402     0.4KB/s   00:00
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;接続&#34;&gt;接続&lt;/h2&gt;
+
+&lt;p&gt;Mac側から接続。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ ssh [HOSTに定義した名前]
+
+# 秘密鍵を作成した際のパスフレーズ入力のダイアログが表示される
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;linux-sshパスワード認証を禁止する&#34;&gt;Linux : SSHパスワード認証を禁止する&lt;/h2&gt;
+
+&lt;p&gt;SSHサーバーの設定を変更し、パスワード認証を無効にする。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo vi /etc/ssh/sshd_config
+
+PassswordAuthentication yes → noに変更
+
+# SSHサービスの設定を再読み込みする
+$ sudo systemctl reload sshd.service
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Linuxでのログインユーザの確認や制御の方法</title>
+      <link>http://mzgkworks.com/post/linux-login-user-management/</link>
+      <pubDate>Fri, 16 Sep 2016 16:21:06 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-login-user-management/</guid>
+      <description>
+
+&lt;p&gt;Linuxにはrootユーザーが必ず存在するため、外部からのログインは一般ユーザーのみに限定し、rootユーザーを禁止する。&lt;/p&gt;
+
+&lt;h2 id=&#34;sshでのrootログインの禁止&#34;&gt;SSHでのrootログインの禁止&lt;/h2&gt;
+
+&lt;p&gt;/etc/ssh/sshd_configファイルを以下に変更。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;PermitRootLogin no
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ログイン可能なユーザーを限定&#34;&gt;ログイン可能なユーザーを限定&lt;/h2&gt;
+
+&lt;p&gt;/etc/ssh/sshd_configファイルに以下を追記。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# AllowUsers [ユーザー名]
+AllowUsers centuser
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;おまけ-sshポートの変更&#34;&gt;（おまけ）SSHポートの変更&lt;/h2&gt;
+
+&lt;p&gt;/etc/ssh/sshd_configファイルを以下に変更。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# Port [ポート番号]
+Port 10022
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;変更後はsshサーバーの再起動&#34;&gt;変更後はSSHサーバーの再起動&lt;/h2&gt;
+
+&lt;p&gt;設定ファイルの変更後は、SSKサーバーを再起動させる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo systemctl restart sshd.service
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;過去のログイン情報を確認する&#34;&gt;過去のログイン情報を確認する&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;$ last&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ last
+centuser pts/0        219.118.174.90   Fri Sep 16 15:59   still logged in
+centuser pts/0        219.118.174.90   Fri Sep 16 15:54 - 15:54  (00:00)
+centuser pts/1        219.118.174.90   Thu Sep 15 19:20 - 19:35  (00:15)
+centuser pts/0        219.118.174.90   Thu Sep 15 16:06 - 21:01  (04:54)
+centuser pts/1        219.118.174.90   Tue Sep 13 17:34 - 19:50  (02:16)
+centuser pts/0        219.118.174.90   Tue Sep 13 16:57 - 19:08  (02:11)
+reboot   system boot  3.10.0-327.28.3. Tue Sep 13 16:56 - 16:16 (2+23:19)
+centuser pts/0        219.118.174.90   Tue Sep 13 16:48 - 16:56  (00:07)
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ユーザーごとの最終ログインを確認する&#34;&gt;ユーザーごとの最終ログインを確認する&lt;/h2&gt;
+
+&lt;p&gt;ユーザーごとの最終ログインを表示することによって、覚えのないユーザーのログインを発見できる。&lt;br /&gt;
+&lt;code&gt;$ lastlog&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ lastlog
+ユーザ名         ポート   場所             最近のログイン
+root             pts/0                     金  9月 16 15:54:17 +0900 2016
+bin                                        **一度もログインしていません**
+...
+centuser         pts/0    219.118.174.90   金  9月 16 15:59:23 +0900 2016
+apache                                     **一度もログインしていません**
+mysql                                      **一度もログインしていません**
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Linuxで開いているポートを確認する方法</title>
+      <link>http://mzgkworks.com/post/linux-port-confirm/</link>
+      <pubDate>Thu, 15 Sep 2016 19:08:29 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-port-confirm/</guid>
+      <description>
+
+&lt;p&gt;開いているポートの確認方法。&lt;br /&gt;
+&lt;br&gt;
+ポートはサービス（ソフトウェア）が使用し、そのポートを通る通信をFireWallが監視（制御）している。&lt;br /&gt;
+なので、サービスの登録（ソフトのインストール）をするとポートが使用され、FireWallでそのポートを開放してやると、外部との通信が可能になる。&lt;/p&gt;
+
+&lt;h2 id=&#34;netstat-ss&#34;&gt;netstat（ss）&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;$ netstat&lt;/code&gt;　または &lt;code&gt;$ ss&lt;/code&gt;コマンドで、現在開いているポートを一覧表示することができる。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;オプション&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;-l&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Listenしているポートのみ表示&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;-t&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;TCPを表示&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;-u&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;UDPを表示&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;-n&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ポートやホストを数値で表示&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;-p&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ポートを開いているプロセスを表示（sudo）&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;-4&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;IPv4のみ&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;-6&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;IPv6のみ&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 開いているポートと使用しているプロセス（IPv4）
+$ sudo netstat -ltup4
+sudo netstat -ltup4
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 0.0.0.0:mysql           0.0.0.0:*               LISTEN      2015/mysqld
+tcp        0      0 localhost:smtp          0.0.0.0:*               LISTEN      2282/master
+tcp        0      0 0.0.0.0:10022           0.0.0.0:*               LISTEN      1274/sshd
+udp        0      0 localhost:323           0.0.0.0:*                           658/chronyd
+
+# 上記を数値で
+sudo netstat -ltunp4
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 0.0.0.0:3306            0.0.0.0:*               LISTEN      2015/mysqld
+tcp        0      0 127.0.0.1:25            0.0.0.0:*               LISTEN      2282/master
+tcp        0      0 0.0.0.0:10022           0.0.0.0:*               LISTEN      1274/sshd
+udp        0      0 127.0.0.1:323           0.0.0.0:*                           658/chronyd
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;例えば&#34;&gt;例えば&lt;/h2&gt;
+
+&lt;p&gt;例えばhttps通信を許可してやるには、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;mod_sslをインストール
+
+&lt;ul&gt;
+&lt;li&gt;$ sudo yum install mod_ssl&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;SSLの設定
+
+&lt;ul&gt;
+&lt;li&gt;/etc/httpd/conf.d/sl.conf&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Apaceを再起動する
+
+&lt;ul&gt;
+&lt;li&gt;$ sudo systemctl restart httpd&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;ポート状態を確認する
+
+&lt;ul&gt;
+&lt;li&gt;$ sudo netstat -ltupn&lt;/li&gt;
+&lt;li&gt;443がLISTEN状態になっているか？&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;FireWallにサービスの許可を追加
+
+&lt;ul&gt;
+&lt;li&gt;$ sudo firewall-cmd &amp;ndash;add-service=https&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;関連&#34;&gt;関連&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://mzgkworks.com/post/network-protocol-ipadress/&#34;&gt;ネットワークの基礎知識（プロトコル・IPアドレス・サブネットマスク・ポート）&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CentOS7のsystemctlコマンドの使い方</title>
+      <link>http://mzgkworks.com/post/centos7-systemctl-service/</link>
+      <pubDate>Thu, 15 Sep 2016 18:57:14 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/centos7-systemctl-service/</guid>
+      <description>
+
+&lt;p&gt;CentOS 7のsystemdサービス管理のメモ。&lt;br /&gt;
+サービスの稼働状態や自動起動設定の確認・操作。　　&lt;/p&gt;
+
+&lt;h2 id=&#34;unitの状態&#34;&gt;UNITの状態&lt;/h2&gt;
+
+&lt;h3 id=&#34;確認-一覧&#34;&gt;確認 : 一覧&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ systemctl list-unit&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;ACTIVE, SUBが実行状態を表している。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# UNITのタイプがServiceのみを確認
+$ systemctl list-units -t service
+UNIT                 LOAD   ACTIVE SUB     DESCRIPTION
+auditd.service       loaded active running Security Auditing Service
+chronyd.service      loaded active running NTP client/server
+...
+● kdump.service      loaded failed failed  Crash recovery kernel arming
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;確認-個別&#34;&gt;確認 : 個別&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ systemctl is-active [UNIT名]&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ systemctl is-active yum-cron
+active
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;確認-個別詳細&#34;&gt;確認 : 個別詳細&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ systemctl status [UNIT名]&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ systemctl status yum-cron
+● yum-cron.service - Run automatic yum updates as a cron job
+   Loaded: loaded (/usr/lib/systemd/system/yum-cron.service; enabled; vendor preset: disabled)
+   Active: active (exited) since 火 2016-09-13 16:56:49 JST; 2 days ago
+  Process: 644 ExecStart=/bin/touch /var/lock/subsys/yum-cron (code=exited, status=0/SUCCESS)
+ Main PID: 644 (code=exited, status=0/SUCCESS)
+   CGroup: /system.slice/yum-cron.service
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;操作-起動-停止-再起動-強制終了&#34;&gt;操作（起動・停止・再起動・強制終了）&lt;/h3&gt;
+
+&lt;p&gt;UNITの操作。&lt;br /&gt;
+&lt;code&gt;$ sudo systemctl [UNITコマンド] [UNIT名]&lt;/code&gt;&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;UNITコマンド&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;start&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;起動させる&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;stop&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;停止させる&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;restart&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;再起動させる&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;kill&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;強制終了させる&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&#34;自動起動設定&#34;&gt;自動起動設定&lt;/h2&gt;
+
+&lt;h3 id=&#34;確認-一覧-1&#34;&gt;確認 : 一覧&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ systemctl list-unit-files&lt;/code&gt;&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;STATE&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;enabled&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;自動起動 : 有効&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;disabled&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;自動起動 : 無効&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;static&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;自動起動 : 設定不可&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# UNITのタイプがServiceのみを確認
+$ systemctl list-unit-files -t service
+UNIT FILE                                   STATE
+arp-ethers.service                          disabled
+auditd.service                              enabled
+chrony-dnssrv@.service                      static
+dbus-org.freedesktop.hostname1.service      static
+...
+
+# grepへパイプで繋いで「enabled」のみを表示させる
+$ systemctl list-unit-files -t service | grep enabled
+UNIT FILE                                   STATE
+auditd.service                              enabled
+chronyd.service                             enabled
+...
+tuned.service                               enabled
+yum-cron.service                            enabled
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;確認-個別-1&#34;&gt;確認 : 個別&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ sudo systemctl is-enabled [Unit名]&lt;/code&gt;&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;状態&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;enabled&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;自動起動が有効&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;disabled&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;自動起動が無効&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# yum-cronの状態確認
+$ sudo systemctl is-active yum-cron
+enabled
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;操作-有効化-無効化&#34;&gt;操作（有効化・無効化）&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ sudo systemctl [UNITコマンド] [UNIT名]&lt;/code&gt;&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;UNITコマンド&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;enable&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;自動起動 : 有効化&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;disable&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;自動起動 : 無効化&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>SELinuxの基礎知識と確認・設定方法</title>
+      <link>http://mzgkworks.com/post/linux-selinux/</link>
+      <pubDate>Tue, 13 Sep 2016 17:57:08 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-selinux/</guid>
+      <description>
+
+&lt;h2 id=&#34;selinux&#34;&gt;SELinux&lt;/h2&gt;
+
+&lt;p&gt;Security-Enhanced Linuxの略。&lt;br /&gt;
+米NSA（National Security Agency＝米国国家安全保障局）が中心となって、不正侵入の被害を極力少なくすることを目的に開発。&lt;br /&gt;
+オープンソースとして提供されており、主要なLinuxディストリビューションに組み込まれている。&lt;br /&gt;
+基本的にはすべてのアクセスを拒否し、ポリシー（アクセス制御設定）でアクセスコントロールを行う仕組み。&lt;br /&gt;
+root権限も無効化する。&lt;/p&gt;
+
+&lt;h2 id=&#34;permissiveモード&#34;&gt;Permissiveモード&lt;/h2&gt;
+
+&lt;p&gt;デフォルトのポリシーで通常は動作するが、インストールしたソフトウェアやWebコンテンツなどがうまく動作しない場合がある。&lt;br /&gt;
+その際の問題切り分け（SELinuxのせいなのか、他に原因があるか）に、一時的にSELinuxをPermissiveモードにして確認を行ったりする。&lt;/p&gt;
+
+&lt;h2 id=&#34;状態の確認&#34;&gt;状態の確認&lt;/h2&gt;
+
+&lt;h3 id=&#34;getenforce&#34;&gt;$ getenforce&lt;/h3&gt;
+
+&lt;p&gt;現在の状態を表示する。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;状態&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;Enforcing&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;有効化されており、ポリシーに違反するアクセスを拒否する&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;Permissive&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;有効化されているが、ポリシー違反はログに出力するのみ&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;Disable&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;無効化されている&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ getenforce
+Permissive
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;etc-sysconfig-selinux&#34;&gt;/etc/sysconfig/selinux&lt;/h3&gt;
+
+&lt;p&gt;システム起動時の設定が書かれている。&lt;br /&gt;
+&lt;strong&gt;システム再起動後も設定を反映させる場合は、このファイルの定義を変更すること。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo vi /etc/sysconfig/selinux
+
+# This file controls the state of SELinux on the system.
+# SELINUX= can take one of these three values:
+#     enforcing - SELinux security policy is enforced.
+#     permissive - SELinux prints warnings instead of enforcing.
+#     disabled - No SELinux policy is loaded.
+SELINUX=permissive
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;設定変更-一時的&#34;&gt;設定変更（一時的）&lt;/h2&gt;
+
+&lt;p&gt;一時的な変更は &lt;code&gt;$ setenforce&lt;/code&gt;コマンドを使用する。&lt;br /&gt;
+※Disableにする場合は、/etc/sysconfig/selinuxファイルの値を変更する。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;引数&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Permissiveへ&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Enforcingへ&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# Permissiveに変更
+$ sudo setenforce 0
+
+# Enforcingに変更
+$ sudo setenforce 1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;設定変更-恒久的&#34;&gt;設定変更（恒久的）&lt;/h2&gt;
+
+&lt;p&gt;/etc/sysconfig/selinuxファイルの定義を変更する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 変更する
+$ sudo vi /etc/sysconfig/selinux
+
+# This file controls the state of SELinux on the system.
+# SELINUX= can take one of these three values:
+#     enforcing - SELinux security policy is enforced.
+#     permissive - SELinux prints warnings instead of enforcing.
+#     disabled - No SELinux policy is loaded.
+SELINUX=permissive
+...
+
+
+# Linuxを再起動する
+$ shutdown -r now
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CentOS 7へのWebサーバー（Apache）のインストールと基本設定</title>
+      <link>http://mzgkworks.com/post/centos7-apache-install/</link>
+      <pubDate>Mon, 12 Sep 2016 15:42:13 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/centos7-apache-install/</guid>
+      <description>
+
+&lt;p&gt;CentOS7への、Webサーバー（Apache）のインストールから設定まで。&lt;/p&gt;
+
+&lt;h2 id=&#34;apacheのインストール&#34;&gt;Apacheのインストール&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;$ yum&lt;/code&gt;コマンドを使用して関連あるパッケージを含めてインストールを行う。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo yum install httpd
+[sudo] password for centuser:
+...
+インストール:
+  httpd.x86_64 0:2.4.6-40.el7.centos.4
+...
+完了しました!
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ドキュメントルート&#34;&gt;ドキュメントルート&lt;/h2&gt;
+
+&lt;p&gt;Webで公開するトップディレクトリ。&lt;br /&gt;
+デフォルトでは、「/var/www/html/」。&lt;br /&gt;
+「/etc/httpd/conf/httpd.conf」ファイルからでも確認ができる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# ドキュメントルートを確認（L119付近）
+$ sudo vi /etc/httpd/conf/httpd.conf
+...
+#
+# DocumentRoot: The directory out of which you will serve your
+# documents. By default, all requests are taken from this directory, but
+# symbolic links and aliases may be used to point to other locations.
+#
+DocumentRoot &amp;quot;/var/www/html&amp;quot;
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;設定ファイル-etc-httpd-conf-httpd-conf&#34;&gt;設定ファイル（/etc/httpd/conf/httpd.conf）&lt;/h2&gt;
+
+&lt;p&gt;Apacheのメイン設定ファイル。&lt;/p&gt;
+
+&lt;p&gt;主なディレクティブ&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;ディレクティブ&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;デフォルト&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;ServerRoot&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;設定ファイル等を配置するトップディレクトリ&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;/etc/httpd&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;Listen&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Apacheが待ち受けるポート番号&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;80&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;User&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Apacheの実行ユーザー&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;apache&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;Group&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Apacheの実行グループ&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;apache&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;ServerAdmin&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Apacheの管理者&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;root@localhost&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;ServerName&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Webサーバー名&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;#ServerName www.example.com:80&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;DocumentRoot&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ドキュメントルート&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;/var/www/html&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;DirectoryIndex&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;インデックスファイル名&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;index.html&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&#34;serverroot&#34;&gt;ServerRoot&lt;/h3&gt;
+
+&lt;p&gt;設定ファイル等を配置するトップディレクトリ。&lt;br /&gt;
+httpd.confファイル内で相対パスを指定すると、このディレクトリが起点となる。&lt;/p&gt;
+
+&lt;h3 id=&#34;listen&#34;&gt;Listen&lt;/h3&gt;
+
+&lt;p&gt;Apacheが待ち受けるポート番号。&lt;/p&gt;
+
+&lt;h3 id=&#34;user-group&#34;&gt;User/Group&lt;/h3&gt;
+
+&lt;p&gt;Apacheの実行ユーザーとグルー。&lt;br /&gt;
+Apacheが扱うコンテンツは、ここで指定されているユーザー・グループが利用できるアクセス権が必要。&lt;/p&gt;
+
+&lt;h3 id=&#34;serveradmin&#34;&gt;ServerAdmin&lt;/h3&gt;
+
+&lt;p&gt;Apacheが稼働しているサーバーの管理者のメールアドレス。&lt;/p&gt;
+
+&lt;h3 id=&#34;servername&#34;&gt;ServerName&lt;/h3&gt;
+
+&lt;p&gt;Webサーバーの名前。&lt;br /&gt;
+デフォルトではコメントアウトされているので、解除して設定すること。&lt;br /&gt;
+:80のようにポート番号を指定できるが、省略してもよい。&lt;/p&gt;
+
+&lt;h3 id=&#34;documentroot&#34;&gt;DocumentRoot&lt;/h3&gt;
+
+&lt;p&gt;ドキュメントルートを &lt;strong&gt;絶対パス&lt;/strong&gt; で設定する。&lt;br /&gt;
+このディレクトリ以下には、User/Groupディレクティブで指定したユーザー・グループがアクセスできる必要がある。&lt;/p&gt;
+
+&lt;h3 id=&#34;directoryindex&#34;&gt;DirectoryIndex&lt;/h3&gt;
+
+&lt;p&gt;URLでファイル名まで指定されなかったときに、表示するファイル名を指定する。&lt;/p&gt;
+
+&lt;h2 id=&#34;httpd-confファイルの構文チェック&#34;&gt;httpd.confファイルの構文チェック&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;$ httpd -t&lt;/code&gt; コマンドで構文チェックをすることができる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# /etc/httpd/conf/httpd.confファイルのチェック
+$ httpd -t
+Syntax OK
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;apacheの起動-自動起動設定&#34;&gt;Apacheの起動・自動起動設定&lt;/h2&gt;
+
+&lt;p&gt;Apacheの起動と、次回からのシステム起動時に自動起動させる設定。&lt;br /&gt;
+Apacheを起動すると、複数のhttpdプロセスが生成される。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 起動
+$ sudo systemctl start httpd.service
+
+# 自動起動設定
+$ sudo systemctl enable httpd.service
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ファイヤウォールの設定&#34;&gt;ファイヤウォールの設定&lt;/h2&gt;
+
+&lt;p&gt;ファイヤウォールの設定を変更し、80番ポート（http）へのアクセスを許可させる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 設定
+$ sudo firewall-cmd --permanent --add-service=http
+
+# 更新
+$ sudo firewall-cmd --reload
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ログ&#34;&gt;ログ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;アクセスログ : /var/log/httpd/access_log&lt;/li&gt;
+&lt;li&gt;エラーログ : /var/log/httpd/error_log&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# アクセスログ
+$ sudo less /var/log/httpd/access_log
+
+# エラーログ
+$ sudo less /var/log/httpd/error_log
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Linux（CentOS7）のサービス操作（systemctlコマンド）</title>
+      <link>http://mzgkworks.com/post/linux-service-systemctl/</link>
+      <pubDate>Fri, 09 Sep 2016 17:35:24 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-service-systemctl/</guid>
+      <description>
+
+&lt;h2 id=&#34;サービスの管理&#34;&gt;サービスの管理&lt;/h2&gt;
+
+&lt;p&gt;サービス : OSから切り離し可能な、何らかの役割を持ったサブシステム。&lt;br /&gt;
+&lt;code&gt;$ systemctl サブコマンド サービス名&lt;/code&gt; で操作を行う。&lt;br /&gt;
+CentOS 6までだと &lt;code&gt;$ service&lt;/code&gt; コマンド。&lt;/p&gt;
+
+&lt;h3 id=&#34;主なサブコマンド&#34;&gt;主なサブコマンド&lt;/h3&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;サブコマンド&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;start&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;サービスを開始する&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;stop&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;サービスを停止する&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;restart&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;サービスを再起動する&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;enable&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;システム起動時にサービスを自動開始する&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;disable&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;システム起動時にサービスが自動開始しないようにする&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;status&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;サービスの状態を表示する&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&#34;主なサービス&#34;&gt;主なサービス&lt;/h3&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;サービス名&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;firewalld.service&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ファイヤーウォールサービス&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;crond.service&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;スケジュール処理サービス&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;cups.service&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;印刷サービス&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;postfix.service&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Postfix（メール）サービス&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;rsyslog.service&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;システムログサービス&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;sshd.service&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;SSHサーバー&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;httpd.service&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Webサーバー&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# postfixサービスの状態を確認
+$ systemctl status postfix.service
+● postfix.service - Postfix Mail Transport Agent
+   Loaded: loaded (/usr/lib/systemd/system/postfix.service; enabled; vendor preset: disabled)
+   Active: active (running) since 金 2016-09-09 16:17:13 JST; 1h 12min ago
+...
+...
+
+# postfixサービスを停止
+sudo systemctl stop postfix.service
+[sudo] password for centuser:
+
+# 確認
+systemctl status postfix.service
+● postfix.service - Postfix Mail Transport Agent
+   Loaded: loaded (/usr/lib/systemd/system/postfix.service; enabled; vendor preset: disabled)
+   Active: inactive (dead) since 金 2016-09-09 17:31:09 JST; 17s ago
+...
+
+# 開始
+# postfixサービスを停止
+sudo systemctl start postfix.service
+[sudo] password for centuser:
+
+# 確認
+systemctl status postfix.service
+● postfix.service - Postfix Mail Transport Agent
+   Loaded: loaded (/usr/lib/systemd/system/postfix.service; enabled; vendor preset: disabled)
+   Active: active (running) since 金 2016-09-09 17:32:26 JST; 33s ago
+...
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Linuxでシステムの状態を確認する方法（uptime・df・free・ps）</title>
+      <link>http://mzgkworks.com/post/linux-check-system-status/</link>
+      <pubDate>Fri, 09 Sep 2016 17:06:23 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-check-system-status/</guid>
+      <description>
+
+&lt;h2 id=&#34;システム負荷の確認&#34;&gt;システム負荷の確認&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;uptime&lt;/code&gt; コマンドを使用して、システム負荷を確認することができる。&lt;br /&gt;
+「load average:」部分が１分、５分、１５分の平均負荷を表す。&lt;br /&gt;
+この数値がCPU数（コア数）以下であれば、CPU処理待ちなく特に問題ない状態。&lt;br /&gt;
+オーバーが一時的ではなく継続しているようなら、処理見直し or スケールアップを検討。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ uptime
+# 現在時刻・稼働時間・ログインユーザー数・１分、５分、１５分の平均負荷
+ 16:19:01 up 2 min,  1 user,  load average: 0.09, 0.08, 0.04
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ディスクの使用状況&#34;&gt;ディスクの使用状況&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;$ df -h&lt;/code&gt; コマンドを使用して、ディスクの使用状況を確認することができる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# -h : サイズを見やすくしてくれる
+# tmpfs : この文字列がつくものは仮想ファイルシステムなので無視してよい
+$ df -h
+ファイルシス                            サイズ  使用  残り 使用% マウント位置
+/dev/mapper/centos_xxx-root    50G  1.4G   49G    3% /  # ← /ディレクトリ
+devtmpfs                                  486M     0  486M    0% /dev
+tmpfs                                     497M     0  497M    0% /dev/shm
+tmpfs                                     497M  6.6M  490M    2% /run
+tmpfs                                     497M     0  497M    0% /sys/fs/cgroup
+/dev/vda1                                 497M  126M  371M   26% /boot
+/dev/mapper/centos_xxx-home    48G   33M   48G    1% /home  # ← /homeディレクトリ
+tmpfs                                     100M     0  100M    0% /run/user/1000
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;メモリとスワップの確認&#34;&gt;メモリとスワップの確認&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;$ free -h&lt;/code&gt; コマンドを使用して、メモリとスワップの使用状況が確認できる。&lt;br /&gt;
+スワップが常態で使われているような場合、メモリが不足していると考えられる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ free -h
+              total        used        free      shared  buff/cache   available
+Mem:           992M         85M        786M        6.5M        121M        777M
+Swap:          2.0G          0B        2.0G
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;項目&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;total&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;合計&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;used&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;利用中&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;free&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;未使用&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;shared&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;仮想的な共有メモリ&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;buff/cache&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;バッファ及びキャッシュ&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;available&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;アプリケーション起動時にスワップなしで使えるメモリ&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;メモリとディスクのアクセス速度の差を小さくするための仕組みとして、バッファとキャッシュがある。&lt;/p&gt;
+
+&lt;h3 id=&#34;バッファ&#34;&gt;バッファ&lt;/h3&gt;
+
+&lt;p&gt;ディスクへデータを書き込む際に、いったんメモリ上のバッファ領域に書き込んだ時点で書き込み完了とし、後からバックグランドで実際にディスクへ書き込みを行う。&lt;/p&gt;
+
+&lt;h3 id=&#34;キャッシュ&#34;&gt;キャッシュ&lt;/h3&gt;
+
+&lt;p&gt;ディスクからいったん読み出したデータをメモリ上のキャッシュ領域に残しておき、同じデータが再度アクセスされた場合はメモリ上のデータを利用する。&lt;/p&gt;
+
+&lt;h2 id=&#34;実行中のプロセスを確認&#34;&gt;実行中のプロセスを確認&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;$ ps aux&lt;/code&gt; コマンドで現在実行中のプログラム（プロセス）の確認ができる。&lt;br /&gt;
+&lt;code&gt;| less&lt;/code&gt; コマンドへパイプしたり、&lt;code&gt;| grep 検索名&lt;/code&gt; コマンドへパイプして確認する。&lt;br /&gt;
+&lt;strong&gt;オプションには「-」をつけない&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# sshdを含むプロセスを表示する
+# ユーザー・プロセスID・CPU占有率・メモリ占有率・仮想メモリ使用サイズ・物理メモリ使用サイズ
+# 端末・状態・開始・稼働時間・コマンド
+$ ps aux | grep sshd
+root      1268  0.0  0.3  82560  3600 ?        Ss   16:17   0:00 /usr/sbin/sshd -D
+root      2408  0.0  0.4 140788  5004 ?        Ss   16:17   0:00 sshd: centuser [priv]
+centuser  2412  0.0  0.2 140788  2148 ?        S    16:17   0:00 sshd: centuser@pts/0
+centuser  2446  0.0  0.0 112668   980 pts/0    S+   16:46   0:00 grep --color=auto sshd
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;プロセスの操作&#34;&gt;プロセスの操作&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;$ kill&lt;/code&gt; コマンドで、不要なプロセスであったりエラーで終了しないプロセスを停止することができる。&lt;br /&gt;
+TEAMを送ってもプロセスが反応しない場合は、KILLシグナルを送る。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;シグナルID&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;シグナル名&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;動作&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;9&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;KILL&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;強制終了&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;15&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;TERM&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;終了&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;18&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;CONT&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;再開&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;19&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;STOP&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;一時停止&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# kill シグナルID プロセスID
+$ kill -15 2412
+
+# kill -s  シグナル名 プロセスID
+$ kill -s KILL 2412
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Linuxのパッケージ管理システム（YUM）</title>
+      <link>http://mzgkworks.com/post/linux-package-management-yum/</link>
+      <pubDate>Fri, 09 Sep 2016 15:51:31 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-package-management-yum/</guid>
+      <description>
+
+&lt;h2 id=&#34;パッケージ&#34;&gt;パッケージ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Linuxでは「パッケージ」という単位でソフトウェアを管理している&lt;/li&gt;
+&lt;li&gt;実行プログラム・設定ファイル・ドキュメントなどが格納されている&lt;/li&gt;
+&lt;li&gt;形式はディストリビューションによって複数存在するが、互換性はない
+
+&lt;ul&gt;
+&lt;li&gt;RPM : Red Hat系（RHEL、CentOS、Fedora、openSUSEなど）&lt;/li&gt;
+&lt;li&gt;deb : Debian系（Debian GNU/Linux、Ubuntuなど）&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;パッケージ間で依存関係がある&lt;/li&gt;
+&lt;li&gt;手動で依存関係を管理するのは大変なので、通常は「パッケージ管理システム」を使う
+
+&lt;ul&gt;
+&lt;li&gt;RPM系 : YUM&lt;/li&gt;
+&lt;li&gt;deb系 : APT&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;yum&#34;&gt;YUM&lt;/h2&gt;
+
+&lt;p&gt;CentOSのRPMパッケージを管理するパッケージ管理システム。&lt;br /&gt;
+主な機能としては&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;面倒な依存関係等を制御&lt;/li&gt;
+&lt;li&gt;パッケージをインターネット上で検索&lt;/li&gt;
+&lt;li&gt;必要なパッケージをインターネット上から自動でダウンロード&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;yumコマンド&#34;&gt;yumコマンド&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ sudo yum サブコマンド パッケージ名&lt;/code&gt;&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;サブコマンド&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;update&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;システム全体をアップデートする&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;install パッケージ名&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;指定したパッケージをインストールする&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;remove パッケージ名&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;指定したパッケージをアンインストールする&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;update パッケージ名&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;指定パッケージをアップデートする&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;list&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;パッケージを一覧表示する（未インストールも含む）&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;info パッケージ名&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;指定したパッケージの情報を表示する&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;search &amp;ldquo;キーワード&amp;rdquo;&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;指定したキーワードでパッケージを検索する&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&#34;システムの自動アップデート&#34;&gt;システムの自動アップデート&lt;/h2&gt;
+
+&lt;p&gt;yumコマンドを使ったアップデートを自動で行う設定。&lt;br /&gt;
+「yum-cron」というパッケージを使用する。&lt;/p&gt;
+
+&lt;h3 id=&#34;インストール&#34;&gt;インストール&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo yum install yum-cron
+[sudo] password for centuser:
+...
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;設定&#34;&gt;設定&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;/etc/yum/yun-cron.conf&lt;/code&gt; ファイルの編集を行う。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;自動更新する内容
+
+&lt;ul&gt;
+&lt;li&gt;全部・セキュリティーのみなど&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;自動更新するか
+
+&lt;ul&gt;
+&lt;li&gt;する・しない&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;[commands]
+#  What kind of update to use:
+# default                            = yum upgrade
+# security                           = yum --security upgrade
+# security-severity:Critical         = yum --sec-severity=Critical upgrade
+# minimal                            = yum --bugfix update-minimal
+# minimal-security                   = yum --security update-minimal
+# minimal-security-severity:Critical =  --sec-severity=Critical update-minimal
+update_cmd = default  # ← 範囲を指定（default 〜 minimal-security-severity:Critical）
+
+...
+...
+
+# Whether updates should be applied when they are available.  Note
+# that download_updates must also be yes for the update to be applied.
+apply_updates = no    # ← yes / no : するしない
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;実行と次回自動起動&#34;&gt;実行と次回自動起動&lt;/h3&gt;
+
+&lt;p&gt;yum-cronサービスの起動と、次回からのシステム起動時に自動起動するように設定する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# yum-cron.serviceの起動
+$ sudo systemctl start yum-cron.service
+
+# システム起動時の自動起動設定
+$ sudo systemctl enable yum-cron.service
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Linuxでrootユーザーへの切替えやroot権限で実行する方法</title>
+      <link>http://mzgkworks.com/post/linux-su-sudo/</link>
+      <pubDate>Fri, 09 Sep 2016 14:39:27 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-su-sudo/</guid>
+      <description>
+
+&lt;h2 id=&#34;rootユーザーに切り替える&#34;&gt;rootユーザーに切り替える&lt;/h2&gt;
+
+&lt;p&gt;ログイン中のユーザーをrootユーザーに切り替える。&lt;br /&gt;
+管理者のパスワードが必要。&lt;br /&gt;
+&lt;strong&gt;オプション「-」をつけると、カレントディレクトリもrootユーザーのホームディレクトリになる。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 一般ユーザー
+[centuser@centos7 ~] $ pwd
+/home/centuser
+
+# rootユーザーに切り替え
+[centuser@centos7 ~] $ su -   # オプション「-」つき
+Password: # 管理者のパスワード
+[root@centos7 ~] #
+[root@centos7 ~] # pwd
+/root     # rootユーザーのホームディレクトリに移動している
+
+# 元のユーザーに戻る
+[root@centos7 ~] # exit
+logout
+[centuser@centos7 ~] $
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;管理者権限でコマンドを実行する&#34;&gt;管理者権限でコマンドを実行する&lt;/h2&gt;
+
+&lt;p&gt;ユーザーの切り替えを行わずに、コマンド実行時のみ管理者権限で実行する。&lt;br /&gt;
+管理者のパスワードは不要。&lt;br /&gt;
+あらかじめ設定が必要。&lt;/p&gt;
+
+&lt;h3 id=&#34;設定&#34;&gt;設定&lt;/h3&gt;
+
+&lt;p&gt;設定ファイル「/etc/sudoers」にユーザーを追加する。&lt;br /&gt;
+rootユーザーで実行する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ visudo
+...
+...
+## Read drop-in files from /etc/sudoers.d (the # here does not mean a comment)
+#includedir /etc/sudoers.d
+
+# 以下を追加する（centuser : sudoを許可したいユーザー）
+# ユーザー名 ホスト名=(実行ユーザー名) 許可するコマンド
+centuser ALL=(ALL) ALL
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;sudo&#34;&gt;sudo&lt;/h3&gt;
+
+&lt;p&gt;実行したいコマンドの前につけて使用する。&lt;br /&gt;
+求められるパスワードは、sudoコマンドを実行したユーザーのコマンド。&lt;br /&gt;
+パスワードが認証されると「５分間」は、再入力が不要となる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 一般ユーザーでは使用できなかったvisudoコマンドを実行する
+$ sudo visudo
+[sudo] password for centuser: # 実行したユーザーのパスワード
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CentOS 7でのネットワーク設定・確認方法</title>
+      <link>http://mzgkworks.com/post/linux-centos7-network-setting/</link>
+      <pubDate>Thu, 08 Sep 2016 18:45:54 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-centos7-network-setting/</guid>
+      <description>
+
+&lt;h2 id=&#34;ネットワークインターフェース&#34;&gt;ネットワークインターフェース&lt;/h2&gt;
+
+&lt;p&gt;CentOS 7では、ネットワークの処理を「NetworkManager」というサービスが担っている。&lt;br /&gt;
+NetworkManagerは &lt;code&gt;nmcli&lt;/code&gt;コマンドで管理をする。&lt;/p&gt;
+
+&lt;h3 id=&#34;ネットワークインターフェースの一覧表示&#34;&gt;ネットワークインターフェースの一覧表示&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ nmcli device&lt;/code&gt;で確認できる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ nmcli device
+デバイス  タイプ    状態      接続
+eth0      ethernet  接続済み  System eth0
+eth1      ethernet  切断済み  --
+eth2      ethernet  切断済み  --
+lo        loopback  管理無し  --
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;詳細表示&#34;&gt;詳細表示&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ nmcli device show デバイス&lt;/code&gt;で確認できる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# eth0を詳細表示
+$ nmcli device show eth0
+GENERAL.デバイス:                        eth0
+GENERAL.タイプ:                         ethernet
+GENERAL.ハードウェアアドレス:               xx:xx:xx:xx:xx:xx
+GENERAL.MTU:                          1500
+GENERAL.状態:                          100 (接続済み)
+GENERAL.接続:                          System eth0
+GENERAL.CON パス:                      /xxx/NetworkManager/xxx
+WIRED-PROPERTIES.キャリア:              オン
+IP4.アドレス[1]:                        xxx.xx.xx.xxx/23 #IPアドレス
+IP4.ゲートウェイ:                        xxx.xx.xx.x #デフォルトゲートウェイ
+IP4.DNS[1]:                           xxx.xx.xx.xxx #DNSサーバー１
+IP4.DNS[2]:                           xxx.xx.xx.xxx #DNSサーバー２
+IP6.アドレス[1]:                        xx:xx:xx:xx:xx:xx/64
+IP6.アドレス[2]:                        xx:xx:xx:xx:xx:xx/64
+IP6.ゲートウェイ:                        xx::xx
+IP6.DNS[1]:                           xx:xx:::xx
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;他には&#34;&gt;他には&lt;/h3&gt;
+
+&lt;p&gt;以下でもネットワークインターフェースの確認が可能。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;$ ifconfig&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;$ ip addr&lt;/code&gt;（CentOS 7ではこちらが推奨）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;ホスト名の確認-変更&#34;&gt;ホスト名の確認・変更&lt;/h2&gt;
+
+&lt;p&gt;ホスト名の確認と変更をする方法。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ファイル : /etc/sysconfig/network&lt;/li&gt;
+&lt;li&gt;ファイル（CnetOS 7） : /etc/hostname&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 確認
+$ hostname
+centos7.sample.com
+
+# 変更（root権限が必要）
+$ nmcli general hostname 変更後のホスト名
+#または
+$ hostnamectl set-hostname 変更後のホスト名
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ipアドレスの設定&#34;&gt;IPアドレスの設定&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;VPSではしないこと。&lt;/strong&gt;&lt;br /&gt;
+&lt;code&gt;# nmcli connection modify &amp;quot;ネットワークインターフェース名&amp;quot; ipv4.address IPアドレス/サブネットマスクビット数&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 固定IP（root権限）
+$ nmcli connection modify &amp;quot;System eth0&amp;quot; ipv4.address 192.168.0.10/24
+
+# DHCP（root権限）
+$ nmcli c modify &amp;quot;System eth0&amp;quot; ipv4.address auto
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;デフォルトdnsサーバーの設定&#34;&gt;デフォルトDNSサーバーの設定&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;# nmcli connection modify &amp;quot;ネットワークインターフェース名&amp;quot; ipv4.dns IPアドレス&lt;/code&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ファイル : /etc/resolv.conf&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# Google提供のDNSサーバー8.8.8.8と8.8.4.4に変更（root権限）
+$ nmcli connection modify &amp;quot;System eth0&amp;quot; ipv4.dns &amp;quot;8.8.8.8 8.8.4.4&amp;quot;
+
+# 設定を反映
+$ systemctl restart NetworkManager
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>パーミッションの操作方法（記号と数値）</title>
+      <link>http://mzgkworks.com/post/linux-permission-operation/</link>
+      <pubDate>Wed, 07 Sep 2016 19:35:21 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-permission-operation/</guid>
+      <description>
+
+&lt;h2 id=&#34;所有者と所有グループ&#34;&gt;所有者と所有グループ&lt;/h2&gt;
+
+&lt;p&gt;基本的にファイルやディレクトリを作成したユーザーが所有者となる。&lt;br /&gt;
+所有グループは、ユーザーを作成した際に同じ名前で作成される。&lt;/p&gt;
+
+&lt;h3 id=&#34;確認&#34;&gt;確認&lt;/h3&gt;
+
+&lt;p&gt;ファイルやディレクトリの所有者を確認する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# ファイルモード・リンク数・所有者・所有グループ・サイズ・最終更新日・名前
+$ ls -l
+-rw-rw-r--. 1 couser couser 0  9月  7 18:40 A.txt
+drwxrwxr-x. 2 couser couser 6  9月  7 18:40 Sample
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;所有者の変更&#34;&gt;所有者の変更&lt;/h3&gt;
+
+&lt;p&gt;rootユーザーのみ変更操作が行える。&lt;br /&gt;
+ディレクトリの場合は、&lt;code&gt;-R&lt;/code&gt;オプションを指定する。&lt;br /&gt;
+指定しない場合、ディレクトリ配下には変更が適用されない。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# ファイルの所有者をtesterAに変更
+$ chown testerA A.txt
+
+# ファイルの所有者とグループ（tester）を変更
+$ chown testerA:tester A.txt
+
+# グループだけ変更（所有者を省略すればよい）
+$ chown :tester A.txt
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;アクセス権&#34;&gt;アクセス権&lt;/h2&gt;
+
+&lt;p&gt;「読み取り : r」「書き込み : w」「実行 : x」の３種類。&lt;br /&gt;
+「所有者」「所有グループ」「その他」それぞれに対して設定できる。&lt;br /&gt;
+&lt;code&gt;$ ls -l&lt;/code&gt;で表示されたファイルモード部分で確認可能。&lt;br /&gt;
+並び順は、「所有者rwx」「所有グループrwx」「その他rwx」。&lt;/p&gt;
+
+&lt;h3 id=&#34;アクセス権-1&#34;&gt;アクセス権&lt;/h3&gt;
+
+&lt;p&gt;アルファベットと数値で表す。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;アクセス権&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;アルファベット&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;数値&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;読み取り&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;r&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;4&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;書き込み&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;w&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;実行&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;x&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&#34;ファイルのアクセス権&#34;&gt;ファイルのアクセス権&lt;/h3&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;アクセス権&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;読み取り&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ファイルの内容をcat等で読むことができる&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;書き込み&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ファイルの内容を変更できる&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;実行&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ファイルを実行できる&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&#34;ディレクトリのアクセス権&#34;&gt;ディレクトリのアクセス権&lt;/h3&gt;
+
+&lt;p&gt;基本的には実行権は付与するのが普通なので、「rwx」「r-x」「&amp;ndash;x」のどれか。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;アクセス権&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;読み取り&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ファイルの一覧を表示できる&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;書き込み&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ファイルの作成や削除ができる&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;実行&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ディレクトリ内のファイルにアクセスできる&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&#34;アクセス権の変更&#34;&gt;アクセス権の変更&lt;/h2&gt;
+
+&lt;p&gt;変更ができるのは、所有者とrootユーザーのみ。&lt;br /&gt;
+記号を使うか、数値で指定することができる。&lt;br /&gt;
+ディレクトリの場合は&lt;code&gt;-R&lt;/code&gt;を指定することで、配下まで適用される。&lt;/p&gt;
+
+&lt;h3 id=&#34;アクセス権記号&#34;&gt;アクセス権記号&lt;/h3&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;記号&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;操作対象&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;u&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;所有者&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;操作対象&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;g&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;所有グループ&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;操作対象&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;o&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;その他&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;操作対象&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;a&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;全ユーザー&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;操作&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;+&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;権限追加&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;操作&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;-&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;権限削除&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;操作&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;=&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;権限指定&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;アクセス権&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;r&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;読み取り&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;アクセス権&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;w&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;書き込み&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;アクセス権&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;x&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;実行&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&#34;記号方式&#34;&gt;記号方式&lt;/h3&gt;
+
+&lt;p&gt;現在のアクセス権を基準に、権限の追加や削除をする場合に有効。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 所有グループとその他に書き込み権を追加
+$ chmod uo+w sample.txt
+
+# その他から書き込み権を削除
+$ chmod o-w sample.txt
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;数値方式&#34;&gt;数値方式&lt;/h3&gt;
+
+&lt;p&gt;元のアクセス権がどうであっても、指定した数値のアクセス権に変更される。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 所有者:rw- グループ:r-- その他:r--
+$ chmod 644 sample.txt
+
+# 所有者:rwx グループ:r-x その他:r-x
+$ chmod 755 sample.txt
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Linuxのディレクトリとパスについてのメモ</title>
+      <link>http://mzgkworks.com/post/linux-directory-memo/</link>
+      <pubDate>Wed, 07 Sep 2016 17:02:18 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-directory-memo/</guid>
+      <description>
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;CentOS 7&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;ディレクトリ&#34;&gt;ディレクトリ&lt;/h2&gt;
+
+&lt;p&gt;Linuxの主なディレクトリ。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;ディレクトリ名&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;使われ方&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;/&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ルートディレクトリ&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;/bin&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;一般ユーザーが利用できるLinuxの基本コマンド&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;/boot&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Linuxカーネルなどの起動に必要なファイル類&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;/dev&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;デバイスファイル&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;/etc&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;システム全体の設定ファイルなど&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;/home&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;一般ユーザーのホームディレクトリを格納&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;/lib&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;共有ライブラリーなど&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;/lib64&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;/media&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;外付けHDDやUSBメモリなどをマウント&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;/mnt&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;一時的にファイルシステム等をマウント&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;/opt&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;追加パッケージや追加プログラムがインストールされる&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;/proc&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;カーネルやプロセスなどのシステム情報&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;/root&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;rootユーザーのホームディレクトリ&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;/run&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;/sbin&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;システム管理者が利用する基本コマンド&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;/srv&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;/sys&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;プロセスに関係のないシステム情報&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;/tmp&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;一時的に使用するファイル&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;/usr&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;一般ユーザーが使用するプログラムの実行ファイルや設定ファイル&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;/var&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ログファイルなどの頻繁に更新されるファイル&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&#34;絶対パス&#34;&gt;絶対パス&lt;/h2&gt;
+
+&lt;p&gt;ルートディレクトリを起点として、ファイルやディレクトリのパスを表す方法。&lt;br /&gt;
+ファイルやディレクトリの場所は一意になる。&lt;/p&gt;
+
+&lt;h2 id=&#34;相対パス&#34;&gt;相対パス&lt;/h2&gt;
+
+&lt;p&gt;カレントディレクトリを起点として、ファイルやディレクトリのパスを表す方法。&lt;br /&gt;
+ファイルやディレクトリの場所は一意にならない。&lt;/p&gt;
+
+&lt;h2 id=&#34;相対パスの記述で使用可能な記号&#34;&gt;相対パスの記述で使用可能な記号&lt;/h2&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;記号&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;.&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;カレントディレクトリ（省略可）&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;..&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;１つ上の親ディレクトリ&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;~&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;ホームディレクトリ&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;例 :&lt;br /&gt;
+カレントディレクトリ内のファイル → ./ファイル名 or ファイル名のみ&lt;br /&gt;
+カレントディレクトリと同レベルのディレクトリ → ../ディレクトリ名&lt;br /&gt;
+カレントディレクトリの親ディレクトリ → ..&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CentOS 7でSSHのポート番号を変更する（SELinux・firewalld）</title>
+      <link>http://mzgkworks.com/post/cetos7-ssh-port-change/</link>
+      <pubDate>Mon, 05 Sep 2016 17:26:03 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/cetos7-ssh-port-change/</guid>
+      <description>
+
+&lt;p&gt;CentOS 7でSSHのポート番号を変更する方法のメモ。&lt;br /&gt;
+CentOS 7から、ファイヤウォールの設定が &lt;strong&gt;iptables → firewalld&lt;/strong&gt; に変更となった。&lt;br /&gt;
+SELinuxが有効で、iptables → firewalld（FireWall）での内容。&lt;br /&gt;
+ポート番号は例。&lt;/p&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;さくらVPS&lt;/li&gt;
+&lt;li&gt;CentOS 7&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;ssh設定ファイル&#34;&gt;SSH設定ファイル&lt;/h2&gt;
+
+&lt;p&gt;SSHサーバーの設定ファイル &lt;code&gt;/etc/ssh/sshd_config&lt;/code&gt; を変更する。&lt;br /&gt;
+rootユーザーに切替えて操作（切替え後の$は#に読替え）。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# rootユーザーに切り替え
+$ su -
+
+$ vi /etc/ssh/sshd_config
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;変更場所&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;変更前&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;変更後&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;L17&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;#Port 22&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Port 10055&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;L49&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;#PermitRootLogin yes&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;PermitRootLogin no&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&#34;selinux&#34;&gt;SELinux&lt;/h2&gt;
+
+&lt;p&gt;SELinuxの設定変更コマンドをインストールする。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 存在確認
+$ rpm -q policycoreutils-python
+
+# インストール
+$ yum -y install policycoreutils-python
+
+# SSHポート（10055）の許可
+$ semanage port -a -t ssh_port_t -p tcp 10055
+
+# 確認
+$ semanage port -l | grep ssh
+ssh_port_t                     tcp      10055, 22
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;firewall&#34;&gt;FireWall&lt;/h2&gt;
+
+&lt;p&gt;外部から10055ポートへのアクセスを許可する。&lt;br /&gt;
+ひな形からコピーして編集を行う。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# コピー
+$ cp /usr/lib/firewalld/services/ssh.xml /etc/firewalld/services/
+
+# viで編集
+$ vi /etc/firewalld/services/ssh.xml
+
+&amp;lt;port protocol=&amp;quot;tcp&amp;quot; port=&amp;quot;22&amp;quot;/&amp;gt;
+↓
+&amp;lt;port protocol=&amp;quot;tcp&amp;quot; port=&amp;quot;10055&amp;quot;/&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;反映&#34;&gt;反映&lt;/h2&gt;
+
+&lt;p&gt;FireWallとSELinuxに変更を反映する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# FireWall
+$ firewall-cmd --reload
+
+# SSHサーバー再起動
+$ systemctl restart sshd.service
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;クライアントからの接続&#34;&gt;クライアントからの接続&lt;/h2&gt;
+
+&lt;p&gt;MacのTerminal.appから接続する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ ssh -p 10055 ユーザー名@IPアドレス
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以上&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ja-JP">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="keywords" content="Program,Mac,iOS,Web,AWS,Hugo,Books">
+    
+        <meta name="description" content=" プログラマーの備忘録。">
+    
+        <meta name="description" content="ApacheにBasic認証を設定する方法。">
+    
+
+    <base href="http://mzgkworks.com">
+    
+    <link rel="stylesheet" href="./css/masamune.css">
+
+    <title>
+        
+        ApacheにBasic認証を設定する
+         | mzgkworks.com
+    </title>
+
+    <meta name="generator" content="Hugo 0.17" />
+</head>
+
+<body>
+    <div class="HeaderContainer">
+        <header class="Header">
+            <div class="Header__head">
+                <h1 class="Header__title"><a href="./index.html">mzgkworks.com</a></h1>
+                <p class="Header__subTitle">Stack the little bets.</p>
+            </div>
+            <nav class="Header__body">
+                <ul class="Navi">
+                    <li class="Navi__item"><a href="./about/about" class="fa fa-smile-o"></a></li>
+                    <li class="Navi__item"><a href="https://github.com/mzgk" target="_blank" rel="noopener noreferrer" class="fa fa-github"></a></li>
+                    <li class="Navi__item"><a href="https://twitter.com/mzgkworks" target="_blank" rel="noopener noreferrer" class="fa fa-twitter"></a></li>
+                    <li class="Navi__item"><a href="#" class="fa fa-rss"></a></li>
+                </ul>
+            </nav>
+        </header>
+    </div>
+
+
+    <div class="ContentsContainer">
+        <main class="MainContainer">
+
+            <article class="PostItem">
+                <div class="PostItem__head">
+                    <div class="PostItem__title">
+                        <h1>
+                            ApacheにBasic認証を設定する
+                            
+                        </h1>
+                    </div>
+                    <div class="PostItem__meta">
+                        <time datetime="2016-09-09">
+                            2016.09.12
+                        </time>
+                        &nbsp;&nbsp;
+                        
+                        <span>[<a href="./categories/setting">Setting</a>]</span>
+                        
+                        
+                        &nbsp;&nbsp;
+                        <span>#<a href="./tags/apache">Apache</a></span>
+                        
+                    </div>
+                </div>
+
+                <div class="PostItem__body">
+                    
+
+<p>CentOS7・Apacheで基本認証（Basic認証）を設定する方法。<br />
+基本認証は、あらかじめApacheにユーザー名とパスワードを登録しておき、特定のディレクトリ以下にアクセスがあれば認証を求めるという仕組み。</p>
+
+<h2 id="環境">環境</h2>
+
+<ul>
+<li>Apache : Apache/2.4.6 (CentOS)</li>
+</ul>
+
+<h2 id="基本認証とダイジェスト認証">基本認証とダイジェスト認証</h2>
+
+<p>ユーザー名・パスワードの入力を戻る方法としては、以下の２種類が存在する。</p>
+
+<ul>
+<li>基本認証 : ユーザー・パスワードのデータを平文で送信</li>
+<li>ダイジェスト認証 : MD5で暗号化して送信</li>
+<li>安全性 : ダイジェスト認証　＞　基本認証</li>
+</ul>
+
+<h2 id="基本認証の追加">基本認証の追加</h2>
+
+<h3 id="登録ファイルの作成">登録ファイルの作成</h3>
+
+<p><code>htpasswd -c ファイル名 ユーザー</code>コマンドで、ユーザーとパスワードを登録するファイルを作成する。</p>
+
+<pre><code class="language-@bash"># 登録するファイルを作成する
+$ sudo htpasswd -c /etc/httpd/conf.d/htpasswd webuser
+New Password:
+...
+Adding password for user webuser
+</code></pre>
+
+<h3 id="権限変更">権限変更</h3>
+
+<p>作成された登録ファイルの権限をapacheユーザー・グループのみアクセス可能なように変更する。</p>
+
+<pre><code class="language-@bash"># 所有権
+$ sudo chown apache:apache /etc/httpd/conf.d/htpasswd
+
+# アクセス権
+$ sudo chmod 600 /etc/httpd/conf.d/htpasswd
+</code></pre>
+
+<h3 id="認証ディレクトリの設定">認証ディレクトリの設定</h3>
+
+<p>基本認証を適用するディレクトリの設定を行う。<br />
+設定を記述するファイルのファイル名は任意。</p>
+
+<pre><code class="language-@bash">$ sudo vi /etc/httpd/conf.d/auth.conf
+
+# 以下を追加（適用するディレクトリがドキュメントルートの場合）
+&lt;Directory &quot;/var/www/http&quot;&gt;
+  AuthType Basic
+  AuthName &quot;Private Aera&quot;
+  AuthUserFile /etc/httpd/conf.d/htpasswd
+  Require valid-user
+&lt;/Directory&gt;
+</code></pre>
+
+<p>設定内容</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">ディレクティブ</th>
+<th align="left">説明</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">AuthType</td>
+<td align="left">BASICを指定すると基本認証</td>
+</tr>
+
+<tr>
+<td align="left">AuthName</td>
+<td align="left">認証名（認証ウィンドウの表示）</td>
+</tr>
+
+<tr>
+<td align="left">AuthUserFile</td>
+<td align="left">パスワードファイル名</td>
+</tr>
+
+<tr>
+<td align="left">Require</td>
+<td align="left">認証ユーザー（valid-user : ファイルに書かれた全ユーザー）</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="apache設定ファイルの再読み込み">Apache設定ファイルの再読み込み</h3>
+
+<p>Apacheをリロードして、設定ファイルを再読み込みさせる。</p>
+
+<pre><code class="language-@bash">$ sudo systemctl reload hhtpd.service
+</code></pre>
+
+<h3 id="urlアクセス時">URLアクセス時</h3>
+
+<p>これで、アクセス時に「ユーザー」「パスワード」を求めるダイアログが表示される。<br />
+認証が成功した場合に、アクセスしたページが表示される。</p>
+
+                </div>
+            </article>
+
+            <nav class="Pagenation">
+                <div class="Pagenation__older">
+                    
+                    <a href="http://mzgkworks.com/post/centos7-apache-install/">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        CentOS 7へのWebサーバー（Apache）のインストールと基本設定
+                    </a>
+                    
+                </div>
+                <div class="Pagenation__newer">
+                    
+                    <a href="http://mzgkworks.com/post/mac-symbolic-link/">
+                        Macでシンボリックリンクを活用する : ln -s
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </a>
+                    
+                </div>
+            </nav>
+
+            <div class="Disqus">
+                
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'mzgkworks-com';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+            </div>
+        </main>
+
+        <aside class="SubContainer">
+    <h1 class="AreaTitle">Products</h1>
+    <div class="SubItem">
+        <a href="./products/products">
+            <i class="fa fa-apple fa-2x" aria-hidden="true"></i>
+        </a>
+    </div>
+
+    <h1 class="AreaTitle">Categories</h1>
+    <div class="SubItem">
+        <ul>
+            
+            <li>
+                <a href="./categories/knowledge/">
+                    knowledge : 6
+                </a>
+            </li>
+            
+            <li>
+                <a href="./categories/setting/">
+                    setting : 10
+                </a>
+            </li>
+            
+            <li>
+                <a href="./categories/usage/">
+                    usage : 14
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+
+    <h1 class="AreaTitle">Tags</h1>
+    <div class="SubItem">
+        <ul>
+            
+            <li>
+                <a href="./tags/apache/">
+                    apache : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/atom/">
+                    atom : 1
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/bash/">
+                    bash : 3
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/blog/">
+                    blog : 5
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/css/">
+                    css : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/http/">
+                    http : 1
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/hugo/">
+                    hugo : 5
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/linux/">
+                    linux : 14
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/mac/">
+                    mac : 4
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/network/">
+                    network : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/sass/">
+                    sass : 1
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</aside>
+
+
+    </div>
+
+    <div class="FooterContainer">
+    <footer class="Footer">
+        <img  class="Footer__head" src="./images/profile.png" alt="profile-image" />
+        <div class="Footer__body">
+            <i class="fa fa-copyright" aria-hidden="true"></i>
+            <span>2016</span>
+            <span><a href="./about/about">mzgk</a></span>
+        </div>
+    </footer>
+</div>
+
+<script src="./js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-82194549-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+</body>
+</html>
+

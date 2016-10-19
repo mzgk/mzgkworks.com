@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="ja-JP">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="keywords" content="Program,Mac,iOS,Web,AWS,Hugo,Books">
+    
+        <meta name="description" content=" プログラマーの備忘録。">
+    
+        <meta name="description" content="CSS1〜CSS3までのセレクタのまとめ。">
+    
+
+    <base href="http://mzgkworks.com">
+    
+    <link rel="stylesheet" href="./css/masamune.css">
+
+    <title>
+        
+        CSS1〜CSS3までのセレクタのまとめ
+         | mzgkworks.com
+    </title>
+
+    <meta name="generator" content="Hugo 0.17" />
+</head>
+
+<body>
+    <div class="HeaderContainer">
+        <header class="Header">
+            <div class="Header__head">
+                <h1 class="Header__title"><a href="./index.html">mzgkworks.com</a></h1>
+                <p class="Header__subTitle">Stack the little bets.</p>
+            </div>
+            <nav class="Header__body">
+                <ul class="Navi">
+                    <li class="Navi__item"><a href="./about/about" class="fa fa-smile-o"></a></li>
+                    <li class="Navi__item"><a href="https://github.com/mzgk" target="_blank" rel="noopener noreferrer" class="fa fa-github"></a></li>
+                    <li class="Navi__item"><a href="https://twitter.com/mzgkworks" target="_blank" rel="noopener noreferrer" class="fa fa-twitter"></a></li>
+                    <li class="Navi__item"><a href="#" class="fa fa-rss"></a></li>
+                </ul>
+            </nav>
+        </header>
+    </div>
+
+
+    <div class="ContentsContainer">
+        <main class="MainContainer">
+
+            <article class="PostItem">
+                <div class="PostItem__head">
+                    <div class="PostItem__title">
+                        <h1>
+                            CSS1〜CSS3までのセレクタのまとめ
+                            
+                        </h1>
+                    </div>
+                    <div class="PostItem__meta">
+                        <time datetime="2016-09-09">
+                            2016.09.21
+                        </time>
+                        &nbsp;&nbsp;
+                        
+                        <span>[<a href="./categories/knowledge">Knowledge</a>]</span>
+                        
+                        
+                        &nbsp;&nbsp;
+                        <span>#<a href="./tags/css">CSS</a></span>
+                        
+                    </div>
+                </div>
+
+                <div class="PostItem__body">
+                    
+
+<h2 id="全称-タイプ-id-クラスセレクタ">全称・タイプ・ID・クラスセレクタ</h2>
+
+<table>
+<thead>
+<tr>
+<th align="left">パターン</th>
+<th align="left">セレクタ名</th>
+<th align="left">適用範囲</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">*</td>
+<td align="left">全称</td>
+<td align="left">すべての要素</td>
+</tr>
+
+<tr>
+<td align="left">E</td>
+<td align="left">タイプ</td>
+<td align="left">E要素</td>
+</tr>
+
+<tr>
+<td align="left">例 E, F</td>
+<td align="left"></td>
+<td align="left">EとFの要素</td>
+</tr>
+
+<tr>
+<td align="left">#id_name</td>
+<td align="left">ID</td>
+<td align="left">id_nameというIDを持つすべての要素</td>
+</tr>
+
+<tr>
+<td align="left">例 E#id_name</td>
+<td align="left"></td>
+<td align="left">id_nameというIDを持つE要素</td>
+</tr>
+
+<tr>
+<td align="left">.class_name</td>
+<td align="left">クラス</td>
+<td align="left">class_nameというクラスを持つすべての要素</td>
+</tr>
+
+<tr>
+<td align="left">例 E.class_name</td>
+<td align="left"></td>
+<td align="left">class_nameというクラスを持つE要素</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="属性セレクタ">属性セレクタ</h2>
+
+<table>
+<thead>
+<tr>
+<th align="left">パターン</th>
+<th align="left">セレクタ名</th>
+<th align="left">適用範囲</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">E[foo]</td>
+<td align="left">属性</td>
+<td align="left">foo属性を持つE要素</td>
+</tr>
+
+<tr>
+<td align="left">E[foo=&ldquo;bar&rdquo;]</td>
+<td align="left"></td>
+<td align="left">foo属性がbarの値だけを持つE要素</td>
+</tr>
+
+<tr>
+<td align="left">E[foo~=&ldquo;bar&rdquo;]</td>
+<td align="left"></td>
+<td align="left">foo属性がbarの値を持つE要素  ※class=&ldquo;bar baz&rdquo;など</td>
+</tr>
+
+<tr>
+<td align="left">E[foo^=&ldquo;bar&rdquo;]</td>
+<td align="left"></td>
+<td align="left">foo属性の値がbarで始まっているE要素  ※class=&ldquo;barbal&rdquo;など</td>
+</tr>
+
+<tr>
+<td align="left">E[foo$=&ldquo;bar&rdquo;]</td>
+<td align="left"></td>
+<td align="left">foo属性の値がbarで終わっているE要素  ※class=&ldquo;balbar&rdquo;など</td>
+</tr>
+
+<tr>
+<td align="left">E[foo*=&ldquo;bar&rdquo;]</td>
+<td align="left"></td>
+<td align="left">foo属性の値にbarが含まれるE要素  ※class=&ldquo;fobarbaz&rdquo;など</td>
+</tr>
+
+<tr>
+<td align="left">E[foo&#124;=&ldquo;bar&rdquo;]</td>
+<td align="left"></td>
+<td align="left">foo属性の値が、bar または bar-bazのE要素</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="結合子セレクタ">結合子セレクタ</h2>
+
+<table>
+<thead>
+<tr>
+<th align="left">パターン</th>
+<th align="left">セレクタ名</th>
+<th align="left">適用範囲</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">E F</td>
+<td align="left">子孫</td>
+<td align="left">E要素の子孫であるF要素</td>
+</tr>
+
+<tr>
+<td align="left">E *</td>
+<td align="left"></td>
+<td align="left">E要素の子孫すべて</td>
+</tr>
+
+<tr>
+<td align="left">E .class_name</td>
+<td align="left"></td>
+<td align="left">E要素の子孫でclass_nameというクラスを持つ要素</td>
+</tr>
+
+<tr>
+<td align="left">.class_name E</td>
+<td align="left"></td>
+<td align="left">.class_nameを持つ要素の子孫であるE要素</td>
+</tr>
+
+<tr>
+<td align="left">E &gt; F</td>
+<td align="left">子</td>
+<td align="left">E要素の子となるF要素  ※途中他要素の子になっているのは対象外</td>
+</tr>
+
+<tr>
+<td align="left">E + F</td>
+<td align="left">隣接</td>
+<td align="left">E要素に隣接（直後）しているF要素</td>
+</tr>
+
+<tr>
+<td align="left">E ~ F</td>
+<td align="left">間接</td>
+<td align="left">E要素の後ろにある同じ階層のF要素</td>
+</tr>
+
+<tr>
+<td align="left">例 div ~ p</td>
+<td align="left"></td>
+<td align="left">divと同階層でdivより後ろにあるpが適用</td>
+</tr>
+
+<tr>
+<td align="left">例 h2 ~ h2</td>
+<td align="left"></td>
+<td align="left">同階層で２番目のh2から適用</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="構造擬似クラスセレクタ">構造擬似クラスセレクタ</h2>
+
+<table>
+<thead>
+<tr>
+<th align="left">パターン</th>
+<th align="left">セレクタ名</th>
+<th align="left">適用範囲</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">E:first-child</td>
+<td align="left">構造擬似</td>
+<td align="left">最初のE要素（= nth-child(1)） ※最初のEより前の他要素もカウント</td>
+</tr>
+
+<tr>
+<td align="left">E:last-child</td>
+<td align="left"></td>
+<td align="left">最後のE要素（= nth-last-child(1)） ※最後のEより後ろの他要素もカウント</td>
+</tr>
+
+<tr>
+<td align="left">E:nth-child(n)</td>
+<td align="left"></td>
+<td align="left">n番目のE要素  ※途中の他要素もカウント</td>
+</tr>
+
+<tr>
+<td align="left">E:nth-last-child(n)</td>
+<td align="left"></td>
+<td align="left">最後からn番目のE要素  ※途中の他要素もカウント</td>
+</tr>
+
+<tr>
+<td align="left">E:nth-of-type(n)</td>
+<td align="left"></td>
+<td align="left">最初からn番目に表れるE要素  ※途中の他要素はカウントしない</td>
+</tr>
+
+<tr>
+<td align="left">E:nth-last-of-type(n)</td>
+<td align="left"></td>
+<td align="left">最後からn番目に表れるE要素  ※途中の他要素はカウントしない</td>
+</tr>
+
+<tr>
+<td align="left">例 (n) → 2n+1 or odd</td>
+<td align="left"></td>
+<td align="left">奇数番目</td>
+</tr>
+
+<tr>
+<td align="left">例 (n) → 2n or even</td>
+<td align="left"></td>
+<td align="left">偶数番目</td>
+</tr>
+
+<tr>
+<td align="left">例 (n) → 3n</td>
+<td align="left"></td>
+<td align="left">３の倍数番目</td>
+</tr>
+
+<tr>
+<td align="left">例 (n) → 3n+1</td>
+<td align="left"></td>
+<td align="left">１、４、７、１０&hellip;番目</td>
+</tr>
+
+<tr>
+<td align="left">E:first-of-type</td>
+<td align="left"></td>
+<td align="left">最初のE要素  ※他の要素はカウントしない</td>
+</tr>
+
+<tr>
+<td align="left">E:last-of-type</td>
+<td align="left"></td>
+<td align="left">最後のE要素  ※他の要素はカウントしない</td>
+</tr>
+
+<tr>
+<td align="left">E F:only-child</td>
+<td align="left"></td>
+<td align="left">E要素内にF要素１つのみ存在の場合  ※他要素・F複数はダメ</td>
+</tr>
+
+<tr>
+<td align="left">E F:only-of-type</td>
+<td align="left"></td>
+<td align="left">E要素内にF要素が１つのみ存在の場合  ※他要素がいても可</td>
+</tr>
+
+<tr>
+<td align="left">E:empty</td>
+<td align="left"></td>
+<td align="left">E要素内がカラの場合</td>
+</tr>
+
+<tr>
+<td align="left">:root</td>
+<td align="left"></td>
+<td align="left">文書のルート要素（htmlに適用するのと同じ）</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="否定擬似クラスセレクタ">否定擬似クラスセレクタ</h2>
+
+<table>
+<thead>
+<tr>
+<th align="left">パターン</th>
+<th align="left">セレクタ名</th>
+<th align="left">適用範囲</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">E:not(s)</td>
+<td align="left">否定擬似</td>
+<td align="left">sで指定するセレクタに該当しないE要素</td>
+</tr>
+
+<tr>
+<td align="left">例 body *:not(h1)</td>
+<td align="left"></td>
+<td align="left">h1以外すべての要素</td>
+</tr>
+
+<tr>
+<td align="left">例 p:not(.class_name)</td>
+<td align="left"></td>
+<td align="left">class_nameがついているp以外のすべてのp</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="リンク擬似クラスセレクタ">リンク擬似クラスセレクタ</h2>
+
+<table>
+<thead>
+<tr>
+<th align="left">パターン</th>
+<th align="left">セレクタ名</th>
+<th align="left">適用範囲</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">E:link</td>
+<td align="left">リンク擬似</td>
+<td align="left">未訪問のリンク</td>
+</tr>
+
+<tr>
+<td align="left">E:visited</td>
+<td align="left"></td>
+<td align="left">訪問済みのリンク</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="ユーザーアクション擬似クラスセレクタ">ユーザーアクション擬似クラスセレクタ</h2>
+
+<table>
+<thead>
+<tr>
+<th align="left">パターン</th>
+<th align="left">セレクタ名</th>
+<th align="left">適用範囲</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">E:active</td>
+<td align="left">ユーザーアクション</td>
+<td align="left">クリック中の要素</td>
+</tr>
+
+<tr>
+<td align="left">E:hover</td>
+<td align="left"></td>
+<td align="left">カーソルが乗っている要素</td>
+</tr>
+
+<tr>
+<td align="left">E:focus</td>
+<td align="left"></td>
+<td align="left">フォーカスされた要素（入力欄で入力可能状態）</td>
+</tr>
+
+<tr>
+<td align="left">:target</td>
+<td align="left"></td>
+<td align="left">href=&ldquo;#foo&rdquo;のリンクを踏んだ際の、id=&ldquo;foo&rdquo;の要素</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="ui状態擬似クラスセレクタ">UI状態擬似クラスセレクタ</h2>
+
+<table>
+<thead>
+<tr>
+<th align="left">パターン</th>
+<th align="left">セレクタ名</th>
+<th align="left">適用範囲</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">E:enabled</td>
+<td align="left">UI状態擬似</td>
+<td align="left">E要素が有効状態（textareaなど）</td>
+</tr>
+
+<tr>
+<td align="left">E:disabled</td>
+<td align="left"></td>
+<td align="left">E要素が無効状態（textareaなど）</td>
+</tr>
+
+<tr>
+<td align="left">E:checked</td>
+<td align="left"></td>
+<td align="left">E要素がチェック状態（ラジオ・チェックボックス）</td>
+</tr>
+
+<tr>
+<td align="left">例 チェックボックス</td>
+<td align="left"></td>
+<td align="left">input[type=&ldquo;checkbox&rdquo;]:checked {}</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="言語情報擬似クラスセレクタ">言語情報擬似クラスセレクタ</h2>
+
+<table>
+<thead>
+<tr>
+<th align="left">パターン</th>
+<th align="left">セレクタ名</th>
+<th align="left">適用範囲</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">E:lang(s)</td>
+<td align="left">言語情報</td>
+<td align="left">lang=&ldquo;s&rdquo;を持つE要素</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="擬似要素セレクタ">擬似要素セレクタ</h2>
+
+<table>
+<thead>
+<tr>
+<th align="left">パターン</th>
+<th align="left">セレクタ名</th>
+<th align="left">適用範囲</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">E::first-letter</td>
+<td align="left">擬似要素</td>
+<td align="left">E要素の最初の１文字</td>
+</tr>
+
+<tr>
+<td align="left">E::first-line</td>
+<td align="left"></td>
+<td align="left">E要素の最初の１行</td>
+</tr>
+
+<tr>
+<td align="left">E::before</td>
+<td align="left"></td>
+<td align="left">E要素の直前</td>
+</tr>
+
+<tr>
+<td align="left">E::after</td>
+<td align="left"></td>
+<td align="left">E要素の直後</td>
+</tr>
+
+<tr>
+<td align="left">例 前に☆</td>
+<td align="left"></td>
+<td align="left">::before {contet: &ldquo;☆&rdquo;}</td>
+</tr>
+</tbody>
+</table>
+
+                </div>
+            </article>
+
+            <nav class="Pagenation">
+                <div class="Pagenation__older">
+                    
+                    <a href="http://mzgkworks.com/post/css-applying-priority/">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        CSSの適用優先度の考え方
+                    </a>
+                    
+                </div>
+                <div class="Pagenation__newer">
+                    
+                    <a href="http://mzgkworks.com/post/ruby-gem-install-sass/">
+                        MacにSass環境を構築する（Ruby gem）
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </a>
+                    
+                </div>
+            </nav>
+
+            <div class="Disqus">
+                
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'mzgkworks-com';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+            </div>
+        </main>
+
+        <aside class="SubContainer">
+    <h1 class="AreaTitle">Products</h1>
+    <div class="SubItem">
+        <a href="./products/products">
+            <i class="fa fa-apple fa-2x" aria-hidden="true"></i>
+        </a>
+    </div>
+
+    <h1 class="AreaTitle">Categories</h1>
+    <div class="SubItem">
+        <ul>
+            
+            <li>
+                <a href="./categories/knowledge/">
+                    knowledge : 6
+                </a>
+            </li>
+            
+            <li>
+                <a href="./categories/setting/">
+                    setting : 10
+                </a>
+            </li>
+            
+            <li>
+                <a href="./categories/usage/">
+                    usage : 14
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+
+    <h1 class="AreaTitle">Tags</h1>
+    <div class="SubItem">
+        <ul>
+            
+            <li>
+                <a href="./tags/apache/">
+                    apache : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/atom/">
+                    atom : 1
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/bash/">
+                    bash : 3
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/blog/">
+                    blog : 5
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/css/">
+                    css : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/http/">
+                    http : 1
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/hugo/">
+                    hugo : 5
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/linux/">
+                    linux : 14
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/mac/">
+                    mac : 4
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/network/">
+                    network : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/sass/">
+                    sass : 1
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</aside>
+
+
+    </div>
+
+    <div class="FooterContainer">
+    <footer class="Footer">
+        <img  class="Footer__head" src="./images/profile.png" alt="profile-image" />
+        <div class="Footer__body">
+            <i class="fa fa-copyright" aria-hidden="true"></i>
+            <span>2016</span>
+            <span><a href="./about/about">mzgk</a></span>
+        </div>
+    </footer>
+</div>
+
+<script src="./js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-82194549-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+</body>
+</html>
+
