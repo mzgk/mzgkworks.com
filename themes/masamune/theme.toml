@@ -1,0 +1,21 @@
+# theme.toml template for a Hugo theme
+# See https://github.com/spf13/hugoThemes#themetoml for an example
+
+name = "Masamune"
+license = "MIT"
+licenselink = "https://github.com/mzgk/masamune/blob/master/LICENSE.md"
+description = "A simple 2column blog theme."
+homepage = "https://github.com/mzgk/masamune"
+tags = ["blog", ""]
+features = ["", ""]
+min_version = 0.17
+
+[author]
+  name = "mzgk"
+  homepage = "http://mzgkworks.com/"
+
+# If porting an existing theme
+[original]
+  name = ""
+  homepage = ""
+  repo = ""
