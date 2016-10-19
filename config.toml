@@ -1,3 +1,28 @@
-title = "My New Hugo Site"
-languageCode = "en-us"
-baseurl = "http://replace-this-with-your-hugo-site.com/"
+baseurl = "http://mzgkworks.com"
+title = "mzgkworks.com"
+languageCode = "ja-JP"
+
+canonifyurls = true
+hasCJKLanguage = true
+
+auther = "mzgk"
+theme = "masamune"
+
+# Hugo Built-in Features
+disqusShortname = "mzgkworks-com"
+enableRobotsTXT = true
+
+[params]
+subTitle = "Stack the little bets."
+copyrightYear = "2016"
+copyrightName = "mzgk"
+profileImage = "./images/profile.png"
+googleAnalytics = "UA-82194549-1"
+
+[params.meta]
+description = "プログラマーの備忘録。"
+keywords = "Program,Mac,iOS,Web,AWS,Hugo,Books"
+
+[params.social]
+github = "https://github.com/mzgk"
+twitter = "https://twitter.com/mzgkworks"
