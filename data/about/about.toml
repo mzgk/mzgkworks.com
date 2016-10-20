@@ -1,0 +1,59 @@
+[[about]]
+title = "About Me"
+update = "2016.10.20"
+description_markdown = """
+受託メインの中小SIer勤務。<br>
+地方銀行向けの金融システム構築に長く従事。<br>
+プログラムから設計・要件定義・チームマネジメントまでいろいろ。<br>
+<br>
+ここ最近は自社サービス及びビジネス立ち上げのため、Mobile・Web・AWS系にシフト。<br>
+相変わらずプログラムから設計・要件定義・マネジメントまでいろいろ。<br>
+iOS・デザイン・Webフロント・バック・AWSインフラまでのごった煮。<br>
+会社が野球球団だとしたら、その中でサッカーをやっているような状況...
+
+## 興味
+- Mac
+- iOS（Swift, Xcode）
+- フォント
+- 欲しいものが作れるようになること
+- Unix / Linux
+- Git
+- デザイン（Mobile, Web）
+- Atom
+- Sketch3
+"""
+
+
+[[about]]
+title = "About Site"
+update = "2016.10.20"
+description_markdown = """
+自分が覚えたことや出来るようになったことを残しておきたくて開設。<br>
+インターネット上に残しておくと、どこからでも参照できるから便利。<br>
+EvernoteやQiitaにしなかったのは、Webサイト構築の習得を兼ねてのため。
+
+## 求める環境
+- 記事はエディタを使ってmarkdownのテキストファイルベースで作成したい
+- 作成した記事はファイル単位でGit管理したい
+- 環境構築や記事作成までの環境にかかる手間を低くしたい
+- 静的サイトであること
+- 独自ドメインで運用
+
+## 現在の環境（キーワード）
+- [Hugo](https://gohugo.io/) : 静的サイトジェネレーター（Go言語）
+- [GitHub Pages](https://pages.github.com/) : Gitホスティングサービス。プロジェクト形式（docディレクトリ）
+- [MacBook Pro(late 2013)](http://www.apple.com/jp/macbook-pro/)
+- [Atom](https://atom.io/) : GitHub社製のエディタ
+- [iTerm2](https://www.iterm2.com/) : bash。Terminal Emulator
+- [Git](https://git-scm.com/)
+- HTML5
+- CSS3
+- [Sass](http://sass-lang.com/) : SCSS記法・RubyGemでコンパイル
+- [masamune](https://github.com/mzgk/masamune) : Hugo Theme。自作
+
+## 今までの遍歴
+- Hatena::Diary
+- WordPress + さくらVPS
+- [Octopress + GitHub Pages](http://mzgk.github.io/) : GitHub Pages
+- [Hatena Blog](http://mzgkworks.hateblo.jp/)
+"""
