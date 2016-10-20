@@ -1,0 +1,28 @@
+update = "2016.10.20"
+
+[[product]]
+title = "かつまたファーム"
+image = "./images/products/web_farm.png"
+alt = "かつまたファーム"
+url = "http://katsumatafarm.com/"
+description_markdown = """
+静岡県御殿場市で<a href="http://katsumatafarm.com/">健太トマト</a>を栽培している友人のために作ったサイト。<br>
+<br>
+最近はテレビで紹介されたりと、何かと話題の若手農業家。<br>
+大学のサークル仲間＆普通より長く通った仲間。
+"""
+keyword = "WordPress, VPS"
+release = "2014.6.17 : 公開"
+
+
+[[product]]
+title = "masamune"
+image = "./images/products/web_masamune.png"
+alt = "masamune"
+url = "https://github.com/mzgk/masamune"
+description_markdown = """
+当サイトで使用しているHugo Theme<br>
+シンプルな２カラム形式がなかったので勉強がてら作ってみた。
+"""
+keyword = "Hugo, GitHub Pages, HTML5, CSS3, Sass"
+release = "2016.10.20 : 公開"

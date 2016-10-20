@@ -1,0 +1,32 @@
+update = "2016.10.20"
+
+[[product]]
+title = "%OFF 買い物中に最適な割引計算機"
+image = "./images/products/ios_off.png"
+alt = "%OFF"
+url = "https://itunes.apple.com/jp/app/off-maii-wu-zhongni-zui-shina/id1130695945?mt=8&ign-mpt=uo%3D4"
+description_markdown = """
+忙しい買い物中でも、簡単操作で割引価格を計算できるアプリ。  
+シンプルで片手でも操作しやすい画面が特徴。  
+<br>
+パッと見でわかる内容と、片手の親指だけでの操作を意識してデザイン。  
+見た目が静かで、片手で操作しやすいアプリが欲しくて作成。
+"""
+keyword = "iOS9, Swift"
+release = "2016.7.28 : ver1.1.0"
+
+
+[[product]]
+title = "高山式液肥計算　美味しい作物を育てよう"
+image = "./images/products/ios_ekihi.png"
+alt = "%OFF"
+url = "https://itunes.apple.com/jp/app/gao-shan-shi-ye-fei-ji-suan/id1084208250?mt=8"
+description_markdown = """
+静岡県御殿場市で[健太トマト](http://katsumatafarm.com/)を栽培している友人のために作ったアプリ。<br>
+化学液肥の計算をスマホでできて、日々の記録を残せる。超ニッチ。<br>
+<br>
+操作を画面下部にまとめて、片手で入力操作ができるようにデザイン。<br>
+視認性と操作の感触を意識して作成。
+"""
+keyword = "iOS9, Swift, Realm"
+release = "2016.7.12 : ver1.1.0"
