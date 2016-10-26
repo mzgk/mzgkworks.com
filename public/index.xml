@@ -6,8 +6,185 @@
     <description>Recent content on mzgkworks.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Wed, 19 Oct 2016 19:14:47 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 26 Oct 2016 16:27:37 +0900</lastBuildDate>
     <atom:link href="http://mzgkworks.com/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Swiftの引数についてのメモ</title>
+      <link>http://mzgkworks.com/post/swift-argument/</link>
+      <pubDate>Wed, 26 Oct 2016 16:27:37 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/swift-argument/</guid>
+      <description>
+
+&lt;p&gt;Swiftの引数について、1.x時代から変わったりうろ覚えだった部分もあったのでメモ。&lt;/p&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Swift 3.0&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;ラベル&#34;&gt;ラベル&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;argument label : 関数呼び出し用（呼び出し時に使用）
+
+&lt;ul&gt;
+&lt;li&gt;「_」をつけることで省略可&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;parameter label : 関数定義用（関数内部で使用）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;argument-label-あり&#34;&gt;argument label : あり&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@Swift&#34;&gt;// argument label : first, second
+// parameter label : a, b
+func addTwo(first a: Int, second b: Int)-&amp;gt; Int {
+    return a + b
+}
+
+// 呼び出し
+var value = addTwo(first: 1, second: 2)
+// 結果 : 3
+print(value)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;argument-label-なし&#34;&gt;argument label : なし&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@Swift&#34;&gt;// parameter label : a, b
+func addTwo(_ a: Int, _ b: Int)-&amp;gt; Int {
+    return a + b
+}
+
+// 呼び出し
+var value = addTwo(1, 2)
+// 結果 : 3
+print(value)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;デフォルト引数&#34;&gt;デフォルト引数&lt;/h2&gt;
+
+&lt;p&gt;あたかじめ引数に値を設定しておくことで、呼び出し時に引数の省略が可能となる。&lt;br /&gt;
+省略された場合、定義されているデフォルト値が適用される。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@Swift&#34;&gt;// aとbの文字列連結。セパレーターのcにデフォルト値（, ）を定義
+func connectTwo(first a: String, second b: String, separator c: String = &amp;quot;, &amp;quot;)-&amp;gt; String {
+    return a + c + b
+}
+
+
+// デフォルト引数を使う
+var val = connectTwo(first: &amp;quot;A&amp;quot;, second: &amp;quot;B&amp;quot;)
+// 結果 : A, B
+print(val)
+
+
+// デフォルト値を使わない
+val = connectTwo(first: &amp;quot;A&amp;quot;, second: &amp;quot;B&amp;quot;, separator: &amp;quot;/ &amp;quot;)
+// 結果 : A/ B
+print(val)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;可変引数&#34;&gt;可変引数&lt;/h2&gt;
+
+&lt;p&gt;あらかじめ引数の数がわからない場合などに使用する。&lt;br /&gt;
+定義時は、型の後ろに「&amp;hellip;」をつける。&lt;br /&gt;
+呼び出し時は、複数の値を「,（カンマ）」で区切って設定する。&lt;br /&gt;
+可変引数の定義は、１関数につき１つまで。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@Swift&#34;&gt;// 最初の引数が可変
+// 引数の値をセパレーターで区切って連結する関数
+func write(inWord a: String..., separator c: String = &amp;quot;, &amp;quot;)-&amp;gt; String {
+    var output = &amp;quot;&amp;quot;
+    for index in 0..&amp;lt;a.count {
+        output += a[index] + c
+    }
+    return output
+}
+
+// １つの場合
+var val = write(inWord: &amp;quot;ABC&amp;quot;)
+// 結果 : ABC,
+print(val)
+
+
+// ３つの場合
+val = write(inWord: &amp;quot;ABC&amp;quot;, &amp;quot;DEF&amp;quot;, &amp;quot;GHI&amp;quot;)
+// 結果 : ABC, DEF, GHI,
+print(val)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;引数の値の変更&#34;&gt;引数の値の変更&lt;/h2&gt;
+
+&lt;p&gt;引数の値は定数となるので、関数内での変更は不可。&lt;br /&gt;
+ただし、インスタンスの場合は参照値が格納されているので、インスタンスの参照値は変更不可だが、中のプロパティ値の変更は可能。&lt;br /&gt;
+※プロパティがvarで宣言されている場合のみ&lt;/p&gt;
+
+&lt;h3 id=&#34;通常&#34;&gt;通常&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@Swift&#34;&gt;// 引数aの値は変更できない
+func change(_ a: String)-&amp;gt; String {
+  a = &amp;quot;XYZ&amp;quot;   // ← Cannot assign to value &#39;a&#39; is a &#39;let&#39; constant
+}
+
+change(&amp;quot;ABC&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;インスタンスの場合&#34;&gt;インスタンスの場合&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@Swift&#34;&gt;class Person {
+    let name: String
+    var age: Int    // ※ここがletの場合は、変更できない
+
+    init(inName name:String, inAge age: Int) {
+        self.name = name
+        self.age = age
+    }
+}
+
+// 引数で渡されたPerson型の引数のageプロパティを変更する関数
+func update(inPerson person: Person) {
+    person.age = 20
+}
+
+// Tomを10才で生成（Tom : 10）
+var tom = Person(inName: &amp;quot;Tom&amp;quot;, inAge: 10)
+print(&amp;quot;\(tom.name) : \(tom.age)&amp;quot;)
+
+
+// 更新する関数に渡す
+update(inPerson: tom)
+// 結果 : Tom : 20
+print(&amp;quot;\(tom.name) : \(tom.age)&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;inoutparameter&#34;&gt;InOutParameter&lt;/h2&gt;
+
+&lt;p&gt;定義時に型の前に「inout」をつけることで、引数の値を関数内で変更し呼び出し元に連携することができる。&lt;br /&gt;
+呼び出し時は、引数の前に「&amp;amp;」をつける。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@Swift&#34;&gt;// 引数の値を入れ替える
+func swap(first a: inout String, second b: inout String) {
+    let tmp = a
+    a = b
+    b = tmp
+}
+
+var wordA = &amp;quot;ABC&amp;quot;
+var wordZ = &amp;quot;XYZ&amp;quot;
+
+// 入れ替え前 : wordA = ABC, wordZ = XYZ
+print(&amp;quot;wordA = \(wordA), wordZ = \(wordZ)&amp;quot;)
+
+// 入れ替え（引数に&amp;amp;がつく）
+swap(first: &amp;amp;wordA, second: &amp;amp;wordZ)
+// 入れ替え後 : wordA = XYZ, wordZ = ABC
+print(&amp;quot;wordA = \(wordA), wordZ = \(wordZ)&amp;quot;)
+
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
     
     <item>
       <title>products</title>
@@ -1862,172 +2039,6 @@ systemctl status postfix.service
    Loaded: loaded (/usr/lib/systemd/system/postfix.service; enabled; vendor preset: disabled)
    Active: active (running) since 金 2016-09-09 17:32:26 JST; 33s ago
 ...
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Linuxでシステムの状態を確認する方法（uptime・df・free・ps）</title>
-      <link>http://mzgkworks.com/post/linux-check-system-status/</link>
-      <pubDate>Fri, 09 Sep 2016 17:06:23 +0900</pubDate>
-      
-      <guid>http://mzgkworks.com/post/linux-check-system-status/</guid>
-      <description>
-
-&lt;h2 id=&#34;システム負荷の確認&#34;&gt;システム負荷の確認&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;uptime&lt;/code&gt; コマンドを使用して、システム負荷を確認することができる。&lt;br /&gt;
-「load average:」部分が１分、５分、１５分の平均負荷を表す。&lt;br /&gt;
-この数値がCPU数（コア数）以下であれば、CPU処理待ちなく特に問題ない状態。&lt;br /&gt;
-オーバーが一時的ではなく継続しているようなら、処理見直し or スケールアップを検討。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ uptime
-# 現在時刻・稼働時間・ログインユーザー数・１分、５分、１５分の平均負荷
- 16:19:01 up 2 min,  1 user,  load average: 0.09, 0.08, 0.04
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;ディスクの使用状況&#34;&gt;ディスクの使用状況&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;$ df -h&lt;/code&gt; コマンドを使用して、ディスクの使用状況を確認することができる。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# -h : サイズを見やすくしてくれる
-# tmpfs : この文字列がつくものは仮想ファイルシステムなので無視してよい
-$ df -h
-ファイルシス                            サイズ  使用  残り 使用% マウント位置
-/dev/mapper/centos_xxx-root    50G  1.4G   49G    3% /  # ← /ディレクトリ
-devtmpfs                                  486M     0  486M    0% /dev
-tmpfs                                     497M     0  497M    0% /dev/shm
-tmpfs                                     497M  6.6M  490M    2% /run
-tmpfs                                     497M     0  497M    0% /sys/fs/cgroup
-/dev/vda1                                 497M  126M  371M   26% /boot
-/dev/mapper/centos_xxx-home    48G   33M   48G    1% /home  # ← /homeディレクトリ
-tmpfs                                     100M     0  100M    0% /run/user/1000
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;メモリとスワップの確認&#34;&gt;メモリとスワップの確認&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;$ free -h&lt;/code&gt; コマンドを使用して、メモリとスワップの使用状況が確認できる。&lt;br /&gt;
-スワップが常態で使われているような場合、メモリが不足していると考えられる。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ free -h
-              total        used        free      shared  buff/cache   available
-Mem:           992M         85M        786M        6.5M        121M        777M
-Swap:          2.0G          0B        2.0G
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;項目&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;total&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;合計&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;used&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;利用中&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;free&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;未使用&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;shared&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;仮想的な共有メモリ&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;buff/cache&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;バッファ及びキャッシュ&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;available&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;アプリケーション起動時にスワップなしで使えるメモリ&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;メモリとディスクのアクセス速度の差を小さくするための仕組みとして、バッファとキャッシュがある。&lt;/p&gt;
-
-&lt;h3 id=&#34;バッファ&#34;&gt;バッファ&lt;/h3&gt;
-
-&lt;p&gt;ディスクへデータを書き込む際に、いったんメモリ上のバッファ領域に書き込んだ時点で書き込み完了とし、後からバックグランドで実際にディスクへ書き込みを行う。&lt;/p&gt;
-
-&lt;h3 id=&#34;キャッシュ&#34;&gt;キャッシュ&lt;/h3&gt;
-
-&lt;p&gt;ディスクからいったん読み出したデータをメモリ上のキャッシュ領域に残しておき、同じデータが再度アクセスされた場合はメモリ上のデータを利用する。&lt;/p&gt;
-
-&lt;h2 id=&#34;実行中のプロセスを確認&#34;&gt;実行中のプロセスを確認&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;$ ps aux&lt;/code&gt; コマンドで現在実行中のプログラム（プロセス）の確認ができる。&lt;br /&gt;
-&lt;code&gt;| less&lt;/code&gt; コマンドへパイプしたり、&lt;code&gt;| grep 検索名&lt;/code&gt; コマンドへパイプして確認する。&lt;br /&gt;
-&lt;strong&gt;オプションには「-」をつけない&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# sshdを含むプロセスを表示する
-# ユーザー・プロセスID・CPU占有率・メモリ占有率・仮想メモリ使用サイズ・物理メモリ使用サイズ
-# 端末・状態・開始・稼働時間・コマンド
-$ ps aux | grep sshd
-root      1268  0.0  0.3  82560  3600 ?        Ss   16:17   0:00 /usr/sbin/sshd -D
-root      2408  0.0  0.4 140788  5004 ?        Ss   16:17   0:00 sshd: centuser [priv]
-centuser  2412  0.0  0.2 140788  2148 ?        S    16:17   0:00 sshd: centuser@pts/0
-centuser  2446  0.0  0.0 112668   980 pts/0    S+   16:46   0:00 grep --color=auto sshd
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;プロセスの操作&#34;&gt;プロセスの操作&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;$ kill&lt;/code&gt; コマンドで、不要なプロセスであったりエラーで終了しないプロセスを停止することができる。&lt;br /&gt;
-TEAMを送ってもプロセスが反応しない場合は、KILLシグナルを送る。&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;シグナルID&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;シグナル名&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;動作&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;9&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;KILL&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;強制終了&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;15&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;TERM&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;終了&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;18&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;CONT&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;再開&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;19&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;STOP&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;一時停止&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# kill シグナルID プロセスID
-$ kill -15 2412
-
-# kill -s  シグナル名 プロセスID
-$ kill -s KILL 2412
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>

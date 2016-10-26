@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ja-JP">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="keywords" content="Program,Mac,iOS,Web,AWS,Hugo,Books">
+    
+        <meta name="description" content=" プログラマーの備忘録。">
+    
+        <meta name="description" content="Swiftの引数のメモ。">
+    
+
+    <base href="http://mzgkworks.com">
+    
+    <link rel="stylesheet" href="./css/masamune.css">
+
+    <title>
+        
+        Swiftの引数についてのメモ
+         | mzgkworks.com
+    </title>
+
+    <meta name="generator" content="Hugo 0.17" />
+</head>
+
+<body>
+    <div class="HeaderContainer">
+        <header class="Header">
+            <div class="Header__head">
+                <h1 class="Header__title"><a href="./index.html">mzgkworks.com</a></h1>
+                <p class="Header__subTitle">Stack the little bets.</p>
+            </div>
+            <nav class="Header__body">
+                <ul class="Navi">
+                    <li class="Navi__item"><a href="./about/about" class="fa fa-smile-o"></a></li>
+                    <li class="Navi__item"><a href="https://github.com/mzgk" target="_blank" rel="noopener noreferrer" class="fa fa-github"></a></li>
+                    <li class="Navi__item"><a href="https://twitter.com/mzgkworks" target="_blank" rel="noopener noreferrer" class="fa fa-twitter"></a></li>
+                    <li class="Navi__item"><a href="#" class="fa fa-rss"></a></li>
+                </ul>
+            </nav>
+        </header>
+    </div>
+
+
+    <div class="ContentsContainer">
+        <main class="MainContainer">
+
+            <article class="PostItem">
+                <div class="PostItem__head">
+                    <div class="PostItem__title">
+                        <h1>
+                            Swiftの引数についてのメモ
+                            
+                        </h1>
+                    </div>
+                    <div class="PostItem__meta">
+                        <time datetime="2016-10-10">
+                            2016.10.26
+                        </time>
+                        &nbsp;&nbsp;
+                        
+                        <span>[<a href="./categories/programing">Programing</a>]</span>
+                        
+                        
+                        &nbsp;&nbsp;
+                        <span>#<a href="./tags/swift">Swift</a></span>
+                        
+                        &nbsp;&nbsp;
+                        <span>#<a href="./tags/ios">iOS</a></span>
+                        
+                    </div>
+                </div>
+
+                <div class="PostItem__body">
+                    
+
+<p>Swiftの引数について、1.x時代から変わったりうろ覚えだった部分もあったのでメモ。</p>
+
+<h2 id="環境">環境</h2>
+
+<ul>
+<li>Swift 3.0</li>
+</ul>
+
+<h2 id="ラベル">ラベル</h2>
+
+<ul>
+<li>argument label : 関数呼び出し用（呼び出し時に使用）
+
+<ul>
+<li>「_」をつけることで省略可</li>
+</ul></li>
+<li>parameter label : 関数定義用（関数内部で使用）</li>
+</ul>
+
+<h3 id="argument-label-あり">argument label : あり</h3>
+
+<pre><code class="language-@Swift">// argument label : first, second
+// parameter label : a, b
+func addTwo(first a: Int, second b: Int)-&gt; Int {
+    return a + b
+}
+
+// 呼び出し
+var value = addTwo(first: 1, second: 2)
+// 結果 : 3
+print(value)
+</code></pre>
+
+<h3 id="argument-label-なし">argument label : なし</h3>
+
+<pre><code class="language-@Swift">// parameter label : a, b
+func addTwo(_ a: Int, _ b: Int)-&gt; Int {
+    return a + b
+}
+
+// 呼び出し
+var value = addTwo(1, 2)
+// 結果 : 3
+print(value)
+</code></pre>
+
+<h2 id="デフォルト引数">デフォルト引数</h2>
+
+<p>あたかじめ引数に値を設定しておくことで、呼び出し時に引数の省略が可能となる。<br />
+省略された場合、定義されているデフォルト値が適用される。</p>
+
+<pre><code class="language-@Swift">// aとbの文字列連結。セパレーターのcにデフォルト値（, ）を定義
+func connectTwo(first a: String, second b: String, separator c: String = &quot;, &quot;)-&gt; String {
+    return a + c + b
+}
+
+
+// デフォルト引数を使う
+var val = connectTwo(first: &quot;A&quot;, second: &quot;B&quot;)
+// 結果 : A, B
+print(val)
+
+
+// デフォルト値を使わない
+val = connectTwo(first: &quot;A&quot;, second: &quot;B&quot;, separator: &quot;/ &quot;)
+// 結果 : A/ B
+print(val)
+</code></pre>
+
+<h2 id="可変引数">可変引数</h2>
+
+<p>あらかじめ引数の数がわからない場合などに使用する。<br />
+定義時は、型の後ろに「&hellip;」をつける。<br />
+呼び出し時は、複数の値を「,（カンマ）」で区切って設定する。<br />
+可変引数の定義は、１関数につき１つまで。</p>
+
+<pre><code class="language-@Swift">// 最初の引数が可変
+// 引数の値をセパレーターで区切って連結する関数
+func write(inWord a: String..., separator c: String = &quot;, &quot;)-&gt; String {
+    var output = &quot;&quot;
+    for index in 0..&lt;a.count {
+        output += a[index] + c
+    }
+    return output
+}
+
+// １つの場合
+var val = write(inWord: &quot;ABC&quot;)
+// 結果 : ABC,
+print(val)
+
+
+// ３つの場合
+val = write(inWord: &quot;ABC&quot;, &quot;DEF&quot;, &quot;GHI&quot;)
+// 結果 : ABC, DEF, GHI,
+print(val)
+</code></pre>
+
+<h2 id="引数の値の変更">引数の値の変更</h2>
+
+<p>引数の値は定数となるので、関数内での変更は不可。<br />
+ただし、インスタンスの場合は参照値が格納されているので、インスタンスの参照値は変更不可だが、中のプロパティ値の変更は可能。<br />
+※プロパティがvarで宣言されている場合のみ</p>
+
+<h3 id="通常">通常</h3>
+
+<pre><code class="language-@Swift">// 引数aの値は変更できない
+func change(_ a: String)-&gt; String {
+  a = &quot;XYZ&quot;   // ← Cannot assign to value 'a' is a 'let' constant
+}
+
+change(&quot;ABC&quot;)
+</code></pre>
+
+<h3 id="インスタンスの場合">インスタンスの場合</h3>
+
+<pre><code class="language-@Swift">class Person {
+    let name: String
+    var age: Int    // ※ここがletの場合は、変更できない
+
+    init(inName name:String, inAge age: Int) {
+        self.name = name
+        self.age = age
+    }
+}
+
+// 引数で渡されたPerson型の引数のageプロパティを変更する関数
+func update(inPerson person: Person) {
+    person.age = 20
+}
+
+// Tomを10才で生成（Tom : 10）
+var tom = Person(inName: &quot;Tom&quot;, inAge: 10)
+print(&quot;\(tom.name) : \(tom.age)&quot;)
+
+
+// 更新する関数に渡す
+update(inPerson: tom)
+// 結果 : Tom : 20
+print(&quot;\(tom.name) : \(tom.age)&quot;)
+</code></pre>
+
+<h2 id="inoutparameter">InOutParameter</h2>
+
+<p>定義時に型の前に「inout」をつけることで、引数の値を関数内で変更し呼び出し元に連携することができる。<br />
+呼び出し時は、引数の前に「&amp;」をつける。</p>
+
+<pre><code class="language-@Swift">// 引数の値を入れ替える
+func swap(first a: inout String, second b: inout String) {
+    let tmp = a
+    a = b
+    b = tmp
+}
+
+var wordA = &quot;ABC&quot;
+var wordZ = &quot;XYZ&quot;
+
+// 入れ替え前 : wordA = ABC, wordZ = XYZ
+print(&quot;wordA = \(wordA), wordZ = \(wordZ)&quot;)
+
+// 入れ替え（引数に&amp;がつく）
+swap(first: &amp;wordA, second: &amp;wordZ)
+// 入れ替え後 : wordA = XYZ, wordZ = ABC
+print(&quot;wordA = \(wordA), wordZ = \(wordZ)&quot;)
+
+</code></pre>
+
+                </div>
+            </article>
+
+            <nav class="Pagenation">
+                <div class="Pagenation__older">
+                    
+                    <a href="http://mzgkworks.com/post/ruby-gem-install-sass/">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        MacにSass環境を構築する（Ruby gem）
+                    </a>
+                    
+                </div>
+                <div class="Pagenation__newer">
+                    
+                </div>
+            </nav>
+
+            <div class="Disqus">
+                
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'mzgkworks-com';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+            </div>
+        </main>
+
+        <aside class="SubContainer">
+    <h1 class="AreaTitle">Products</h1>
+    <div class="SubItem">
+        <a href="./products/products">
+            <i class="fa fa-apple fa-2x" aria-hidden="true"></i>
+        </a>
+    </div>
+
+    <h1 class="AreaTitle">Categories</h1>
+    <div class="SubItem">
+        <ul>
+            
+            <li>
+                <a href="./categories/knowledge/">
+                    knowledge : 6
+                </a>
+            </li>
+            
+            <li>
+                <a href="./categories/programing/">
+                    programing : 1
+                </a>
+            </li>
+            
+            <li>
+                <a href="./categories/setting/">
+                    setting : 10
+                </a>
+            </li>
+            
+            <li>
+                <a href="./categories/usage/">
+                    usage : 14
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+
+    <h1 class="AreaTitle">Tags</h1>
+    <div class="SubItem">
+        <ul>
+            
+            <li>
+                <a href="./tags/apache/">
+                    apache : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/atom/">
+                    atom : 1
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/bash/">
+                    bash : 3
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/blog/">
+                    blog : 5
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/css/">
+                    css : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/http/">
+                    http : 1
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/hugo/">
+                    hugo : 5
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/ios/">
+                    ios : 1
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/linux/">
+                    linux : 14
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/mac/">
+                    mac : 4
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/network/">
+                    network : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/sass/">
+                    sass : 1
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/swift/">
+                    swift : 1
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</aside>
+
+
+    </div>
+
+    <div class="FooterContainer">
+    <footer class="Footer">
+        <img  class="Footer__head" src="./images/profile.png" alt="profile-image" />
+        <div class="Footer__body">
+            <i class="fa fa-copyright" aria-hidden="true"></i>
+            <span>2016</span>
+            <span><a href="./about/about">mzgk</a></span>
+        </div>
+    </footer>
+</div>
+
+<script src="./js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-82194549-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+</body>
+</html>
+
