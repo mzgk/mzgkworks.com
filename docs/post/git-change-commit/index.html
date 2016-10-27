@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="ja-JP">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="keywords" content="Program,Mac,iOS,Web,AWS,Hugo,Books">
+    
+        <meta name="description" content=" プログラマーの備忘録。">
+    
+        <meta name="description" content="Gitでコミットを直したい、取り消したい時の操作方法">
+    
+
+    <base href="http://mzgkworks.com">
+    
+    <link rel="stylesheet" href="./css/masamune.css">
+
+    <title>
+        
+        Git コミットをミスった時の操作
+         | mzgkworks.com
+    </title>
+
+    <meta name="generator" content="Hugo 0.17" />
+</head>
+
+<body>
+    <div class="HeaderContainer">
+        <header class="Header">
+            <div class="Header__head">
+                <h1 class="Header__title"><a href="./index.html">mzgkworks.com</a></h1>
+                <p class="Header__subTitle">Stack the little bets.</p>
+            </div>
+            <nav class="Header__body">
+                <ul class="Navi">
+                    <li class="Navi__item"><a href="./about/about" class="fa fa-smile-o"></a></li>
+                    <li class="Navi__item"><a href="https://github.com/mzgk" target="_blank" rel="noopener noreferrer" class="fa fa-github"></a></li>
+                    <li class="Navi__item"><a href="https://twitter.com/mzgkworks" target="_blank" rel="noopener noreferrer" class="fa fa-twitter"></a></li>
+                    <li class="Navi__item"><a href="#" class="fa fa-rss"></a></li>
+                </ul>
+            </nav>
+        </header>
+    </div>
+
+
+    <div class="ContentsContainer">
+        <main class="MainContainer">
+
+            <article class="PostItem">
+                <div class="PostItem__head">
+                    <div class="PostItem__title">
+                        <h1>
+                            Git コミットをミスった時の操作
+                            
+                        </h1>
+                    </div>
+                    <div class="PostItem__meta">
+                        <time datetime="2016-10-10">
+                            2016.10.27
+                        </time>
+                        &nbsp;&nbsp;
+                        
+                        <span>[<a href="./categories/usage">Usage</a>]</span>
+                        
+                        
+                        &nbsp;&nbsp;
+                        <span>#<a href="./tags/git">Git</a></span>
+                        
+                    </div>
+                </div>
+
+                <div class="PostItem__body">
+                    
+
+<p>コミットをミスった時の対処方法。<br />
+<strong>コミットのハッシュ値が変わるので、push前のコミットに対して行うこと。</strong><br />
+独り開発の場合は、$ git push -f &lt;リモート&gt; &lt;ブランチ&gt; で強制pushもできるが&hellip;</p>
+
+<h2 id="環境">環境</h2>
+
+<ul>
+<li>Git 2.10.1</li>
+</ul>
+
+<h2 id="ハッシュ値">ハッシュ値</h2>
+
+<p>ハッシュ値の指定部分は以下でも置き換えが可能。</p>
+
+<ul>
+<li>現在のコミット : HEAD</li>
+<li>１つ前のコミット : HEAD~, HEAD^</li>
+<li>２つ前のコミット : HEAD~2, HEAD^^</li>
+</ul>
+
+<h2 id="メッセージを直したい">メッセージを直したい</h2>
+
+<h3 id="直前のコミットの場合">直前のコミットの場合</h3>
+
+<ol>
+<li><code>$ git commit --amend</code></li>
+<li>コミットメッセージ入力画面で編集・保存・終了</li>
+</ol>
+
+<h3 id="いくつか前のコミットの場合">いくつか前のコミットの場合</h3>
+
+<ol>
+<li><code>$ git log --oneline</code> : 対象コミットの特定</li>
+<li><code>$ git rebase -i &lt;対象コミットの**１つ前**のハッシュ値&gt;</code></li>
+<li>変更するコミットのコマンドを「pick → r」に編集・保存・終了</li>
+<li>コミットメッセージの編集・保存・終了</li>
+<li><code>$ git rebase --continue</code> : 対象が複数ある場合</li>
+</ol>
+
+<h2 id="コミットに漏れの追加や内容修正をしたい">コミットに漏れの追加や内容修正をしたい</h2>
+
+<h3 id="直前のコミットの場合-1">直前のコミットの場合</h3>
+
+<ol>
+<li><code>$ git add A.txt</code> : 変更や漏れをステージング</li>
+<li><code>$ git commit --amend --no-edit</code> : メッセージ変更しない場合</li>
+<li><code>$ git commit --amend</code> : メッセージも変更する場合</li>
+</ol>
+
+<h3 id="いくつか前のコミットの場合-1">いくつか前のコミットの場合</h3>
+
+<ol>
+<li><code>$ git log --oneline</code> : 対象コミットの特定</li>
+<li><code>$ git rebase -i &lt;対象コミットの**１つ前**のハッシュ値&gt;</code></li>
+<li>変更するコミットのコマンドを「pick → e」に編集・保存・終了</li>
+<li><code>$ git add A.txt</code> : 変更や漏れをステージング</li>
+<li><code>$ git commit --amend (--no-edit)</code> : コミット</li>
+<li><code>$ git rebase --continue</code> : 対象が複数ある場合</li>
+</ol>
+
+<h2 id="今のコミットを取り消したい">今のコミットを取り消したい</h2>
+
+<h3 id="soft-リポジトリだけ変更">&ndash;soft : リポジトリだけ変更</h3>
+
+<p>コミットは取り消したいけど、インデックス・ワーキングエリアはそのままにしたい。<br />
+1. <code>$ git reset --soft HEAD~</code> : HEADの１つ前の状態に巻き戻す</p>
+
+<h3 id="mixed-リポジトリ-インデックスを変更">&ndash;mixed : リポジトリ・インデックスを変更</h3>
+
+<p>コミットは取り消したいけど、ワーキングエリアだけはそのままにしたい。<br />
+1. <code>$ git reset --mixed HEAD~</code> : HEADの１つ前の状態に巻き戻す</p>
+
+<h3 id="hard-まったくなかったことにしたい">&ndash;hard : まったくなかったことにしたい</h3>
+
+<p>コミットも取り消して、ワーキングエリアの状態も戻したい。<br />
+1. <code>$ git reset --hard 40eeb32</code> : HEADの１つ前のハッシュ値でも可</p>
+
+<h2 id="直近のいくつかのコミットを取り消したい-途中のいくつかだけはrebaseで">直近のいくつかのコミットを取り消したい（途中のいくつかだけはrebaseで）</h2>
+
+<h3 id="soft-リポジトリだけ変更-1">&ndash;soft : リポジトリだけ変更</h3>
+
+<p>コミットは取り消したいけど、インデックス・ワーキングエリアはそのままにしたい。<br />
+1. <code>$ git reset --soft HEAD~3</code> : HEADの3つ前の状態に巻き戻す</p>
+
+<h3 id="mixed-リポジトリ-インデックスを変更-1">&ndash;mixed : リポジトリ・インデックスを変更</h3>
+
+<p>コミットは取り消したいけど、ワーキングエリアだけはそのままにしたい。<br />
+1. <code>$ git reset --mixed HEAD~3</code> : HEADの3つ前の状態に巻き戻す</p>
+
+<h3 id="hard-全エリアを変更">&ndash;hard : 全エリアを変更</h3>
+
+<p>コミットも取り消して、ワーキングエリアの状態も戻したい。<br />
+1. <code>$ git reset --hard 40eeb32</code> : その状態にしたいコミットのハッシュ値でも可</p>
+
+<h2 id="あのコミットをなくしたい">あのコミットをなくしたい</h2>
+
+<p>途中のあのコミットだけを削除したい場合。</p>
+
+<ol>
+<li><code>$ git log --oneline</code> : 対象コミットの特定</li>
+<li><code>$ git rebase -i &lt;対象コミットの**１つ前**のハッシュ値&gt;</code></li>
+<li>対象のコミットの行のコマンドを「pick → d」に変更して、保存・終了</li>
+</ol>
+
+<pre><code>$ git log --decorate --oneline
+1588243 (HEAD -&gt; master) 3 bye
+2620a4a 2 morning ← このコミットを削除したい
+40eeb32 1st hello
+
+// rebase
+$ git rebase -i HEAD~2（or 40eeb32）
+... エディタが起動
+pick 2620a4a 2 morning
+pick 1588243 3 bye
+
+... 対象コミットのpickをdに編集して、保存・終了
+d 2620a4a 2 morning ← 削除 : d
+pick 1588243 3 bye
+
+// コンフリクトが発生した場合は、解消して
+$ git add .
+$ git rebase --continue
+</code></pre>
+
+<h2 id="コミットをまとめたい">コミットをまとめたい</h2>
+
+<p>いくつかのコミットをまとめて、１つのコミットにしたい場合。<br />
+<strong>１つ前</strong> のコミットと統合される。</p>
+
+<ol>
+<li><code>$ git log --oneline</code> : 対象コミットの特定</li>
+<li><code>$ git rebase -i &lt;対象コミットの**１つ前**のハッシュ値&gt;</code></li>
+<li>（メッセージ変更あり）まとめたいコミット行のコマンドを「s」に変更して、保存・終了</li>
+<li>（メッセージ変更なし）まとめたいコミット行のコマンドを「f」に変更して、保存・終了</li>
+</ol>
+
+<pre><code class="language-@git">$ git log --oneline
+a990297 4 commit
+72698fd 3 commit ← これと
+38517d7 2 commit ← これを統合したい
+1736724 1 commit
+
+// rebase開始
+$ git rebase -i HEAD~3
+pick 38517d7 2 commit
+pick 72698fd 3 commit　← これを２に統合（１つ前に統合されるので）
+pick a990297 4 commit
+
+// 編集して、保存・終了
+pick 38517d7 2 commit
+s 72698fd 3 commit → s:メッセージ編集あり／f:なし（１つ前のメッセージが適用）
+pick a990297 4 commit
+
+// メッセージ編集が表示される
+# This is a combination of 2 commits.
+# This is the 1st commit message:
+
+2 commit
+
+# This is the commit message #2:
+
+3 commit
+
+// 編集して、保存・終了
+2-3 commit
+
+// 確認
+$ git log --oneline
+f91881d 4 commit
+a7c420d 2-3 commit
+1736724 1 commit
+</code></pre>
+
+<h2 id="コミットの順番を変更したい">コミットの順番を変更したい</h2>
+
+<p>コミットの順番を入れ替えたい場合。</p>
+
+<ol>
+<li><code>$ git log --oneline</code> : 対象コミットの特定</li>
+<li><code>$ git rebase -i &lt;対象コミットの**１つ前**のハッシュ値&gt;</code></li>
+<li>コミットの行を入れ替えて、保存・終了</li>
+</ol>
+
+<pre><code class="language-@git">$ git log --oneline
+f02a616 4 commit
+9b399bc 3 commit file add ← これと
+12f55d3 2 commit          ← これの順番を入れ替えたい
+8a337e8 1 commit
+
+// rebase開始
+$ git rebase -i HEAD~3
+pick 12f55d3 2 commit
+pick 9b399bc 3 commit file add ← この行を2 commitの上に移動する
+pick f02a616 4 commit
+
+// 編集し、保存・終了
+pick 9b399bc 3 commit file add
+pick 12f55d3 2 commit
+pick f02a616 4 commit
+
+// 結果
+$ git log --oneline
+d7f14ec 4 commit
+00d216a 2 commit
+a22ab93 3 commit file add
+8a337e8 1 commit
+</code></pre>
+
+                </div>
+            </article>
+
+            <nav class="Pagenation">
+                <div class="Pagenation__older">
+                    
+                    <a href="http://mzgkworks.com/post/swift-argument/">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        Swiftの引数についてのメモ
+                    </a>
+                    
+                </div>
+                <div class="Pagenation__newer">
+                    
+                </div>
+            </nav>
+
+            <div class="Disqus">
+                
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'mzgkworks-com';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+            </div>
+        </main>
+
+        <aside class="SubContainer">
+    <h1 class="AreaTitle">Products</h1>
+    <div class="SubItem">
+        <a href="./products/products">
+            <i class="fa fa-apple fa-2x" aria-hidden="true"></i>
+        </a>
+    </div>
+
+    <h1 class="AreaTitle">Categories</h1>
+    <div class="SubItem">
+        <ul>
+            
+            <li>
+                <a href="./categories/knowledge/">
+                    knowledge : 6
+                </a>
+            </li>
+            
+            <li>
+                <a href="./categories/programing/">
+                    programing : 1
+                </a>
+            </li>
+            
+            <li>
+                <a href="./categories/setting/">
+                    setting : 10
+                </a>
+            </li>
+            
+            <li>
+                <a href="./categories/usage/">
+                    usage : 15
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+
+    <h1 class="AreaTitle">Tags</h1>
+    <div class="SubItem">
+        <ul>
+            
+            <li>
+                <a href="./tags/apache/">
+                    apache : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/atom/">
+                    atom : 1
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/bash/">
+                    bash : 3
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/blog/">
+                    blog : 5
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/css/">
+                    css : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/git/">
+                    git : 1
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/http/">
+                    http : 1
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/hugo/">
+                    hugo : 5
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/ios/">
+                    ios : 1
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/linux/">
+                    linux : 14
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/mac/">
+                    mac : 4
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/network/">
+                    network : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/sass/">
+                    sass : 1
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/swift/">
+                    swift : 1
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</aside>
+
+
+    </div>
+
+    <div class="FooterContainer">
+    <footer class="Footer">
+        <img  class="Footer__head" src="./images/profile.png" alt="profile-image" />
+        <div class="Footer__body">
+            <i class="fa fa-copyright" aria-hidden="true"></i>
+            <span>2016</span>
+            <span><a href="./about/about">mzgk</a></span>
+        </div>
+    </footer>
+</div>
+
+<script src="./js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-82194549-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+</body>
+</html>
+
