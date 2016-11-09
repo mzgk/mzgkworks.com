@@ -12,7 +12,7 @@ description = "吉本隆明が語った「才能」についての言葉。『15
 
 +++
 
-吉本隆明が、『[15歳の寺小屋　ひとり](https://www.amazon.co.jp/gp/product/4062165651/ref=as_li_tf_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=4062165651&linkCode=as2&tag=mzjubilee0526-22)』の中で、才能について語った言葉。
+吉本隆明が『[15歳の寺小屋　ひとり](https://www.amazon.co.jp/gp/product/4062165651/ref=as_li_tf_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=4062165651&linkCode=as2&tag=mzjubilee0526-22)』の中で、才能について語った言葉。
 <br>
 <br>
 
