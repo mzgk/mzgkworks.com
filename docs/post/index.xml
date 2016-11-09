@@ -6,8 +6,29 @@
     <description>Recent content in Post-rsses on mzgkworks.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Thu, 27 Oct 2016 19:14:50 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 09 Nov 2016 22:23:56 +0900</lastBuildDate>
     <atom:link href="http://mzgkworks.com/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>才能について　吉本隆明</title>
+      <link>http://mzgkworks.com/post/201611092223_words-yoshimoto-takaaki/</link>
+      <pubDate>Wed, 09 Nov 2016 22:23:56 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/201611092223_words-yoshimoto-takaaki/</guid>
+      <description>&lt;p&gt;吉本隆明が、『&lt;a href=&#34;https://www.amazon.co.jp/15%E6%AD%B3%E3%81%AE%E5%AF%BA%E5%AD%90%E5%B1%8B-%E3%81%B2%E3%81%A8%E3%82%8A-%E5%90%89%E6%9C%AC-%E9%9A%86%E6%98%8E/dp/4062165651&#34;&gt;15歳の寺小屋　ひとり&lt;/a&gt;』の中で、才能について語った言葉。
+&lt;br&gt;
+&lt;br&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;才能があるとかないとか、そんなものは認めない。&lt;br&gt;
+そんなのは嘘だ。&lt;br&gt;
+本当なのは、そのために手の動きをどれだけやったかということです。&lt;br&gt;
+才能なんてものは問題にならない。問題になるのはせいぜい最初の二、三年くらいのもので、十年経ったらそんなことは全然問題じゃなくなるぜ。
+&lt;br&gt;&lt;br&gt;
+〜二時間目　才能って何だろうね〜&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+    </item>
     
     <item>
       <title>Git コミットをミスった時の操作</title>
@@ -2239,172 +2260,6 @@ systemctl status postfix.service
    Loaded: loaded (/usr/lib/systemd/system/postfix.service; enabled; vendor preset: disabled)
    Active: active (running) since 金 2016-09-09 17:32:26 JST; 33s ago
 ...
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Linuxでシステムの状態を確認する方法（uptime・df・free・ps）</title>
-      <link>http://mzgkworks.com/post/linux-check-system-status/</link>
-      <pubDate>Fri, 09 Sep 2016 17:06:23 +0900</pubDate>
-      
-      <guid>http://mzgkworks.com/post/linux-check-system-status/</guid>
-      <description>
-
-&lt;h2 id=&#34;システム負荷の確認&#34;&gt;システム負荷の確認&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;uptime&lt;/code&gt; コマンドを使用して、システム負荷を確認することができる。&lt;br /&gt;
-「load average:」部分が１分、５分、１５分の平均負荷を表す。&lt;br /&gt;
-この数値がCPU数（コア数）以下であれば、CPU処理待ちなく特に問題ない状態。&lt;br /&gt;
-オーバーが一時的ではなく継続しているようなら、処理見直し or スケールアップを検討。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ uptime
-# 現在時刻・稼働時間・ログインユーザー数・１分、５分、１５分の平均負荷
- 16:19:01 up 2 min,  1 user,  load average: 0.09, 0.08, 0.04
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;ディスクの使用状況&#34;&gt;ディスクの使用状況&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;$ df -h&lt;/code&gt; コマンドを使用して、ディスクの使用状況を確認することができる。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# -h : サイズを見やすくしてくれる
-# tmpfs : この文字列がつくものは仮想ファイルシステムなので無視してよい
-$ df -h
-ファイルシス                            サイズ  使用  残り 使用% マウント位置
-/dev/mapper/centos_xxx-root    50G  1.4G   49G    3% /  # ← /ディレクトリ
-devtmpfs                                  486M     0  486M    0% /dev
-tmpfs                                     497M     0  497M    0% /dev/shm
-tmpfs                                     497M  6.6M  490M    2% /run
-tmpfs                                     497M     0  497M    0% /sys/fs/cgroup
-/dev/vda1                                 497M  126M  371M   26% /boot
-/dev/mapper/centos_xxx-home    48G   33M   48G    1% /home  # ← /homeディレクトリ
-tmpfs                                     100M     0  100M    0% /run/user/1000
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;メモリとスワップの確認&#34;&gt;メモリとスワップの確認&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;$ free -h&lt;/code&gt; コマンドを使用して、メモリとスワップの使用状況が確認できる。&lt;br /&gt;
-スワップが常態で使われているような場合、メモリが不足していると考えられる。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ free -h
-              total        used        free      shared  buff/cache   available
-Mem:           992M         85M        786M        6.5M        121M        777M
-Swap:          2.0G          0B        2.0G
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;項目&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;total&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;合計&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;used&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;利用中&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;free&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;未使用&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;shared&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;仮想的な共有メモリ&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;buff/cache&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;バッファ及びキャッシュ&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;available&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;アプリケーション起動時にスワップなしで使えるメモリ&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;メモリとディスクのアクセス速度の差を小さくするための仕組みとして、バッファとキャッシュがある。&lt;/p&gt;
-
-&lt;h3 id=&#34;バッファ&#34;&gt;バッファ&lt;/h3&gt;
-
-&lt;p&gt;ディスクへデータを書き込む際に、いったんメモリ上のバッファ領域に書き込んだ時点で書き込み完了とし、後からバックグランドで実際にディスクへ書き込みを行う。&lt;/p&gt;
-
-&lt;h3 id=&#34;キャッシュ&#34;&gt;キャッシュ&lt;/h3&gt;
-
-&lt;p&gt;ディスクからいったん読み出したデータをメモリ上のキャッシュ領域に残しておき、同じデータが再度アクセスされた場合はメモリ上のデータを利用する。&lt;/p&gt;
-
-&lt;h2 id=&#34;実行中のプロセスを確認&#34;&gt;実行中のプロセスを確認&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;$ ps aux&lt;/code&gt; コマンドで現在実行中のプログラム（プロセス）の確認ができる。&lt;br /&gt;
-&lt;code&gt;| less&lt;/code&gt; コマンドへパイプしたり、&lt;code&gt;| grep 検索名&lt;/code&gt; コマンドへパイプして確認する。&lt;br /&gt;
-&lt;strong&gt;オプションには「-」をつけない&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# sshdを含むプロセスを表示する
-# ユーザー・プロセスID・CPU占有率・メモリ占有率・仮想メモリ使用サイズ・物理メモリ使用サイズ
-# 端末・状態・開始・稼働時間・コマンド
-$ ps aux | grep sshd
-root      1268  0.0  0.3  82560  3600 ?        Ss   16:17   0:00 /usr/sbin/sshd -D
-root      2408  0.0  0.4 140788  5004 ?        Ss   16:17   0:00 sshd: centuser [priv]
-centuser  2412  0.0  0.2 140788  2148 ?        S    16:17   0:00 sshd: centuser@pts/0
-centuser  2446  0.0  0.0 112668   980 pts/0    S+   16:46   0:00 grep --color=auto sshd
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;プロセスの操作&#34;&gt;プロセスの操作&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;$ kill&lt;/code&gt; コマンドで、不要なプロセスであったりエラーで終了しないプロセスを停止することができる。&lt;br /&gt;
-TEAMを送ってもプロセスが反応しない場合は、KILLシグナルを送る。&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;シグナルID&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;シグナル名&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;動作&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;9&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;KILL&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;強制終了&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;15&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;TERM&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;終了&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;18&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;CONT&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;再開&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;19&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;STOP&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;一時停止&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# kill シグナルID プロセスID
-$ kill -15 2412
-
-# kill -s  シグナル名 プロセスID
-$ kill -s KILL 2412
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>

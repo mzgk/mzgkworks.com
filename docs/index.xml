@@ -6,8 +6,29 @@
     <description>Recent content on mzgkworks.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Thu, 27 Oct 2016 19:14:50 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 09 Nov 2016 22:23:56 +0900</lastBuildDate>
     <atom:link href="http://mzgkworks.com/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>才能について　吉本隆明</title>
+      <link>http://mzgkworks.com/post/201611092223_words-yoshimoto-takaaki/</link>
+      <pubDate>Wed, 09 Nov 2016 22:23:56 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/201611092223_words-yoshimoto-takaaki/</guid>
+      <description>&lt;p&gt;吉本隆明が、『&lt;a href=&#34;https://www.amazon.co.jp/15%E6%AD%B3%E3%81%AE%E5%AF%BA%E5%AD%90%E5%B1%8B-%E3%81%B2%E3%81%A8%E3%82%8A-%E5%90%89%E6%9C%AC-%E9%9A%86%E6%98%8E/dp/4062165651&#34;&gt;15歳の寺小屋　ひとり&lt;/a&gt;』の中で、才能について語った言葉。
+&lt;br&gt;
+&lt;br&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;才能があるとかないとか、そんなものは認めない。&lt;br&gt;
+そんなのは嘘だ。&lt;br&gt;
+本当なのは、そのために手の動きをどれだけやったかということです。&lt;br&gt;
+才能なんてものは問題にならない。問題になるのはせいぜい最初の二、三年くらいのもので、十年経ったらそんなことは全然問題じゃなくなるぜ。
+&lt;br&gt;&lt;br&gt;
+〜二時間目　才能って何だろうね〜&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+    </item>
     
     <item>
       <title>Git コミットをミスった時の操作</title>
@@ -1931,194 +1952,6 @@ $ sudo chmod 600 /etc/httpd/conf.d/htpasswd
 
 &lt;p&gt;これで、アクセス時に「ユーザー」「パスワード」を求めるダイアログが表示される。&lt;br /&gt;
 認証が成功した場合に、アクセスしたページが表示される。&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>CentOS 7へのWebサーバー（Apache）のインストールと基本設定</title>
-      <link>http://mzgkworks.com/post/centos7-apache-install/</link>
-      <pubDate>Mon, 12 Sep 2016 15:42:13 +0900</pubDate>
-      
-      <guid>http://mzgkworks.com/post/centos7-apache-install/</guid>
-      <description>
-
-&lt;p&gt;CentOS7への、Webサーバー（Apache）のインストールから設定まで。&lt;/p&gt;
-
-&lt;h2 id=&#34;apacheのインストール&#34;&gt;Apacheのインストール&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;$ yum&lt;/code&gt;コマンドを使用して関連あるパッケージを含めてインストールを行う。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo yum install httpd
-[sudo] password for centuser:
-...
-インストール:
-  httpd.x86_64 0:2.4.6-40.el7.centos.4
-...
-完了しました!
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;ドキュメントルート&#34;&gt;ドキュメントルート&lt;/h2&gt;
-
-&lt;p&gt;Webで公開するトップディレクトリ。&lt;br /&gt;
-デフォルトでは、「/var/www/html/」。&lt;br /&gt;
-「/etc/httpd/conf/httpd.conf」ファイルからでも確認ができる。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# ドキュメントルートを確認（L119付近）
-$ sudo vi /etc/httpd/conf/httpd.conf
-...
-#
-# DocumentRoot: The directory out of which you will serve your
-# documents. By default, all requests are taken from this directory, but
-# symbolic links and aliases may be used to point to other locations.
-#
-DocumentRoot &amp;quot;/var/www/html&amp;quot;
-...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;設定ファイル-etc-httpd-conf-httpd-conf&#34;&gt;設定ファイル（/etc/httpd/conf/httpd.conf）&lt;/h2&gt;
-
-&lt;p&gt;Apacheのメイン設定ファイル。&lt;/p&gt;
-
-&lt;p&gt;主なディレクティブ&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;ディレクティブ&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;デフォルト&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;ServerRoot&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;設定ファイル等を配置するトップディレクトリ&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;/etc/httpd&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;Listen&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Apacheが待ち受けるポート番号&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;80&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;User&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Apacheの実行ユーザー&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;apache&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;Group&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Apacheの実行グループ&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;apache&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;ServerAdmin&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Apacheの管理者&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;root@localhost&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;ServerName&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Webサーバー名&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;#ServerName www.example.com:80&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;DocumentRoot&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;ドキュメントルート&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;/var/www/html&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;DirectoryIndex&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;インデックスファイル名&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;index.html&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&#34;serverroot&#34;&gt;ServerRoot&lt;/h3&gt;
-
-&lt;p&gt;設定ファイル等を配置するトップディレクトリ。&lt;br /&gt;
-httpd.confファイル内で相対パスを指定すると、このディレクトリが起点となる。&lt;/p&gt;
-
-&lt;h3 id=&#34;listen&#34;&gt;Listen&lt;/h3&gt;
-
-&lt;p&gt;Apacheが待ち受けるポート番号。&lt;/p&gt;
-
-&lt;h3 id=&#34;user-group&#34;&gt;User/Group&lt;/h3&gt;
-
-&lt;p&gt;Apacheの実行ユーザーとグルー。&lt;br /&gt;
-Apacheが扱うコンテンツは、ここで指定されているユーザー・グループが利用できるアクセス権が必要。&lt;/p&gt;
-
-&lt;h3 id=&#34;serveradmin&#34;&gt;ServerAdmin&lt;/h3&gt;
-
-&lt;p&gt;Apacheが稼働しているサーバーの管理者のメールアドレス。&lt;/p&gt;
-
-&lt;h3 id=&#34;servername&#34;&gt;ServerName&lt;/h3&gt;
-
-&lt;p&gt;Webサーバーの名前。&lt;br /&gt;
-デフォルトではコメントアウトされているので、解除して設定すること。&lt;br /&gt;
-:80のようにポート番号を指定できるが、省略してもよい。&lt;/p&gt;
-
-&lt;h3 id=&#34;documentroot&#34;&gt;DocumentRoot&lt;/h3&gt;
-
-&lt;p&gt;ドキュメントルートを &lt;strong&gt;絶対パス&lt;/strong&gt; で設定する。&lt;br /&gt;
-このディレクトリ以下には、User/Groupディレクティブで指定したユーザー・グループがアクセスできる必要がある。&lt;/p&gt;
-
-&lt;h3 id=&#34;directoryindex&#34;&gt;DirectoryIndex&lt;/h3&gt;
-
-&lt;p&gt;URLでファイル名まで指定されなかったときに、表示するファイル名を指定する。&lt;/p&gt;
-
-&lt;h2 id=&#34;httpd-confファイルの構文チェック&#34;&gt;httpd.confファイルの構文チェック&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;$ httpd -t&lt;/code&gt; コマンドで構文チェックをすることができる。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# /etc/httpd/conf/httpd.confファイルのチェック
-$ httpd -t
-Syntax OK
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;apacheの起動-自動起動設定&#34;&gt;Apacheの起動・自動起動設定&lt;/h2&gt;
-
-&lt;p&gt;Apacheの起動と、次回からのシステム起動時に自動起動させる設定。&lt;br /&gt;
-Apacheを起動すると、複数のhttpdプロセスが生成される。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 起動
-$ sudo systemctl start httpd.service
-
-# 自動起動設定
-$ sudo systemctl enable httpd.service
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;ファイヤウォールの設定&#34;&gt;ファイヤウォールの設定&lt;/h2&gt;
-
-&lt;p&gt;ファイヤウォールの設定を変更し、80番ポート（http）へのアクセスを許可させる。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 設定
-$ sudo firewall-cmd --permanent --add-service=http
-
-# 更新
-$ sudo firewall-cmd --reload
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;ログ&#34;&gt;ログ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;アクセスログ : /var/log/httpd/access_log&lt;/li&gt;
-&lt;li&gt;エラーログ : /var/log/httpd/error_log&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# アクセスログ
-$ sudo less /var/log/httpd/access_log
-
-# エラーログ
-$ sudo less /var/log/httpd/error_log
-&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
