@@ -6,8 +6,88 @@
     <description>Recent content on mzgkworks.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Wed, 09 Nov 2016 22:23:56 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 21 Nov 2016 17:42:49 +0900</lastBuildDate>
     <atom:link href="http://mzgkworks.com/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Swift3 ViewControllerのライフサイクル</title>
+      <link>http://mzgkworks.com/post/swift3-viewcontroller-lifecycle/</link>
+      <pubDate>Mon, 21 Nov 2016 17:42:49 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/swift3-viewcontroller-lifecycle/</guid>
+      <description>
+
+&lt;p&gt;ViewControllerのルートViewのライフサイクルを再確認。&lt;br /&gt;
+各メソッドに以下のようなデバッグログを埋め込んで確認。&lt;br /&gt;
+&lt;br&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@Swift&#34;&gt;override func loadView() {
+    super.loadView()
+    print(&amp;quot;VC1 :&amp;quot;, #function)
+    // #functionで関数名が表示される
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Xcode 8.1&lt;/li&gt;
+&lt;li&gt;Swift 3&lt;/li&gt;
+&lt;li&gt;シュミュレーターで確認（iPhone6s 10.1）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;起動-ホームボタン-アプリアイコン&#34;&gt;起動 → ホームボタン → アプリアイコン&lt;/h2&gt;
+
+&lt;h3 id=&#34;起動&#34;&gt;起動&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;application(_:didFinishLaunchingWithOptions:)&lt;/li&gt;
+&lt;li&gt;VC1 : loadView()&lt;/li&gt;
+&lt;li&gt;VC1 : viewDidLoad()&lt;/li&gt;
+&lt;li&gt;VC1 : viewWillAppear&lt;/li&gt;
+&lt;li&gt;applicationDidBecomeActive&lt;/li&gt;
+&lt;li&gt;VC1 : viewWillLayoutSubviews()&lt;/li&gt;
+&lt;li&gt;VC1 : viewDidLayoutSubviews()&lt;/li&gt;
+&lt;li&gt;VC1 : viewWillLayoutSubviews()&lt;/li&gt;
+&lt;li&gt;VC1 : viewDidLayoutSubviews()&lt;/li&gt;
+&lt;li&gt;VC1 : viewDidAppear&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&#34;ホームボタンをタップ&#34;&gt;ホームボタンをタップ&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;applicationWillResignActive&lt;/li&gt;
+&lt;li&gt;applicationDidEnterBackground&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&#34;アプリアイコンをタップ&#34;&gt;アプリアイコンをタップ&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;applicationWillEnterForeground&lt;/li&gt;
+&lt;li&gt;applicationDidBecomeActive&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;vc1-ボタンタップ-vc2-モーダル表示&#34;&gt;VC1（ボタンタップ） → VC2（モーダル表示）&lt;/h2&gt;
+
+&lt;h3 id=&#34;画面遷移&#34;&gt;画面遷移&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;VC1 : prepare(for:sender:)&lt;/li&gt;
+&lt;li&gt;VC2 : loadView()&lt;/li&gt;
+&lt;li&gt;VC2 : viewDidLoad()&lt;/li&gt;
+&lt;li&gt;VC1 : viewWillDisappear&lt;/li&gt;
+&lt;li&gt;VC2 : viewWillAppear&lt;/li&gt;
+&lt;li&gt;VC2 : viewWillLayoutSubviews()&lt;/li&gt;
+&lt;li&gt;VC2 : viewDidLayoutSubviews()&lt;/li&gt;
+&lt;li&gt;VC1 : viewWillLayoutSubviews()  ← 謎&lt;/li&gt;
+&lt;li&gt;VC1 : viewDidLayoutSubviews()   ← 謎&lt;/li&gt;
+&lt;li&gt;VC2 : viewWillLayoutSubviews()  ← 謎&lt;/li&gt;
+&lt;li&gt;VC2 : viewDidLayoutSubviews()   ← 謎&lt;/li&gt;
+&lt;li&gt;VC2 : viewDidAppear&lt;/li&gt;
+&lt;li&gt;VC1 : viewDidDisappear&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
     
     <item>
       <title>才能について　吉本隆明</title>
@@ -1838,120 +1918,6 @@ lrwxr-xr-x    1 usr  staff     35  9 12 18:29 .editorconfig -&amp;gt; /Users/usr
 &lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 削除
 $ unlink ~/.editorconfig
 &lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>ApacheにBasic認証を設定する</title>
-      <link>http://mzgkworks.com/post/apache-basic-auth/</link>
-      <pubDate>Mon, 12 Sep 2016 16:28:46 +0900</pubDate>
-      
-      <guid>http://mzgkworks.com/post/apache-basic-auth/</guid>
-      <description>
-
-&lt;p&gt;CentOS7・Apacheで基本認証（Basic認証）を設定する方法。&lt;br /&gt;
-基本認証は、あらかじめApacheにユーザー名とパスワードを登録しておき、特定のディレクトリ以下にアクセスがあれば認証を求めるという仕組み。&lt;/p&gt;
-
-&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Apache : Apache/2.4.6 (CentOS)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;基本認証とダイジェスト認証&#34;&gt;基本認証とダイジェスト認証&lt;/h2&gt;
-
-&lt;p&gt;ユーザー名・パスワードの入力を戻る方法としては、以下の２種類が存在する。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;基本認証 : ユーザー・パスワードのデータを平文で送信&lt;/li&gt;
-&lt;li&gt;ダイジェスト認証 : MD5で暗号化して送信&lt;/li&gt;
-&lt;li&gt;安全性 : ダイジェスト認証　＞　基本認証&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;基本認証の追加&#34;&gt;基本認証の追加&lt;/h2&gt;
-
-&lt;h3 id=&#34;登録ファイルの作成&#34;&gt;登録ファイルの作成&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;htpasswd -c ファイル名 ユーザー&lt;/code&gt;コマンドで、ユーザーとパスワードを登録するファイルを作成する。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 登録するファイルを作成する
-$ sudo htpasswd -c /etc/httpd/conf.d/htpasswd webuser
-New Password:
-...
-Adding password for user webuser
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;権限変更&#34;&gt;権限変更&lt;/h3&gt;
-
-&lt;p&gt;作成された登録ファイルの権限をapacheユーザー・グループのみアクセス可能なように変更する。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 所有権
-$ sudo chown apache:apache /etc/httpd/conf.d/htpasswd
-
-# アクセス権
-$ sudo chmod 600 /etc/httpd/conf.d/htpasswd
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;認証ディレクトリの設定&#34;&gt;認証ディレクトリの設定&lt;/h3&gt;
-
-&lt;p&gt;基本認証を適用するディレクトリの設定を行う。&lt;br /&gt;
-設定を記述するファイルのファイル名は任意。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo vi /etc/httpd/conf.d/auth.conf
-
-# 以下を追加（適用するディレクトリがドキュメントルートの場合）
-&amp;lt;Directory &amp;quot;/var/www/http&amp;quot;&amp;gt;
-  AuthType Basic
-  AuthName &amp;quot;Private Aera&amp;quot;
-  AuthUserFile /etc/httpd/conf.d/htpasswd
-  Require valid-user
-&amp;lt;/Directory&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;設定内容&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;ディレクティブ&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;AuthType&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;BASICを指定すると基本認証&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;AuthName&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;認証名（認証ウィンドウの表示）&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;AuthUserFile&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;パスワードファイル名&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;Require&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;認証ユーザー（valid-user : ファイルに書かれた全ユーザー）&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&#34;apache設定ファイルの再読み込み&#34;&gt;Apache設定ファイルの再読み込み&lt;/h3&gt;
-
-&lt;p&gt;Apacheをリロードして、設定ファイルを再読み込みさせる。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo systemctl reload hhtpd.service
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;urlアクセス時&#34;&gt;URLアクセス時&lt;/h3&gt;
-
-&lt;p&gt;これで、アクセス時に「ユーザー」「パスワード」を求めるダイアログが表示される。&lt;br /&gt;
-認証が成功した場合に、アクセスしたページが表示される。&lt;/p&gt;
 </description>
     </item>
     

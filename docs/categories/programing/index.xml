@@ -9,6 +9,86 @@
     <atom:link href="http://mzgkworks.com/categories/programing/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>Swift3 ViewControllerのライフサイクル</title>
+      <link>http://mzgkworks.com/post/swift3-viewcontroller-lifecycle/</link>
+      <pubDate>Mon, 21 Nov 2016 17:42:49 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/swift3-viewcontroller-lifecycle/</guid>
+      <description>
+
+&lt;p&gt;ViewControllerのルートViewのライフサイクルを再確認。&lt;br /&gt;
+各メソッドに以下のようなデバッグログを埋め込んで確認。&lt;br /&gt;
+&lt;br&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@Swift&#34;&gt;override func loadView() {
+    super.loadView()
+    print(&amp;quot;VC1 :&amp;quot;, #function)
+    // #functionで関数名が表示される
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Xcode 8.1&lt;/li&gt;
+&lt;li&gt;Swift 3&lt;/li&gt;
+&lt;li&gt;シュミュレーターで確認（iPhone6s 10.1）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;起動-ホームボタン-アプリアイコン&#34;&gt;起動 → ホームボタン → アプリアイコン&lt;/h2&gt;
+
+&lt;h3 id=&#34;起動&#34;&gt;起動&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;application(_:didFinishLaunchingWithOptions:)&lt;/li&gt;
+&lt;li&gt;VC1 : loadView()&lt;/li&gt;
+&lt;li&gt;VC1 : viewDidLoad()&lt;/li&gt;
+&lt;li&gt;VC1 : viewWillAppear&lt;/li&gt;
+&lt;li&gt;applicationDidBecomeActive&lt;/li&gt;
+&lt;li&gt;VC1 : viewWillLayoutSubviews()&lt;/li&gt;
+&lt;li&gt;VC1 : viewDidLayoutSubviews()&lt;/li&gt;
+&lt;li&gt;VC1 : viewWillLayoutSubviews()&lt;/li&gt;
+&lt;li&gt;VC1 : viewDidLayoutSubviews()&lt;/li&gt;
+&lt;li&gt;VC1 : viewDidAppear&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&#34;ホームボタンをタップ&#34;&gt;ホームボタンをタップ&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;applicationWillResignActive&lt;/li&gt;
+&lt;li&gt;applicationDidEnterBackground&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&#34;アプリアイコンをタップ&#34;&gt;アプリアイコンをタップ&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;applicationWillEnterForeground&lt;/li&gt;
+&lt;li&gt;applicationDidBecomeActive&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;vc1-ボタンタップ-vc2-モーダル表示&#34;&gt;VC1（ボタンタップ） → VC2（モーダル表示）&lt;/h2&gt;
+
+&lt;h3 id=&#34;画面遷移&#34;&gt;画面遷移&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;VC1 : prepare(for:sender:)&lt;/li&gt;
+&lt;li&gt;VC2 : loadView()&lt;/li&gt;
+&lt;li&gt;VC2 : viewDidLoad()&lt;/li&gt;
+&lt;li&gt;VC1 : viewWillDisappear&lt;/li&gt;
+&lt;li&gt;VC2 : viewWillAppear&lt;/li&gt;
+&lt;li&gt;VC2 : viewWillLayoutSubviews()&lt;/li&gt;
+&lt;li&gt;VC2 : viewDidLayoutSubviews()&lt;/li&gt;
+&lt;li&gt;VC1 : viewWillLayoutSubviews()  ← 謎&lt;/li&gt;
+&lt;li&gt;VC1 : viewDidLayoutSubviews()   ← 謎&lt;/li&gt;
+&lt;li&gt;VC2 : viewWillLayoutSubviews()  ← 謎&lt;/li&gt;
+&lt;li&gt;VC2 : viewDidLayoutSubviews()   ← 謎&lt;/li&gt;
+&lt;li&gt;VC2 : viewDidAppear&lt;/li&gt;
+&lt;li&gt;VC1 : viewDidDisappear&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Swiftの引数についてのメモ</title>
       <link>http://mzgkworks.com/post/swift-argument/</link>
       <pubDate>Wed, 26 Oct 2016 16:27:37 +0900</pubDate>

@@ -6,8 +6,88 @@
     <description>Recent content in Post-rsses on mzgkworks.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Wed, 09 Nov 2016 22:23:56 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 21 Nov 2016 17:42:49 +0900</lastBuildDate>
     <atom:link href="http://mzgkworks.com/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Swift3 ViewControllerのライフサイクル</title>
+      <link>http://mzgkworks.com/post/swift3-viewcontroller-lifecycle/</link>
+      <pubDate>Mon, 21 Nov 2016 17:42:49 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/swift3-viewcontroller-lifecycle/</guid>
+      <description>
+
+&lt;p&gt;ViewControllerのルートViewのライフサイクルを再確認。&lt;br /&gt;
+各メソッドに以下のようなデバッグログを埋め込んで確認。&lt;br /&gt;
+&lt;br&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-@Swift&#34;&gt;override func loadView() {
+    super.loadView()
+    print(&amp;quot;VC1 :&amp;quot;, #function)
+    // #functionで関数名が表示される
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Xcode 8.1&lt;/li&gt;
+&lt;li&gt;Swift 3&lt;/li&gt;
+&lt;li&gt;シュミュレーターで確認（iPhone6s 10.1）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;起動-ホームボタン-アプリアイコン&#34;&gt;起動 → ホームボタン → アプリアイコン&lt;/h2&gt;
+
+&lt;h3 id=&#34;起動&#34;&gt;起動&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;application(_:didFinishLaunchingWithOptions:)&lt;/li&gt;
+&lt;li&gt;VC1 : loadView()&lt;/li&gt;
+&lt;li&gt;VC1 : viewDidLoad()&lt;/li&gt;
+&lt;li&gt;VC1 : viewWillAppear&lt;/li&gt;
+&lt;li&gt;applicationDidBecomeActive&lt;/li&gt;
+&lt;li&gt;VC1 : viewWillLayoutSubviews()&lt;/li&gt;
+&lt;li&gt;VC1 : viewDidLayoutSubviews()&lt;/li&gt;
+&lt;li&gt;VC1 : viewWillLayoutSubviews()&lt;/li&gt;
+&lt;li&gt;VC1 : viewDidLayoutSubviews()&lt;/li&gt;
+&lt;li&gt;VC1 : viewDidAppear&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&#34;ホームボタンをタップ&#34;&gt;ホームボタンをタップ&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;applicationWillResignActive&lt;/li&gt;
+&lt;li&gt;applicationDidEnterBackground&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&#34;アプリアイコンをタップ&#34;&gt;アプリアイコンをタップ&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;applicationWillEnterForeground&lt;/li&gt;
+&lt;li&gt;applicationDidBecomeActive&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;vc1-ボタンタップ-vc2-モーダル表示&#34;&gt;VC1（ボタンタップ） → VC2（モーダル表示）&lt;/h2&gt;
+
+&lt;h3 id=&#34;画面遷移&#34;&gt;画面遷移&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;VC1 : prepare(for:sender:)&lt;/li&gt;
+&lt;li&gt;VC2 : loadView()&lt;/li&gt;
+&lt;li&gt;VC2 : viewDidLoad()&lt;/li&gt;
+&lt;li&gt;VC1 : viewWillDisappear&lt;/li&gt;
+&lt;li&gt;VC2 : viewWillAppear&lt;/li&gt;
+&lt;li&gt;VC2 : viewWillLayoutSubviews()&lt;/li&gt;
+&lt;li&gt;VC2 : viewDidLayoutSubviews()&lt;/li&gt;
+&lt;li&gt;VC1 : viewWillLayoutSubviews()  ← 謎&lt;/li&gt;
+&lt;li&gt;VC1 : viewDidLayoutSubviews()   ← 謎&lt;/li&gt;
+&lt;li&gt;VC2 : viewWillLayoutSubviews()  ← 謎&lt;/li&gt;
+&lt;li&gt;VC2 : viewDidLayoutSubviews()   ← 謎&lt;/li&gt;
+&lt;li&gt;VC2 : viewDidAppear&lt;/li&gt;
+&lt;li&gt;VC1 : viewDidDisappear&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
     
     <item>
       <title>才能について　吉本隆明</title>
@@ -2121,145 +2201,6 @@ $ sudo less /var/log/httpd/access_log
 
 # エラーログ
 $ sudo less /var/log/httpd/error_log
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Linux（CentOS7）のサービス操作（systemctlコマンド）</title>
-      <link>http://mzgkworks.com/post/linux-service-systemctl/</link>
-      <pubDate>Fri, 09 Sep 2016 17:35:24 +0900</pubDate>
-      
-      <guid>http://mzgkworks.com/post/linux-service-systemctl/</guid>
-      <description>
-
-&lt;h2 id=&#34;サービスの管理&#34;&gt;サービスの管理&lt;/h2&gt;
-
-&lt;p&gt;サービス : OSから切り離し可能な、何らかの役割を持ったサブシステム。&lt;br /&gt;
-&lt;code&gt;$ systemctl サブコマンド サービス名&lt;/code&gt; で操作を行う。&lt;br /&gt;
-CentOS 6までだと &lt;code&gt;$ service&lt;/code&gt; コマンド。&lt;/p&gt;
-
-&lt;h3 id=&#34;主なサブコマンド&#34;&gt;主なサブコマンド&lt;/h3&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;サブコマンド&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;start&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;サービスを開始する&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;stop&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;サービスを停止する&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;restart&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;サービスを再起動する&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;enable&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;システム起動時にサービスを自動開始する&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;disable&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;システム起動時にサービスが自動開始しないようにする&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;status&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;サービスの状態を表示する&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&#34;主なサービス&#34;&gt;主なサービス&lt;/h3&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;サービス名&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;firewalld.service&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;ファイヤーウォールサービス&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;crond.service&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;スケジュール処理サービス&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;cups.service&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;印刷サービス&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;postfix.service&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Postfix（メール）サービス&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;rsyslog.service&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;システムログサービス&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;sshd.service&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;SSHサーバー&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;httpd.service&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Webサーバー&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# postfixサービスの状態を確認
-$ systemctl status postfix.service
-● postfix.service - Postfix Mail Transport Agent
-   Loaded: loaded (/usr/lib/systemd/system/postfix.service; enabled; vendor preset: disabled)
-   Active: active (running) since 金 2016-09-09 16:17:13 JST; 1h 12min ago
-...
-...
-
-# postfixサービスを停止
-sudo systemctl stop postfix.service
-[sudo] password for centuser:
-
-# 確認
-systemctl status postfix.service
-● postfix.service - Postfix Mail Transport Agent
-   Loaded: loaded (/usr/lib/systemd/system/postfix.service; enabled; vendor preset: disabled)
-   Active: inactive (dead) since 金 2016-09-09 17:31:09 JST; 17s ago
-...
-
-# 開始
-# postfixサービスを停止
-sudo systemctl start postfix.service
-[sudo] password for centuser:
-
-# 確認
-systemctl status postfix.service
-● postfix.service - Postfix Mail Transport Agent
-   Loaded: loaded (/usr/lib/systemd/system/postfix.service; enabled; vendor preset: disabled)
-   Active: active (running) since 金 2016-09-09 17:32:26 JST; 33s ago
-...
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
