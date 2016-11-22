@@ -6,8 +6,94 @@
     <description>Recent content in Post-rsses on mzgkworks.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Mon, 21 Nov 2016 17:42:49 +0900</lastBuildDate>
+    <lastBuildDate>Tue, 22 Nov 2016 18:19:42 +0900</lastBuildDate>
     <atom:link href="http://mzgkworks.com/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>iOSでの画面遷移（Segue/Modalの方針・データ授受・ライフサイクル）の確認</title>
+      <link>http://mzgkworks.com/post/iso-transition-segue-modal/</link>
+      <pubDate>Tue, 22 Nov 2016 18:19:42 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/iso-transition-segue-modal/</guid>
+      <description>
+
+&lt;p&gt;Single ViewController間の画面遷移に関して、以下の再確認のためのサンプル。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;遷移方法（Segue・Modal）の使用方針&lt;/li&gt;
+&lt;li&gt;VC間のデータを受け渡す方法&lt;/li&gt;
+&lt;li&gt;ライフサイクルの確認&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Xcode 8.1&lt;/li&gt;
+&lt;li&gt;Swift 3.0&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;使用方針&#34;&gt;使用方針&lt;/h2&gt;
+
+&lt;h3 id=&#34;segue&#34;&gt;Segue&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Viewが提供する機能が完全に切り替わる場合に使用&lt;/li&gt;
+&lt;li&gt;遷移のアクションを発火させるUIから、遷移先のViewControllerへ直接Segueを接続しない
+
+&lt;ul&gt;
+&lt;li&gt;遷移の発火がStoryBoardに埋もれるため&lt;/li&gt;
+&lt;li&gt;Triggered Segues : manualを使用してVC間を接続&lt;/li&gt;
+&lt;li&gt;発火させるUIからは、コードでSegueを実行する&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;戻る処理はunwind Segueを使用&lt;/li&gt;
+&lt;li&gt;データの受け渡し
+
+&lt;ul&gt;
+&lt;li&gt;各VCのprepare(for:sender:)にて、インスタンスを生成して行う&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;サンプル
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/mzgk/ManualSegue&#34;&gt;GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;modal&#34;&gt;Modal&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;元のViewから一時的に別機能を提供する場合に使用&lt;/li&gt;
+&lt;li&gt;Segueを使用しないで、コードで表示させる
+
+&lt;ul&gt;
+&lt;li&gt;機能の切り替えではないため&lt;/li&gt;
+&lt;li&gt;storyboard?.instantiateViewController(withIdentifier:) as! ModalのVCクラス名&lt;/li&gt;
+&lt;li&gt;self.present(_:animated:completion:)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;閉じるのは表示元の責務とし、Modal側でDelegateプロトコルを定義する
+
+&lt;ul&gt;
+&lt;li&gt;表示元でDelegateプロトコルを実装し、Modalを閉じる&lt;/li&gt;
+&lt;li&gt;self.dismiss(animated: true, completion: nil)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;データの受け渡し
+
+&lt;ul&gt;
+&lt;li&gt;元 → Modal : self.present(_:animated:completion:)前に生成したModalのインスタンスに設定&lt;/li&gt;
+&lt;li&gt;Modal → 元 : Modal側でDelegateプロトコルを定義し、その引数を使用&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;サンプル
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/mzgk/ModalWithCode&#34;&gt;GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br&gt;
+&lt;br&gt;
+SegueとModalの使い分け方針とデータの受け渡し方法をすっきりさせるためのアウトプット。&lt;br /&gt;
+ライフサイクルに関しては、シュミュレーターで実行したからなのかLayoutSubView()系が複数回コールされているのが、ちょっと違和感を感じる。&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Swift3 ViewControllerのライフサイクル</title>
@@ -2014,194 +2100,6 @@ $ sudo chmod 600 /etc/httpd/conf.d/htpasswd
 
 &lt;p&gt;これで、アクセス時に「ユーザー」「パスワード」を求めるダイアログが表示される。&lt;br /&gt;
 認証が成功した場合に、アクセスしたページが表示される。&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>CentOS 7へのWebサーバー（Apache）のインストールと基本設定</title>
-      <link>http://mzgkworks.com/post/centos7-apache-install/</link>
-      <pubDate>Mon, 12 Sep 2016 15:42:13 +0900</pubDate>
-      
-      <guid>http://mzgkworks.com/post/centos7-apache-install/</guid>
-      <description>
-
-&lt;p&gt;CentOS7への、Webサーバー（Apache）のインストールから設定まで。&lt;/p&gt;
-
-&lt;h2 id=&#34;apacheのインストール&#34;&gt;Apacheのインストール&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;$ yum&lt;/code&gt;コマンドを使用して関連あるパッケージを含めてインストールを行う。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo yum install httpd
-[sudo] password for centuser:
-...
-インストール:
-  httpd.x86_64 0:2.4.6-40.el7.centos.4
-...
-完了しました!
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;ドキュメントルート&#34;&gt;ドキュメントルート&lt;/h2&gt;
-
-&lt;p&gt;Webで公開するトップディレクトリ。&lt;br /&gt;
-デフォルトでは、「/var/www/html/」。&lt;br /&gt;
-「/etc/httpd/conf/httpd.conf」ファイルからでも確認ができる。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# ドキュメントルートを確認（L119付近）
-$ sudo vi /etc/httpd/conf/httpd.conf
-...
-#
-# DocumentRoot: The directory out of which you will serve your
-# documents. By default, all requests are taken from this directory, but
-# symbolic links and aliases may be used to point to other locations.
-#
-DocumentRoot &amp;quot;/var/www/html&amp;quot;
-...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;設定ファイル-etc-httpd-conf-httpd-conf&#34;&gt;設定ファイル（/etc/httpd/conf/httpd.conf）&lt;/h2&gt;
-
-&lt;p&gt;Apacheのメイン設定ファイル。&lt;/p&gt;
-
-&lt;p&gt;主なディレクティブ&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;ディレクティブ&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;デフォルト&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;ServerRoot&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;設定ファイル等を配置するトップディレクトリ&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;/etc/httpd&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;Listen&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Apacheが待ち受けるポート番号&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;80&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;User&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Apacheの実行ユーザー&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;apache&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;Group&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Apacheの実行グループ&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;apache&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;ServerAdmin&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Apacheの管理者&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;root@localhost&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;ServerName&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Webサーバー名&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;#ServerName www.example.com:80&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;DocumentRoot&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;ドキュメントルート&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;/var/www/html&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;DirectoryIndex&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;インデックスファイル名&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;index.html&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&#34;serverroot&#34;&gt;ServerRoot&lt;/h3&gt;
-
-&lt;p&gt;設定ファイル等を配置するトップディレクトリ。&lt;br /&gt;
-httpd.confファイル内で相対パスを指定すると、このディレクトリが起点となる。&lt;/p&gt;
-
-&lt;h3 id=&#34;listen&#34;&gt;Listen&lt;/h3&gt;
-
-&lt;p&gt;Apacheが待ち受けるポート番号。&lt;/p&gt;
-
-&lt;h3 id=&#34;user-group&#34;&gt;User/Group&lt;/h3&gt;
-
-&lt;p&gt;Apacheの実行ユーザーとグルー。&lt;br /&gt;
-Apacheが扱うコンテンツは、ここで指定されているユーザー・グループが利用できるアクセス権が必要。&lt;/p&gt;
-
-&lt;h3 id=&#34;serveradmin&#34;&gt;ServerAdmin&lt;/h3&gt;
-
-&lt;p&gt;Apacheが稼働しているサーバーの管理者のメールアドレス。&lt;/p&gt;
-
-&lt;h3 id=&#34;servername&#34;&gt;ServerName&lt;/h3&gt;
-
-&lt;p&gt;Webサーバーの名前。&lt;br /&gt;
-デフォルトではコメントアウトされているので、解除して設定すること。&lt;br /&gt;
-:80のようにポート番号を指定できるが、省略してもよい。&lt;/p&gt;
-
-&lt;h3 id=&#34;documentroot&#34;&gt;DocumentRoot&lt;/h3&gt;
-
-&lt;p&gt;ドキュメントルートを &lt;strong&gt;絶対パス&lt;/strong&gt; で設定する。&lt;br /&gt;
-このディレクトリ以下には、User/Groupディレクティブで指定したユーザー・グループがアクセスできる必要がある。&lt;/p&gt;
-
-&lt;h3 id=&#34;directoryindex&#34;&gt;DirectoryIndex&lt;/h3&gt;
-
-&lt;p&gt;URLでファイル名まで指定されなかったときに、表示するファイル名を指定する。&lt;/p&gt;
-
-&lt;h2 id=&#34;httpd-confファイルの構文チェック&#34;&gt;httpd.confファイルの構文チェック&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;$ httpd -t&lt;/code&gt; コマンドで構文チェックをすることができる。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# /etc/httpd/conf/httpd.confファイルのチェック
-$ httpd -t
-Syntax OK
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;apacheの起動-自動起動設定&#34;&gt;Apacheの起動・自動起動設定&lt;/h2&gt;
-
-&lt;p&gt;Apacheの起動と、次回からのシステム起動時に自動起動させる設定。&lt;br /&gt;
-Apacheを起動すると、複数のhttpdプロセスが生成される。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 起動
-$ sudo systemctl start httpd.service
-
-# 自動起動設定
-$ sudo systemctl enable httpd.service
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;ファイヤウォールの設定&#34;&gt;ファイヤウォールの設定&lt;/h2&gt;
-
-&lt;p&gt;ファイヤウォールの設定を変更し、80番ポート（http）へのアクセスを許可させる。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 設定
-$ sudo firewall-cmd --permanent --add-service=http
-
-# 更新
-$ sudo firewall-cmd --reload
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;ログ&#34;&gt;ログ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;アクセスログ : /var/log/httpd/access_log&lt;/li&gt;
-&lt;li&gt;エラーログ : /var/log/httpd/error_log&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# アクセスログ
-$ sudo less /var/log/httpd/access_log
-
-# エラーログ
-$ sudo less /var/log/httpd/error_log
-&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     

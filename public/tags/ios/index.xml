@@ -9,6 +9,92 @@
     <atom:link href="http://mzgkworks.com/tags/ios/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>iOSでの画面遷移（Segue/Modalの方針・データ授受・ライフサイクル）の確認</title>
+      <link>http://mzgkworks.com/post/iso-transition-segue-modal/</link>
+      <pubDate>Tue, 22 Nov 2016 18:19:42 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/iso-transition-segue-modal/</guid>
+      <description>
+
+&lt;p&gt;Single ViewController間の画面遷移に関して、以下の再確認のためのサンプル。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;遷移方法（Segue・Modal）の使用方針&lt;/li&gt;
+&lt;li&gt;VC間のデータを受け渡す方法&lt;/li&gt;
+&lt;li&gt;ライフサイクルの確認&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Xcode 8.1&lt;/li&gt;
+&lt;li&gt;Swift 3.0&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;使用方針&#34;&gt;使用方針&lt;/h2&gt;
+
+&lt;h3 id=&#34;segue&#34;&gt;Segue&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Viewが提供する機能が完全に切り替わる場合に使用&lt;/li&gt;
+&lt;li&gt;遷移のアクションを発火させるUIから、遷移先のViewControllerへ直接Segueを接続しない
+
+&lt;ul&gt;
+&lt;li&gt;遷移の発火がStoryBoardに埋もれるため&lt;/li&gt;
+&lt;li&gt;Triggered Segues : manualを使用してVC間を接続&lt;/li&gt;
+&lt;li&gt;発火させるUIからは、コードでSegueを実行する&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;戻る処理はunwind Segueを使用&lt;/li&gt;
+&lt;li&gt;データの受け渡し
+
+&lt;ul&gt;
+&lt;li&gt;各VCのprepare(for:sender:)にて、インスタンスを生成して行う&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;サンプル
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/mzgk/ManualSegue&#34;&gt;GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;modal&#34;&gt;Modal&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;元のViewから一時的に別機能を提供する場合に使用&lt;/li&gt;
+&lt;li&gt;Segueを使用しないで、コードで表示させる
+
+&lt;ul&gt;
+&lt;li&gt;機能の切り替えではないため&lt;/li&gt;
+&lt;li&gt;storyboard?.instantiateViewController(withIdentifier:) as! ModalのVCクラス名&lt;/li&gt;
+&lt;li&gt;self.present(_:animated:completion:)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;閉じるのは表示元の責務とし、Modal側でDelegateプロトコルを定義する
+
+&lt;ul&gt;
+&lt;li&gt;表示元でDelegateプロトコルを実装し、Modalを閉じる&lt;/li&gt;
+&lt;li&gt;self.dismiss(animated: true, completion: nil)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;データの受け渡し
+
+&lt;ul&gt;
+&lt;li&gt;元 → Modal : self.present(_:animated:completion:)前に生成したModalのインスタンスに設定&lt;/li&gt;
+&lt;li&gt;Modal → 元 : Modal側でDelegateプロトコルを定義し、その引数を使用&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;サンプル
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/mzgk/ModalWithCode&#34;&gt;GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br&gt;
+&lt;br&gt;
+SegueとModalの使い分け方針とデータの受け渡し方法をすっきりさせるためのアウトプット。&lt;br /&gt;
+ライフサイクルに関しては、シュミュレーターで実行したからなのかLayoutSubView()系が複数回コールされているのが、ちょっと違和感を感じる。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Swift3 ViewControllerのライフサイクル</title>
       <link>http://mzgkworks.com/post/swift3-viewcontroller-lifecycle/</link>
       <pubDate>Mon, 21 Nov 2016 17:42:49 +0900</pubDate>

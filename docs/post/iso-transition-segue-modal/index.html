@@ -10,19 +10,16 @@
     
         <meta name="description" content=" プログラマーの備忘録。">
     
-        <meta name="description" content="">
+        <meta name="description" content="ViewController間の画面遷移に関しての方針・使用方法・データ授受・ライフサイクルの再確認">
     
 
     <base href="http://mzgkworks.com">
-    
-        <link href="#ZgotmplZ" rel="alternate" type="application/rss+xml" title="mzgkworks.com" />
-        <link href="#ZgotmplZ" rel="feed" type="application/rss+xml" title="mzgkworks.com" />
     
     <link rel="stylesheet" href="./css/masamune.css">
 
     <title>
         
-        Products
+        iOSでの画面遷移（Segue/Modalの方針・データ授受・ライフサイクル）の確認
          | mzgkworks.com
     </title>
 
@@ -50,15 +47,149 @@
 
     <div class="ContentsContainer">
         <main class="MainContainer">
-            <h1 class="AreaTitle">Products</h1>
 
-            
-            
+            <article class="PostItem">
+                <div class="PostItem__head">
+                    <div class="PostItem__title">
+                        <h1>
+                            iOSでの画面遷移（Segue/Modalの方針・データ授受・ライフサイクル）の確認
+                            
+                        </h1>
+                    </div>
+                    <div class="PostItem__meta">
+                        <time datetime="2016-11-11">
+                            2016.11.22
+                        </time>
+                        &nbsp;&nbsp;
+                        
+                        <span>[<a href="./categories/programing">Programing</a>]</span>
+                        
+                        
+                        &nbsp;&nbsp;
+                        <span>#<a href="./tags/swift">Swift</a></span>
+                        
+                        &nbsp;&nbsp;
+                        <span>#<a href="./tags/ios">iOS</a></span>
+                        
+                    </div>
+                </div>
+
+                <div class="PostItem__body">
+                    
+
+<p>Single ViewController間の画面遷移に関して、以下の再確認のためのサンプル。</p>
+
+<ul>
+<li>遷移方法（Segue・Modal）の使用方針</li>
+<li>VC間のデータを受け渡す方法</li>
+<li>ライフサイクルの確認</li>
+</ul>
+
+<h2 id="環境">環境</h2>
+
+<ul>
+<li>Xcode 8.1</li>
+<li>Swift 3.0</li>
+</ul>
+
+<h2 id="使用方針">使用方針</h2>
+
+<h3 id="segue">Segue</h3>
+
+<ul>
+<li>Viewが提供する機能が完全に切り替わる場合に使用</li>
+<li>遷移のアクションを発火させるUIから、遷移先のViewControllerへ直接Segueを接続しない
+
+<ul>
+<li>遷移の発火がStoryBoardに埋もれるため</li>
+<li>Triggered Segues : manualを使用してVC間を接続</li>
+<li>発火させるUIからは、コードでSegueを実行する</li>
+</ul></li>
+<li>戻る処理はunwind Segueを使用</li>
+<li>データの受け渡し
+
+<ul>
+<li>各VCのprepare(for:sender:)にて、インスタンスを生成して行う</li>
+</ul></li>
+<li>サンプル
+
+<ul>
+<li><a href="https://github.com/mzgk/ManualSegue">GitHub</a></li>
+</ul></li>
+</ul>
+
+<h3 id="modal">Modal</h3>
+
+<ul>
+<li>元のViewから一時的に別機能を提供する場合に使用</li>
+<li>Segueを使用しないで、コードで表示させる
+
+<ul>
+<li>機能の切り替えではないため</li>
+<li>storyboard?.instantiateViewController(withIdentifier:) as! ModalのVCクラス名</li>
+<li>self.present(_:animated:completion:)</li>
+</ul></li>
+<li>閉じるのは表示元の責務とし、Modal側でDelegateプロトコルを定義する
+
+<ul>
+<li>表示元でDelegateプロトコルを実装し、Modalを閉じる</li>
+<li>self.dismiss(animated: true, completion: nil)</li>
+</ul></li>
+<li>データの受け渡し
+
+<ul>
+<li>元 → Modal : self.present(_:animated:completion:)前に生成したModalのインスタンスに設定</li>
+<li>Modal → 元 : Modal側でDelegateプロトコルを定義し、その引数を使用</li>
+</ul></li>
+<li>サンプル
+
+<ul>
+<li><a href="https://github.com/mzgk/ModalWithCode">GitHub</a></li>
+</ul></li>
+</ul>
+
+<p><br>
+<br>
+SegueとModalの使い分け方針とデータの受け渡し方法をすっきりさせるためのアウトプット。<br />
+ライフサイクルに関しては、シュミュレーターで実行したからなのかLayoutSubView()系が複数回コールされているのが、ちょっと違和感を感じる。</p>
+
+                </div>
+            </article>
 
             <nav class="Pagenation">
-                
-                
+                <div class="Pagenation__older">
+                    
+                    <a href="http://mzgkworks.com/post/swift3-viewcontroller-lifecycle/">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        Swift3 ViewControllerのライフサイクル
+                    </a>
+                    
+                </div>
+                <div class="Pagenation__newer">
+                    
+                </div>
             </nav>
+
+            <div class="Disqus">
+                
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'mzgkworks-com';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+            </div>
         </main>
 
         <aside class="SubContainer">
