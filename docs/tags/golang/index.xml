@@ -74,7 +74,7 @@ $ vim ~/.bash_profile
 
 
 # 以下を追記する
-export GOPATH=$Home/Development/Go
+export GOPATH=$HOME/Development/Go
 export PATH=$PATH:$GOPATH/bin
 
 
