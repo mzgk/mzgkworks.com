@@ -2,8 +2,8 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://mzgkworks.com/</loc>
-    <lastmod>2016-11-22T18:19:42+09:00</lastmod>
+    <loc>http://mzgkworks.com/post/golang-install-mac/</loc>
+    <lastmod>2017-01-26T18:00:25+09:00</lastmod>
   </url>
   
   <url>
@@ -189,6 +189,160 @@
   <url>
     <loc>http://mzgkworks.com/post/build-a-blog-in-hugo-0/</loc>
     <lastmod>2016-08-30T13:58:05+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://mzgkworks.com/about/</loc>
+    <lastmod>2016-10-19T19:12:09+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://mzgkworks.com/tags/apache/</loc>
+    <lastmod>2016-09-12T16:28:46+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://mzgkworks.com/tags/atom/</loc>
+    <lastmod>2016-09-01T15:34:24+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://mzgkworks.com/tags/bash/</loc>
+    <lastmod>2016-09-07T17:18:07+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://mzgkworks.com/tags/blog/</loc>
+    <lastmod>2016-08-30T15:20:03+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://mzgkworks.com/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://mzgkworks.com/tags/css/</loc>
+    <lastmod>2016-09-21T18:28:09+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://mzgkworks.com/tags/git/</loc>
+    <lastmod>2016-10-27T19:14:50+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://mzgkworks.com/tags/golang/</loc>
+    <lastmod>2017-01-26T18:00:25+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://mzgkworks.com/tags/http/</loc>
+    <lastmod>2016-09-02T16:00:48+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://mzgkworks.com/tags/hugo/</loc>
+    <lastmod>2016-08-30T15:20:03+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://mzgkworks.com/tags/ios/</loc>
+    <lastmod>2016-11-22T18:19:42+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://mzgkworks.com/categories/knowledge/</loc>
+    <lastmod>2016-09-21T18:28:09+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://mzgkworks.com/tags/linux/</loc>
+    <lastmod>2016-09-16T18:32:16+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://mzgkworks.com/tags/mac/</loc>
+    <lastmod>2016-10-04T18:57:07+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://mzgkworks.com/tags/network/</loc>
+    <lastmod>2016-09-08T18:45:54+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://mzgkworks.com/post/</loc>
+    <lastmod>2017-01-26T18:00:25+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://mzgkworks.com/products/</loc>
+    <lastmod>2016-10-19T19:14:47+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://mzgkworks.com/categories/programing/</loc>
+    <lastmod>2016-11-22T18:19:42+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://mzgkworks.com/tags/sass/</loc>
+    <lastmod>2016-10-04T18:57:07+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://mzgkworks.com/categories/setting/</loc>
+    <lastmod>2017-01-26T18:00:25+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://mzgkworks.com/tags/swift/</loc>
+    <lastmod>2016-11-22T18:19:42+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://mzgkworks.com/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://mzgkworks.com/categories/usage/</loc>
+    <lastmod>2016-10-27T19:14:50+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://mzgkworks.com/categories/words/</loc>
+    <lastmod>2016-11-09T22:23:56+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://mzgkworks.com/</loc>
+    <lastmod>2017-01-26T18:00:25+09:00</lastmod>
+    <priority>0</priority>
   </url>
   
 </urlset>

@@ -1,6 +1,6 @@
 +++
 categories = [""]
-date = "now()"
+date = ""
 description = ""
 draft = false
 tags = ["", ""]
