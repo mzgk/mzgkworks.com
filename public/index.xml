@@ -6,8 +6,134 @@
     <description>Recent content on mzgkworks.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Thu, 26 Jan 2017 18:00:25 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 27 Jan 2017 17:19:47 +0900</lastBuildDate>
     <atom:link href="http://mzgkworks.com/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Visual Studio CodeにGolang向けの開発デバッグ環境を設定する</title>
+      <link>http://mzgkworks.com/post/golang-vscode-setting/</link>
+      <pubDate>Fri, 27 Jan 2017 17:19:47 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/golang-vscode-setting/</guid>
+      <description>
+
+&lt;p&gt;Visual Studio CodeにGolang向けの開発環境の設定をする。&lt;br /&gt;
+補完・デバッグ実行までできるのは便利。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;VSCodeのインストール&lt;/li&gt;
+&lt;li&gt;Golangの拡張機能をインストール&lt;/li&gt;
+&lt;li&gt;Golangのデバッグ実行ができるようにする&lt;/li&gt;
+&lt;li&gt;おまけ&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;MacBook Pro (15-inch, Mid 2012)&lt;/li&gt;
+&lt;li&gt;macOS Sierra 10.12.3&lt;/li&gt;
+&lt;li&gt;Golang 1.7.4 darwin/amd64&lt;/li&gt;
+&lt;li&gt;Visual Studio Code 1.8.1&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;1-visual-studio-codeのインストール&#34;&gt;1. Visual Studio Codeのインストール&lt;/h2&gt;
+
+&lt;h3 id=&#34;インストール&#34;&gt;インストール&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;公式 : &lt;a href=&#34;https://code.visualstudio.com/&#34;&gt;https://code.visualstudio.com/&lt;/a&gt;&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;Mac版をダウンロードしてインストール&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;vscodeをターミナルから起動できるように設定する&#34;&gt;VSCodeをターミナルから起動できるように設定する&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;公式 : &lt;a href=&#34;https://code.visualstudio.com/docs/setup/mac&#34;&gt;https://code.visualstudio.com/docs/setup/mac&lt;/a&gt;&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;VSCode起動 -&amp;gt; Shift+Cmd+P -&amp;gt; Shell Command: Install &amp;lsquo;code&amp;rsquo; command in PATH command.&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;ターミナルを起動&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;$ code&lt;/code&gt; でVSCodeが起動するか確認&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;2-golangの拡張機能をインストール&#34;&gt;2. Golangの拡張機能をインストール&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://marketplace.visualstudio.com/items?itemName=lukehoban.Go&#34;&gt;https://marketplace.visualstudio.com/items?itemName=lukehoban.Go&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;必要パッケージが不足している場合は、VSCodeの上部からInstallを促すダイアログが都度表示される&lt;/li&gt;
+&lt;li&gt;もしくは、右下にメッセージ「Analysis Tools Missing」が表示されるので、クリックして不足分をインストール&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;golangのデバッグ実行を可能にする&#34;&gt;Golangのデバッグ実行を可能にする&lt;/h2&gt;
+
+&lt;h3 id=&#34;delve公式サイト&#34;&gt;Delve公式サイト&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/derekparker/delve/blob/master/Documentation/installation/osx/install.md&#34;&gt;https://github.com/derekparker/delve/blob/master/Documentation/installation/osx/install.md&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;公式サイトにHomebrewでいけるとあったけど、ダメだった（証明書作成とHomebrew領域へのインストールはされた）&lt;/li&gt;
+&lt;li&gt;たぶん$GOPATH配下に生成されたdlvを移さないとダメだったのかも（未検証）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;基本的にはここを参照&#34;&gt;基本的にはここを参照&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://dev.classmethod.jp/go/visual-studio-code-golang-debug/&#34;&gt;http://dev.classmethod.jp/go/visual-studio-code-golang-debug/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;証明書の作成&#34;&gt;証明書の作成&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;MacでDELVEを使う場合は証明書の作成が必要とのことなので、KeyChainで証明書を作成&lt;/li&gt;
+&lt;li&gt;証明書名はDELVEインストール時に使用する（今回はdlv-certで作成）。&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://dev.classmethod.jp/go/visual-studio-code-golang-debug/&#34;&gt;http://dev.classmethod.jp/go/visual-studio-code-golang-debug/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;delveのインストール&#34;&gt;DELVEのインストール&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ここも上記に同じ。もしくは公式サイトの「Manual install -&amp;gt; 2)Install the binary」を参照&lt;/li&gt;
+&lt;li&gt;MacにXcodeがインストールされていない場合は、Command Line Toolのインストールが必要かも&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;# 必要に応じて
+$ xcode-select --install
+
+# ディレクトリ作成と移動
+$ mkdir $GOPATH/src/github.com/derekparker &amp;amp;&amp;amp; cd $GOPATH/src/github.com/derekparker
+
+# GitHubからcloneして、移動
+$ git clone https://github.com/derekparker/delve.git &amp;amp;&amp;amp; cd delve
+
+# 証明書と紐付けてmake。dlv-certは証明書の名前
+$ CERT=dlv-cert make install
+
+# KeyChainの変更を有効化
+$ sudo kill `pgrep taskgated`
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;vscodeでのデバッグ&#34;&gt;VSCodeでのデバッグ&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;デバッグをしたい場合は、プロジェクトのフォルダーを指定する必要あり&lt;/li&gt;
+&lt;li&gt;フォルダーを作成 -&amp;gt; VSCodeで開く -&amp;gt; main.goファイルを作成の流れ&lt;/li&gt;
+&lt;li&gt;ブレークポイント張って、F5で実行&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;おまけ&#34;&gt;おまけ&lt;/h2&gt;
+
+&lt;h3 id=&#34;vscode内でターミナルを開く&#34;&gt;VSCode内でターミナルを開く&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;メニューバー -&amp;gt; 表示 -&amp;gt; 統合ターミナルでターミナルを表示できる&lt;/li&gt;
+&lt;li&gt;使用するターミナルは、基本設定 -&amp;gt; ユーザー設定 -&amp;gt; 外部ターミナルで変更ができる&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;terminal.external.osxExec&amp;rdquo;: &amp;ldquo;iTerm.app&amp;rdquo;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;vscodeの使い方&#34;&gt;VSCodeの使い方&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.atmarkit.co.jp/ait/subtop/features/dotnet/all.html#xe789b9e99b86efbc9aVisualStudioCodee697a9e58886e3818be3828ae382ace382a4e38389&#34;&gt;@IT 特集：Visual Studio Code早分かりガイド&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
     
     <item>
       <title>Golangの環境をMacに構築する</title>
@@ -1709,199 +1835,6 @@ udp        0      0 127.0.0.1:323           0.0.0.0:*                           
 &lt;h2 id=&#34;関連&#34;&gt;関連&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://mzgkworks.com/post/network-protocol-ipadress/&#34;&gt;ネットワークの基礎知識（プロトコル・IPアドレス・サブネットマスク・ポート）&lt;/a&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>CentOS7のsystemctlコマンドの使い方</title>
-      <link>http://mzgkworks.com/post/centos7-systemctl-service/</link>
-      <pubDate>Thu, 15 Sep 2016 18:57:14 +0900</pubDate>
-      
-      <guid>http://mzgkworks.com/post/centos7-systemctl-service/</guid>
-      <description>
-
-&lt;p&gt;CentOS 7のsystemdサービス管理のメモ。&lt;br /&gt;
-サービスの稼働状態や自動起動設定の確認・操作。　　&lt;/p&gt;
-
-&lt;h2 id=&#34;unitの状態&#34;&gt;UNITの状態&lt;/h2&gt;
-
-&lt;h3 id=&#34;確認-一覧&#34;&gt;確認 : 一覧&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;$ systemctl list-unit&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;ACTIVE, SUBが実行状態を表している。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# UNITのタイプがServiceのみを確認
-$ systemctl list-units -t service
-UNIT                 LOAD   ACTIVE SUB     DESCRIPTION
-auditd.service       loaded active running Security Auditing Service
-chronyd.service      loaded active running NTP client/server
-...
-● kdump.service      loaded failed failed  Crash recovery kernel arming
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;確認-個別&#34;&gt;確認 : 個別&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;$ systemctl is-active [UNIT名]&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ systemctl is-active yum-cron
-active
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;確認-個別詳細&#34;&gt;確認 : 個別詳細&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;$ systemctl status [UNIT名]&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ systemctl status yum-cron
-● yum-cron.service - Run automatic yum updates as a cron job
-   Loaded: loaded (/usr/lib/systemd/system/yum-cron.service; enabled; vendor preset: disabled)
-   Active: active (exited) since 火 2016-09-13 16:56:49 JST; 2 days ago
-  Process: 644 ExecStart=/bin/touch /var/lock/subsys/yum-cron (code=exited, status=0/SUCCESS)
- Main PID: 644 (code=exited, status=0/SUCCESS)
-   CGroup: /system.slice/yum-cron.service
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;操作-起動-停止-再起動-強制終了&#34;&gt;操作（起動・停止・再起動・強制終了）&lt;/h3&gt;
-
-&lt;p&gt;UNITの操作。&lt;br /&gt;
-&lt;code&gt;$ sudo systemctl [UNITコマンド] [UNIT名]&lt;/code&gt;&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;UNITコマンド&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;start&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;起動させる&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;stop&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;停止させる&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;restart&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;再起動させる&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;kill&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;強制終了させる&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&#34;自動起動設定&#34;&gt;自動起動設定&lt;/h2&gt;
-
-&lt;h3 id=&#34;確認-一覧-1&#34;&gt;確認 : 一覧&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;$ systemctl list-unit-files&lt;/code&gt;&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;STATE&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;enabled&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;自動起動 : 有効&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;disabled&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;自動起動 : 無効&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;static&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;自動起動 : 設定不可&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# UNITのタイプがServiceのみを確認
-$ systemctl list-unit-files -t service
-UNIT FILE                                   STATE
-arp-ethers.service                          disabled
-auditd.service                              enabled
-chrony-dnssrv@.service                      static
-dbus-org.freedesktop.hostname1.service      static
-...
-
-# grepへパイプで繋いで「enabled」のみを表示させる
-$ systemctl list-unit-files -t service | grep enabled
-UNIT FILE                                   STATE
-auditd.service                              enabled
-chronyd.service                             enabled
-...
-tuned.service                               enabled
-yum-cron.service                            enabled
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;確認-個別-1&#34;&gt;確認 : 個別&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;$ sudo systemctl is-enabled [Unit名]&lt;/code&gt;&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;状態&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;enabled&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;自動起動が有効&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;disabled&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;自動起動が無効&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# yum-cronの状態確認
-$ sudo systemctl is-active yum-cron
-enabled
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;操作-有効化-無効化&#34;&gt;操作（有効化・無効化）&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;$ sudo systemctl [UNITコマンド] [UNIT名]&lt;/code&gt;&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;UNITコマンド&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;enable&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;自動起動 : 有効化&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;disable&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;自動起動 : 無効化&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
 </description>
     </item>
     
