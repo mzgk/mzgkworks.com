@@ -6,8 +6,59 @@
     <description>Recent content in Posts on mzgkworks.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Wed, 01 Feb 2017 16:27:09 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 01 Feb 2017 17:06:48 +0900</lastBuildDate>
     <atom:link href="http://mzgkworks.com/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>ATOM vim-mode-plusのESCで、autocomplete-plusのポップアップのみ閉じる方法</title>
+      <link>http://mzgkworks.com/post/atom-vimmodeplus-autocomplete-esc/</link>
+      <pubDate>Wed, 01 Feb 2017 17:06:48 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/atom-vimmodeplus-autocomplete-esc/</guid>
+      <description>
+
+&lt;p&gt;ATOMでvim-mode-plusとautocomplete-plusを導入済み。&lt;br&gt;
+入力中にautocomplete-plusのポップアップをESCで閉じた際に、Vimのモードをそのままにしたい。&lt;br&gt;
+何も設定しないと、ポップアップが閉じると同時にinsert-mode -&amp;gt; normal-modeになってしまう。&lt;/p&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;macOS Sierra 10.12.3&lt;/li&gt;
+&lt;li&gt;ATOM 1.13.1&lt;/li&gt;
+&lt;li&gt;vim-mode-plus 0.82.0&lt;/li&gt;
+&lt;li&gt;autocomplete-plus 2.33.1&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;症状&#34;&gt;症状&lt;/h2&gt;
+
+&lt;p&gt;ATOMには「vim-mode-plus」を導入済み（autocomplete-plusはデフォルトインストール）&lt;br&gt;
+↓&lt;br&gt;
+insert-modeで入力中に、autocomplete-plusのポップアップが表示される&lt;br&gt;
+↓&lt;br&gt;
+候補の中に必要なものがないので、ESCでポップアップを閉じる&lt;br&gt;
+↓&lt;br&gt;
+ポップアップは閉じるが、insert-modeも抜けてnormal-modeになってしまう&lt;br&gt;
+↓&lt;br&gt;
+insert-modeのままにしたい&lt;/p&gt;
+
+&lt;h2 id=&#34;対応方法&#34;&gt;対応方法&lt;/h2&gt;
+
+&lt;p&gt;ここを参照。&lt;br /&gt;
+&lt;a href=&#34;https://github.com/t9md/atom-vim-mode-plus/wiki/TIPS#in-insert-mode-hitting-escape-to-close-autocomplete-popup-result-in-normal-mode-but-want-to-remain-in-insert-mode&#34;&gt;atom-vim-mode-plus TIPS&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;keymap-csonへの追加&#34;&gt;keymap.csonへの追加&lt;/h2&gt;
+
+&lt;p&gt;以下をkeymap.csonに追加する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&#39;atom-text-editor.vim-mode-plus.insert-mode.autocomplete-active&#39;:
+  &#39;escape&#39;: &#39;autocomplete-plus:cancel&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br&gt;
+ 以上&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>GitHubにSSH接続する</title>
@@ -1941,199 +1992,6 @@ udp        0      0 127.0.0.1:323           0.0.0.0:*                           
 &lt;h2 id=&#34;関連&#34;&gt;関連&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://mzgkworks.com/post/network-protocol-ipadress/&#34;&gt;ネットワークの基礎知識（プロトコル・IPアドレス・サブネットマスク・ポート）&lt;/a&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>CentOS7のsystemctlコマンドの使い方</title>
-      <link>http://mzgkworks.com/post/centos7-systemctl-service/</link>
-      <pubDate>Thu, 15 Sep 2016 18:57:14 +0900</pubDate>
-      
-      <guid>http://mzgkworks.com/post/centos7-systemctl-service/</guid>
-      <description>
-
-&lt;p&gt;CentOS 7のsystemdサービス管理のメモ。&lt;br /&gt;
-サービスの稼働状態や自動起動設定の確認・操作。　　&lt;/p&gt;
-
-&lt;h2 id=&#34;unitの状態&#34;&gt;UNITの状態&lt;/h2&gt;
-
-&lt;h3 id=&#34;確認-一覧&#34;&gt;確認 : 一覧&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;$ systemctl list-unit&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;ACTIVE, SUBが実行状態を表している。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# UNITのタイプがServiceのみを確認
-$ systemctl list-units -t service
-UNIT                 LOAD   ACTIVE SUB     DESCRIPTION
-auditd.service       loaded active running Security Auditing Service
-chronyd.service      loaded active running NTP client/server
-...
-● kdump.service      loaded failed failed  Crash recovery kernel arming
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;確認-個別&#34;&gt;確認 : 個別&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;$ systemctl is-active [UNIT名]&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ systemctl is-active yum-cron
-active
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;確認-個別詳細&#34;&gt;確認 : 個別詳細&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;$ systemctl status [UNIT名]&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ systemctl status yum-cron
-● yum-cron.service - Run automatic yum updates as a cron job
-   Loaded: loaded (/usr/lib/systemd/system/yum-cron.service; enabled; vendor preset: disabled)
-   Active: active (exited) since 火 2016-09-13 16:56:49 JST; 2 days ago
-  Process: 644 ExecStart=/bin/touch /var/lock/subsys/yum-cron (code=exited, status=0/SUCCESS)
- Main PID: 644 (code=exited, status=0/SUCCESS)
-   CGroup: /system.slice/yum-cron.service
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;操作-起動-停止-再起動-強制終了&#34;&gt;操作（起動・停止・再起動・強制終了）&lt;/h3&gt;
-
-&lt;p&gt;UNITの操作。&lt;br /&gt;
-&lt;code&gt;$ sudo systemctl [UNITコマンド] [UNIT名]&lt;/code&gt;&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;UNITコマンド&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;start&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;起動させる&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;stop&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;停止させる&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;restart&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;再起動させる&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;kill&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;強制終了させる&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&#34;自動起動設定&#34;&gt;自動起動設定&lt;/h2&gt;
-
-&lt;h3 id=&#34;確認-一覧-1&#34;&gt;確認 : 一覧&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;$ systemctl list-unit-files&lt;/code&gt;&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;STATE&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;enabled&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;自動起動 : 有効&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;disabled&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;自動起動 : 無効&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;static&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;自動起動 : 設定不可&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# UNITのタイプがServiceのみを確認
-$ systemctl list-unit-files -t service
-UNIT FILE                                   STATE
-arp-ethers.service                          disabled
-auditd.service                              enabled
-chrony-dnssrv@.service                      static
-dbus-org.freedesktop.hostname1.service      static
-...
-
-# grepへパイプで繋いで「enabled」のみを表示させる
-$ systemctl list-unit-files -t service | grep enabled
-UNIT FILE                                   STATE
-auditd.service                              enabled
-chronyd.service                             enabled
-...
-tuned.service                               enabled
-yum-cron.service                            enabled
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;確認-個別-1&#34;&gt;確認 : 個別&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;$ sudo systemctl is-enabled [Unit名]&lt;/code&gt;&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;状態&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;enabled&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;自動起動が有効&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;disabled&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;自動起動が無効&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# yum-cronの状態確認
-$ sudo systemctl is-active yum-cron
-enabled
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;操作-有効化-無効化&#34;&gt;操作（有効化・無効化）&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;$ sudo systemctl [UNITコマンド] [UNIT名]&lt;/code&gt;&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;UNITコマンド&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;enable&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;自動起動 : 有効化&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;disable&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;自動起動 : 無効化&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
 </description>
     </item>
     

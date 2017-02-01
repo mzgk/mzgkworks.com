@@ -10,7 +10,7 @@
     
         <meta name="description" content=" プログラマーの備忘録。">
     
-        <meta name="description" content="HTTPのリクエストとレスポンスのメモ">
+        <meta name="description" content="ATOM vim-mode-plusのESCをちょっと便利にする。">
     
 
     <base href="http://mzgkworks.com">
@@ -19,7 +19,7 @@
 
     <title>
         
-        HTTPのリクエストとレスポンスのメモ
+        ATOM vim-mode-plusのESCで、autocomplete-plusのポップアップのみ閉じる方法
          | mzgkworks.com
     </title>
 
@@ -52,21 +52,21 @@
                 <div class="PostItem__head">
                     <div class="PostItem__title">
                         <h1>
-                            HTTPのリクエストとレスポンスのメモ
+                            ATOM vim-mode-plusのESCで、autocomplete-plusのポップアップのみ閉じる方法
                             
                         </h1>
                     </div>
                     <div class="PostItem__meta">
-                        <time datetime="2016-09-09">
-                            2016.09.02
+                        <time datetime="2017-02-02">
+                            2017.02.01
                         </time>
                         &nbsp;&nbsp;
                         
-                        <span>[<a href="./categories/knowledge">Knowledge</a>]</span>
+                        <span>[<a href="./categories/setting">Setting</a>]</span>
                         
                         
                         &nbsp;&nbsp;
-                        <span>#<a href="./tags/http">HTTP</a></span>
+                        <span>#<a href="./tags/atom">ATOM</a></span>
                         
                     </div>
                 </div>
@@ -74,147 +74,46 @@
                 <div class="PostItem__body">
                     
 
-<p>HTTPプロトコルでやりとりしている中身のメモ。</p>
+<p>ATOMでvim-mode-plusとautocomplete-plusを導入済み。<br>
+入力中にautocomplete-plusのポップアップをESCで閉じた際に、Vimのモードをそのままにしたい。<br>
+何も設定しないと、ポップアップが閉じると同時にinsert-mode -&gt; normal-modeになってしまう。</p>
 
-<h2 id="httpリクエスト">HTTPリクエスト</h2>
-
-<h3 id="構成">構成</h3>
+<h2 id="環境">環境</h2>
 
 <ul>
-<li>リクエストライン</li>
-<li>ヘッダ</li>
-<li>空行</li>
-<li>ボディ</li>
+<li>macOS Sierra 10.12.3</li>
+<li>ATOM 1.13.1</li>
+<li>vim-mode-plus 0.82.0</li>
+<li>autocomplete-plus 2.33.1</li>
 </ul>
 
-<h3 id="例-ボディなし">例（ボディなし）</h3>
+<h2 id="症状">症状</h2>
 
-<pre><code class="language-@bash"># telnetコマンドでexample.comのポート80にアクセス
-$ telnet example.com 80
-Trying 93.184.216.34...
-Connected to example.com.
-Escape character is '^]'.
+<p>ATOMには「vim-mode-plus」を導入済み（autocomplete-plusはデフォルトインストール）<br>
+↓<br>
+insert-modeで入力中に、autocomplete-plusのポップアップが表示される<br>
+↓<br>
+候補の中に必要なものがないので、ESCでポップアップを閉じる<br>
+↓<br>
+ポップアップは閉じるが、insert-modeも抜けてnormal-modeになってしまう<br>
+↓<br>
+insert-modeのままにしたい</p>
 
-# リクエストを入力（最後に空行を入れること）
-GET / HTTP/1.1    # GETメソッドでパス「/」にHTTP1.1でリクエスト
-Host: example.com # ヘッダ
+<h2 id="対応方法">対応方法</h2>
 
+<p>ここを参照。<br />
+<a href="https://github.com/t9md/atom-vim-mode-plus/wiki/TIPS#in-insert-mode-hitting-escape-to-close-autocomplete-popup-result-in-normal-mode-but-want-to-remain-in-insert-mode">atom-vim-mode-plus TIPS</a></p>
 
+<h2 id="keymap-csonへの追加">keymap.csonへの追加</h2>
+
+<p>以下をkeymap.csonに追加する。</p>
+
+<pre><code>'atom-text-editor.vim-mode-plus.insert-mode.autocomplete-active':
+  'escape': 'autocomplete-plus:cancel'
 </code></pre>
 
-<h3 id="リクエスト">リクエスト</h3>
-
-<ul>
-<li>GET     : URLで示されたリソースをサーバから取得</li>
-<li>POST  : クライアントからサーバへデータを送信</li>
-<li>PUT</li>
-<li>HEAD</li>
-<li>DELETE</li>
-<li>OPTION</li>
-<li>TRACE</li>
-<li>CONNECT</li>
-</ul>
-
-<h2 id="httpレスポンス">HTTPレスポンス</h2>
-
-<h3 id="構成-1">構成</h3>
-
-<ul>
-<li>レスポンスライン</li>
-<li>レスポンスヘッダ</li>
-<li>空行</li>
-<li>ボディ</li>
-</ul>
-
-<h3 id="例">例</h3>
-
-<pre><code class="language-@bash">HTTP/1.1 200 OK                 # レスポンスライン
-Accept-Ranges: bytes            # ヘッダ
-Cache-Control: max-age=604800
-Content-Type: text/html
-Date: Fri, 02 Sep 2016 06:11:51 GMT
-Etag: &quot;359670651+gzip&quot;
-Expires: Fri, 09 Sep 2016 06:11:51 GMT
-Last-Modified: Fri, 09 Aug 2013 23:54:35 GMT
-Server: ECS (cpm/F9D5)
-Vary: Accept-Encoding
-X-Cache: HIT
-x-ec-custom-error: 1
-Content-Length: 1270
-                      # 空行
-&lt;!doctype html&gt;         # ボディ
-&lt;html&gt;
-&lt;head&gt;
-    &lt;title&gt;Example Domain&lt;/title&gt;
-...
-&lt;/head&gt;
-
-&lt;body&gt;
-&lt;div&gt;
-    &lt;h1&gt;Example Domain&lt;/h1&gt;
-    &lt;p&gt;This domain is established to be used for illustrative examples in documents. You may use this
-    domain in examples without prior coordination or asking for permission.&lt;/p&gt;
-    &lt;p&gt;&lt;a href=&quot;http://www.iana.org/domains/example&quot;&gt;More information...&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-
-<h3 id="代表的なステータスコード">代表的なステータスコード</h3>
-
-<table>
-<thead>
-<tr>
-<th align="left">コード</th>
-<th align="left">メッセージ</th>
-<th align="left">説明</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td align="left">200</td>
-<td align="left">OK</td>
-<td align="left">リクエストの処理が成功</td>
-</tr>
-
-<tr>
-<td align="left">301</td>
-<td align="left">Moved Permanently</td>
-<td align="left">URLが恒久的に変更。Lacationヘッダに移転先URLが記載される。</td>
-</tr>
-
-<tr>
-<td align="left">302</td>
-<td align="left">Found</td>
-<td align="left">URLが一時的に変更。他は同上。</td>
-</tr>
-
-<tr>
-<td align="left">403</td>
-<td align="left">Forbidden</td>
-<td align="left">リクエスト先のURLにアクセス禁止。</td>
-</tr>
-
-<tr>
-<td align="left">404</td>
-<td align="left">Not Found</td>
-<td align="left">リクエスト先のURLが見つからない。</td>
-</tr>
-
-<tr>
-<td align="left">500</td>
-<td align="left">Internal Server Error</td>
-<td align="left">サーバ側でエラー</td>
-</tr>
-
-<tr>
-<td align="left">503</td>
-<td align="left">Service Unavailabel</td>
-<td align="left">サーバが一時的に利用できない</td>
-</tr>
-</tbody>
-</table>
+<p><br>
+ 以上</p>
 
                 </div>
             </article>
@@ -222,18 +121,13 @@ Content-Length: 1270
             <nav class="Pagenation">
                 <div class="Pagenation__older">
                     
-                    <a href="http://mzgkworks.com/post/atom-vim-normalmode-with-eisuu/">
+                    <a href="http://mzgkworks.com/post/ssh-connction-to-github/">
                         <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                        Atom（vim-mode-plus）で、ノーマルモード移行時に日本語オフにする方法。
+                        GitHubにSSH接続する
                     </a>
                     
                 </div>
                 <div class="Pagenation__newer">
-                    
-                    <a href="http://mzgkworks.com/post/cetos7-ssh-port-change/">
-                        CentOS 7でSSHのポート番号を変更する（SELinux・firewalld）
-                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                    </a>
                     
                 </div>
             </nav>

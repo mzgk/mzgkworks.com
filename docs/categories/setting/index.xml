@@ -9,6 +9,57 @@
     <atom:link href="http://mzgkworks.com/categories/setting/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>ATOM vim-mode-plusのESCで、autocomplete-plusのポップアップのみ閉じる方法</title>
+      <link>http://mzgkworks.com/post/atom-vimmodeplus-autocomplete-esc/</link>
+      <pubDate>Wed, 01 Feb 2017 17:06:48 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/atom-vimmodeplus-autocomplete-esc/</guid>
+      <description>
+
+&lt;p&gt;ATOMでvim-mode-plusとautocomplete-plusを導入済み。&lt;br&gt;
+入力中にautocomplete-plusのポップアップをESCで閉じた際に、Vimのモードをそのままにしたい。&lt;br&gt;
+何も設定しないと、ポップアップが閉じると同時にinsert-mode -&amp;gt; normal-modeになってしまう。&lt;/p&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;macOS Sierra 10.12.3&lt;/li&gt;
+&lt;li&gt;ATOM 1.13.1&lt;/li&gt;
+&lt;li&gt;vim-mode-plus 0.82.0&lt;/li&gt;
+&lt;li&gt;autocomplete-plus 2.33.1&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;症状&#34;&gt;症状&lt;/h2&gt;
+
+&lt;p&gt;ATOMには「vim-mode-plus」を導入済み（autocomplete-plusはデフォルトインストール）&lt;br&gt;
+↓&lt;br&gt;
+insert-modeで入力中に、autocomplete-plusのポップアップが表示される&lt;br&gt;
+↓&lt;br&gt;
+候補の中に必要なものがないので、ESCでポップアップを閉じる&lt;br&gt;
+↓&lt;br&gt;
+ポップアップは閉じるが、insert-modeも抜けてnormal-modeになってしまう&lt;br&gt;
+↓&lt;br&gt;
+insert-modeのままにしたい&lt;/p&gt;
+
+&lt;h2 id=&#34;対応方法&#34;&gt;対応方法&lt;/h2&gt;
+
+&lt;p&gt;ここを参照。&lt;br /&gt;
+&lt;a href=&#34;https://github.com/t9md/atom-vim-mode-plus/wiki/TIPS#in-insert-mode-hitting-escape-to-close-autocomplete-popup-result-in-normal-mode-but-want-to-remain-in-insert-mode&#34;&gt;atom-vim-mode-plus TIPS&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;keymap-csonへの追加&#34;&gt;keymap.csonへの追加&lt;/h2&gt;
+
+&lt;p&gt;以下をkeymap.csonに追加する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&#39;atom-text-editor.vim-mode-plus.insert-mode.autocomplete-active&#39;:
+  &#39;escape&#39;: &#39;autocomplete-plus:cancel&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br&gt;
+ 以上&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>GitHubにSSH接続する</title>
       <link>http://mzgkworks.com/post/ssh-connction-to-github/</link>
       <pubDate>Wed, 01 Feb 2017 16:27:09 +0900</pubDate>
