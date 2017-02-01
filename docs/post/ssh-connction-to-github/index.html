@@ -10,7 +10,7 @@
     
         <meta name="description" content=" プログラマーの備忘録。">
     
-        <meta name="description" content="吉本隆明が語った「才能」についての言葉。『15歳の寺小屋　ひとり』講談社">
+        <meta name="description" content="Mac上でSSH鍵を生成し、GitHubとのSSH接続を可能にする。">
     
 
     <base href="http://mzgkworks.com">
@@ -19,7 +19,7 @@
 
     <title>
         
-        才能について　吉本隆明
+        GitHubにSSH接続する
          | mzgkworks.com
     </title>
 
@@ -52,35 +52,141 @@
                 <div class="PostItem__head">
                     <div class="PostItem__title">
                         <h1>
-                            才能について　吉本隆明
+                            GitHubにSSH接続する
                             
                         </h1>
                     </div>
                     <div class="PostItem__meta">
-                        <time datetime="2016-11-11">
-                            2016.11.09
+                        <time datetime="2017-02-02">
+                            2017.02.01
                         </time>
                         &nbsp;&nbsp;
                         
-                        <span>[<a href="./categories/words">Words</a>]</span>
+                        <span>[<a href="./categories/setting">Setting</a>]</span>
                         
+                        
+                        &nbsp;&nbsp;
+                        <span>#<a href="./tags/git">Git</a></span>
                         
                     </div>
                 </div>
 
                 <div class="PostItem__body">
-                    <p>吉本隆明が『<a href="https://www.amazon.co.jp/gp/product/4062165651/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=4062165651&amp;linkCode=as2&amp;tag=mzjubilee0526-22">15歳の寺小屋　ひとり</a>』の中で、才能について語った言葉。
-<br>
-<br></p>
+                    
 
-<blockquote>
-<p>才能があるとかないとか、そんなものは認めない。<br>
-そんなのは嘘だ。<br>
-本当なのは、そのために手の動きをどれだけやったかということです。<br>
-才能なんてものは問題にならない。問題になるのはせいぜい最初の二、三年くらいのもので、十年経ったらそんなことは全然問題じゃなくなるぜ。
-<br><br>
-〜二時間目　才能って何だろうね〜</p>
-</blockquote>
+<p>SSH鍵を作成・登録し、GitHubとのSSH接続を可能にする。<br />
+たまにやる作業で、いつも忘れて検索するのでメモ。</p>
+
+<h2 id="環境">環境</h2>
+
+<ul>
+<li>MacBook Pro (15-inch, Mid 2012)</li>
+<li>macOS Sierra 10.12.3</li>
+</ul>
+
+<h2 id="ssh鍵の作成-mac">SSH鍵の作成（Mac）</h2>
+
+<ul>
+<li>ターミナルを起動し、Mac上でSSH鍵を作成する</li>
+<li>秘密鍵・公開鍵の２つが作成される
+
+<ul>
+<li>id_rsa_xxx : 秘密鍵（Mac上へ）</li>
+<li>id_rsa_xxx.pub : 公開鍵（GitHubに登録）</li>
+</ul></li>
+<li>SSH鍵は <code>~/.ssh</code> 配下に格納する</li>
+</ul>
+
+<pre><code># 鍵の作成
+# -t 鍵の種類
+# -b 鍵の長さ（GitHubは4096を推奨）
+$ ssh-keygen -t rsa -b 4096 -C &quot;鍵のコメント&quot;
+Generating public/private rsa key pair.
+
+# 鍵の出力場所と鍵名の入力を求められる
+# 鍵名 -&gt; id_rsa_github
+Enter file in which to save the key (/Users/USER名/.ssh/id_rsa): ここに入力
+
+# 鍵のパスフレーズの入力を求められる
+Enter passphrase (empty for no passphrase): ここに新規パスワードを入力
+Enter same passphrase again:
+
+# 鍵が作成される
+...
++---[RSA 4096]----+
+...
++----[SHA256]-----+
+</code></pre>
+
+<h2 id="ssh鍵の確認">SSH鍵の確認</h2>
+
+<ul>
+<li>鍵ファイルが作成されたことを確認する</li>
+<li>秘密鍵のパーミッションを変更（600になっていない場合）</li>
+</ul>
+
+<pre><code># 作成されたかを確認する
+$ ls -la ~/.ssh
+-rw-------   1 xxxx  staff  3326  2  1 15:37 id_rsa_github     # 秘密鍵
+-rw-r--r--   1 xxxx  staff   742  2  1 15:37 id_rsa_github.pub # 公開鍵
+
+# 秘密鍵のパーミッションを変更する（600以外の場合）
+$ chomod 600 ~/.ssh/id_rsa_github
+</code></pre>
+
+<h2 id="sshの設定ファイルへの追記">SSHの設定ファイルへの追記</h2>
+
+<ul>
+<li><code>~/.ssh/config</code> ファイルに、SSHの接続情報を記述する</li>
+<li>今後、ターミナル上で <code>$ ssh github</code> を入力することで接続できるようになる</li>
+</ul>
+
+<pre><code># エディタで開く
+$ vim ~/.ssh/config
+
+# 以下を追加する
+HOST github
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/id_rsa_github
+</code></pre>
+
+<h2 id="githubに公開鍵を登録する">GitHubに公開鍵を登録する</h2>
+
+<ul>
+<li>ブラウザでGitHubにログインし、公開鍵を登録する</li>
+<li>アカウントメニュー -&gt; Settings -&gt; SSH and GPG keys</li>
+<li>SSH Keys -&gt; New SSH Key</li>
+<li>Title : 任意の名前（どのPCからの鍵なのかなど）</li>
+<li>Key : 以下で公開鍵をコピーした内容を貼り付ける</li>
+</ul>
+
+<pre><code># 公開鍵の内容をコピーする
+$ pbcopy &lt; ~/.ssh/id_rsa_github.pub
+</code></pre>
+
+<h2 id="githubとのssh接続を確認する">GitHubとのSSH接続を確認する</h2>
+
+<ul>
+<li>GitHubへSSH接続の確認を行う</li>
+<li>途中で秘密鍵を作成した際に入力したパスフレーズの入力を求められる</li>
+</ul>
+
+<pre><code># 接続（github -&gt; configに設定したHOSTの値）
+$ ssh github
+The authenticity of host 'github.com (192.30.253.112)' can't be established.
+...
+Are you sure you want to continue connecting (yes/no)? yes
+...
+Warning: Permanently added 'github.com,192.30.253.112' (RSA) to the list of known hosts.
+Enter passphrase for key '/Users/xxxx/.ssh/id_rsa_github': 鍵作成時のパスフレーズを入力
+PTY allocation request failed on channel 0
+Hi ユーザー名! You've successfully authenticated, but GitHub does not provide shell access.
+Connection to github.com closed.
+</code></pre>
+
+<p><br>
+以上</p>
 
                 </div>
             </article>
@@ -88,18 +194,13 @@
             <nav class="Pagenation">
                 <div class="Pagenation__older">
                     
-                    <a href="http://mzgkworks.com/post/git-change-commit/">
+                    <a href="http://mzgkworks.com/post/golang-vscode-setting/">
                         <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                        Git コミットをミスった時の操作
+                        Visual Studio CodeにGolang向けの開発デバッグ環境を設定する
                     </a>
                     
                 </div>
                 <div class="Pagenation__newer">
-                    
-                    <a href="http://mzgkworks.com/post/swift3-viewcontroller-lifecycle/">
-                        Swift3 ViewControllerのライフサイクル
-                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                    </a>
                     
                 </div>
             </nav>

@@ -6,8 +6,132 @@
     <description>Recent content on mzgkworks.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Fri, 27 Jan 2017 17:19:47 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 01 Feb 2017 16:27:09 +0900</lastBuildDate>
     <atom:link href="http://mzgkworks.com/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>GitHubにSSH接続する</title>
+      <link>http://mzgkworks.com/post/ssh-connction-to-github/</link>
+      <pubDate>Wed, 01 Feb 2017 16:27:09 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/ssh-connction-to-github/</guid>
+      <description>
+
+&lt;p&gt;SSH鍵を作成・登録し、GitHubとのSSH接続を可能にする。&lt;br /&gt;
+たまにやる作業で、いつも忘れて検索するのでメモ。&lt;/p&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;MacBook Pro (15-inch, Mid 2012)&lt;/li&gt;
+&lt;li&gt;macOS Sierra 10.12.3&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;ssh鍵の作成-mac&#34;&gt;SSH鍵の作成（Mac）&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ターミナルを起動し、Mac上でSSH鍵を作成する&lt;/li&gt;
+&lt;li&gt;秘密鍵・公開鍵の２つが作成される
+
+&lt;ul&gt;
+&lt;li&gt;id_rsa_xxx : 秘密鍵（Mac上へ）&lt;/li&gt;
+&lt;li&gt;id_rsa_xxx.pub : 公開鍵（GitHubに登録）&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;SSH鍵は &lt;code&gt;~/.ssh&lt;/code&gt; 配下に格納する&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;# 鍵の作成
+# -t 鍵の種類
+# -b 鍵の長さ（GitHubは4096を推奨）
+$ ssh-keygen -t rsa -b 4096 -C &amp;quot;鍵のコメント&amp;quot;
+Generating public/private rsa key pair.
+
+# 鍵の出力場所と鍵名の入力を求められる
+# 鍵名 -&amp;gt; id_rsa_github
+Enter file in which to save the key (/Users/USER名/.ssh/id_rsa): ここに入力
+
+# 鍵のパスフレーズの入力を求められる
+Enter passphrase (empty for no passphrase): ここに新規パスワードを入力
+Enter same passphrase again:
+
+# 鍵が作成される
+...
++---[RSA 4096]----+
+...
++----[SHA256]-----+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ssh鍵の確認&#34;&gt;SSH鍵の確認&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;鍵ファイルが作成されたことを確認する&lt;/li&gt;
+&lt;li&gt;秘密鍵のパーミッションを変更（600になっていない場合）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;# 作成されたかを確認する
+$ ls -la ~/.ssh
+-rw-------   1 xxxx  staff  3326  2  1 15:37 id_rsa_github     # 秘密鍵
+-rw-r--r--   1 xxxx  staff   742  2  1 15:37 id_rsa_github.pub # 公開鍵
+
+# 秘密鍵のパーミッションを変更する（600以外の場合）
+$ chomod 600 ~/.ssh/id_rsa_github
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;sshの設定ファイルへの追記&#34;&gt;SSHの設定ファイルへの追記&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;~/.ssh/config&lt;/code&gt; ファイルに、SSHの接続情報を記述する&lt;/li&gt;
+&lt;li&gt;今後、ターミナル上で &lt;code&gt;$ ssh github&lt;/code&gt; を入力することで接続できるようになる&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;# エディタで開く
+$ vim ~/.ssh/config
+
+# 以下を追加する
+HOST github
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/id_rsa_github
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;githubに公開鍵を登録する&#34;&gt;GitHubに公開鍵を登録する&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ブラウザでGitHubにログインし、公開鍵を登録する&lt;/li&gt;
+&lt;li&gt;アカウントメニュー -&amp;gt; Settings -&amp;gt; SSH and GPG keys&lt;/li&gt;
+&lt;li&gt;SSH Keys -&amp;gt; New SSH Key&lt;/li&gt;
+&lt;li&gt;Title : 任意の名前（どのPCからの鍵なのかなど）&lt;/li&gt;
+&lt;li&gt;Key : 以下で公開鍵をコピーした内容を貼り付ける&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;# 公開鍵の内容をコピーする
+$ pbcopy &amp;lt; ~/.ssh/id_rsa_github.pub
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;githubとのssh接続を確認する&#34;&gt;GitHubとのSSH接続を確認する&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;GitHubへSSH接続の確認を行う&lt;/li&gt;
+&lt;li&gt;途中で秘密鍵を作成した際に入力したパスフレーズの入力を求められる&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;# 接続（github -&amp;gt; configに設定したHOSTの値）
+$ ssh github
+The authenticity of host &#39;github.com (192.30.253.112)&#39; can&#39;t be established.
+...
+Are you sure you want to continue connecting (yes/no)? yes
+...
+Warning: Permanently added &#39;github.com,192.30.253.112&#39; (RSA) to the list of known hosts.
+Enter passphrase for key &#39;/Users/xxxx/.ssh/id_rsa_github&#39;: 鍵作成時のパスフレーズを入力
+PTY allocation request failed on channel 0
+Hi ユーザー名! You&#39;ve successfully authenticated, but GitHub does not provide shell access.
+Connection to github.com closed.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br&gt;
+以上&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Visual Studio CodeにGolang向けの開発デバッグ環境を設定する</title>
@@ -1713,128 +1837,6 @@ centuser         pts/0    219.118.174.90   金  9月 16 15:59:23 +0900 2016
 apache                                     **一度もログインしていません**
 mysql                                      **一度もログインしていません**
 &lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Linuxで開いているポートを確認する方法</title>
-      <link>http://mzgkworks.com/post/linux-port-confirm/</link>
-      <pubDate>Thu, 15 Sep 2016 19:08:29 +0900</pubDate>
-      
-      <guid>http://mzgkworks.com/post/linux-port-confirm/</guid>
-      <description>
-
-&lt;p&gt;開いているポートの確認方法。&lt;br /&gt;
-&lt;br&gt;
-ポートはサービス（ソフトウェア）が使用し、そのポートを通る通信をFireWallが監視（制御）している。&lt;br /&gt;
-なので、サービスの登録（ソフトのインストール）をするとポートが使用され、FireWallでそのポートを開放してやると、外部との通信が可能になる。&lt;/p&gt;
-
-&lt;h2 id=&#34;netstat-ss&#34;&gt;netstat（ss）&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;$ netstat&lt;/code&gt;　または &lt;code&gt;$ ss&lt;/code&gt;コマンドで、現在開いているポートを一覧表示することができる。&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;オプション&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;-l&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Listenしているポートのみ表示&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;-t&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;TCPを表示&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;-u&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;UDPを表示&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;-n&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;ポートやホストを数値で表示&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;-p&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;ポートを開いているプロセスを表示（sudo）&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;-4&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;IPv4のみ&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;-6&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;IPv6のみ&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 開いているポートと使用しているプロセス（IPv4）
-$ sudo netstat -ltup4
-sudo netstat -ltup4
-Active Internet connections (only servers)
-Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
-tcp        0      0 0.0.0.0:mysql           0.0.0.0:*               LISTEN      2015/mysqld
-tcp        0      0 localhost:smtp          0.0.0.0:*               LISTEN      2282/master
-tcp        0      0 0.0.0.0:10022           0.0.0.0:*               LISTEN      1274/sshd
-udp        0      0 localhost:323           0.0.0.0:*                           658/chronyd
-
-# 上記を数値で
-sudo netstat -ltunp4
-Active Internet connections (only servers)
-Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
-tcp        0      0 0.0.0.0:3306            0.0.0.0:*               LISTEN      2015/mysqld
-tcp        0      0 127.0.0.1:25            0.0.0.0:*               LISTEN      2282/master
-tcp        0      0 0.0.0.0:10022           0.0.0.0:*               LISTEN      1274/sshd
-udp        0      0 127.0.0.1:323           0.0.0.0:*                           658/chronyd
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;例えば&#34;&gt;例えば&lt;/h2&gt;
-
-&lt;p&gt;例えばhttps通信を許可してやるには、&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;mod_sslをインストール
-
-&lt;ul&gt;
-&lt;li&gt;$ sudo yum install mod_ssl&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;SSLの設定
-
-&lt;ul&gt;
-&lt;li&gt;/etc/httpd/conf.d/sl.conf&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Apaceを再起動する
-
-&lt;ul&gt;
-&lt;li&gt;$ sudo systemctl restart httpd&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;ポート状態を確認する
-
-&lt;ul&gt;
-&lt;li&gt;$ sudo netstat -ltupn&lt;/li&gt;
-&lt;li&gt;443がLISTEN状態になっているか？&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;FireWallにサービスの許可を追加
-
-&lt;ul&gt;
-&lt;li&gt;$ sudo firewall-cmd &amp;ndash;add-service=https&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;関連&#34;&gt;関連&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://mzgkworks.com/post/network-protocol-ipadress/&#34;&gt;ネットワークの基礎知識（プロトコル・IPアドレス・サブネットマスク・ポート）&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     

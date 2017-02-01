@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://mzgkworks.com/post/ssh-connction-to-github/</loc>
+    <lastmod>2017-02-01T16:27:09+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://mzgkworks.com/post/golang-vscode-setting/</loc>
     <lastmod>2017-01-27T17:19:47+09:00</lastmod>
   </url>
@@ -239,7 +244,7 @@
   
   <url>
     <loc>http://mzgkworks.com/tags/git/</loc>
-    <lastmod>2016-10-27T19:14:50+09:00</lastmod>
+    <lastmod>2017-02-01T16:27:09+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -293,7 +298,7 @@
   
   <url>
     <loc>http://mzgkworks.com/post/</loc>
-    <lastmod>2017-01-27T17:19:47+09:00</lastmod>
+    <lastmod>2017-02-01T16:27:09+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -317,7 +322,7 @@
   
   <url>
     <loc>http://mzgkworks.com/categories/setting/</loc>
-    <lastmod>2017-01-27T17:19:47+09:00</lastmod>
+    <lastmod>2017-02-01T16:27:09+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -346,7 +351,7 @@
   
   <url>
     <loc>http://mzgkworks.com/</loc>
-    <lastmod>2017-01-27T17:19:47+09:00</lastmod>
+    <lastmod>2017-02-01T16:27:09+09:00</lastmod>
     <priority>0</priority>
   </url>
   
