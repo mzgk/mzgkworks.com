@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Windows on mzgkworks.com</title>
+    <link>http://mzgkworks.com/tags/windows/index.xml</link>
+    <description>Recent content in Windows on mzgkworks.com</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-JP</language>
+    <atom:link href="http://mzgkworks.com/tags/windows/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Windowsの変換／無変換キーでIMEの日本語/英数モードを切り替える</title>
+      <link>http://mzgkworks.com/post/windows-imemode-like-mac/</link>
+      <pubDate>Fri, 10 Feb 2017 17:26:44 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/windows-imemode-like-mac/</guid>
+      <description>
+
+&lt;p&gt;WindowsのIME変換（日本語／英数）の切り替えを、Mac同様にスペースキーの両隣のキーで切り替えたい。&lt;br&gt;
+そうすることによって、今が日本語入力なのか英数なのかを判断する必要がなくなって、半角/全角キーの連打をしなくてよくなる。&lt;/p&gt;
+
+&lt;h2 id=&#34;目標&#34;&gt;目標&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;変換キー　：日本語入力&lt;/li&gt;
+&lt;li&gt;無変換キー：英数入力&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Windows10 Pro&lt;/li&gt;
+&lt;li&gt;Google日本語入力 -&amp;gt; 未インストール&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;設定方法&#34;&gt;設定方法&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;タスクバーに表示されているIME入力モード（あ／Aとか）を右クリック&lt;/li&gt;
+&lt;li&gt;プロパティ -&amp;gt; 詳細設定&lt;/li&gt;
+&lt;li&gt;「全般」タブ -&amp;gt; 編集操作のキー設定 Microsoft IME -&amp;gt; 変更&lt;/li&gt;
+&lt;li&gt;「キー設定」タブ&lt;/li&gt;
+&lt;li&gt;キー欄の「英数」 -&amp;gt; 「入力/変換済み文字なし」欄をクリック&lt;/li&gt;
+&lt;li&gt;「IME-オン」を選択 -&amp;gt; OK&lt;/li&gt;
+&lt;li&gt;キー欄の「無変換」 -&amp;gt; 「入力/変換済み文字なし」欄をクリック&lt;/li&gt;
+&lt;li&gt;「IME-オフ」を選択 -&amp;gt; OK&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br&gt;
+以上&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

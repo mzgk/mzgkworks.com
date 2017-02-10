@@ -6,8 +6,51 @@
     <description>Recent content on mzgkworks.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Wed, 01 Feb 2017 17:06:48 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 10 Feb 2017 17:26:44 +0900</lastBuildDate>
     <atom:link href="http://mzgkworks.com/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Windowsの変換／無変換キーでIMEの日本語/英数モードを切り替える</title>
+      <link>http://mzgkworks.com/post/windows-imemode-like-mac/</link>
+      <pubDate>Fri, 10 Feb 2017 17:26:44 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/windows-imemode-like-mac/</guid>
+      <description>
+
+&lt;p&gt;WindowsのIME変換（日本語／英数）の切り替えを、Mac同様にスペースキーの両隣のキーで切り替えたい。&lt;br&gt;
+そうすることによって、今が日本語入力なのか英数なのかを判断する必要がなくなって、半角/全角キーの連打をしなくてよくなる。&lt;/p&gt;
+
+&lt;h2 id=&#34;目標&#34;&gt;目標&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;変換キー　：日本語入力&lt;/li&gt;
+&lt;li&gt;無変換キー：英数入力&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Windows10 Pro&lt;/li&gt;
+&lt;li&gt;Google日本語入力 -&amp;gt; 未インストール&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;設定方法&#34;&gt;設定方法&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;タスクバーに表示されているIME入力モード（あ／Aとか）を右クリック&lt;/li&gt;
+&lt;li&gt;プロパティ -&amp;gt; 詳細設定&lt;/li&gt;
+&lt;li&gt;「全般」タブ -&amp;gt; 編集操作のキー設定 Microsoft IME -&amp;gt; 変更&lt;/li&gt;
+&lt;li&gt;「キー設定」タブ&lt;/li&gt;
+&lt;li&gt;キー欄の「英数」 -&amp;gt; 「入力/変換済み文字なし」欄をクリック&lt;/li&gt;
+&lt;li&gt;「IME-オン」を選択 -&amp;gt; OK&lt;/li&gt;
+&lt;li&gt;キー欄の「無変換」 -&amp;gt; 「入力/変換済み文字なし」欄をクリック&lt;/li&gt;
+&lt;li&gt;「IME-オフ」を選択 -&amp;gt; OK&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br&gt;
+以上&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>ATOM vim-mode-plusのESCで、autocomplete-plusのポップアップのみ閉じる方法</title>
@@ -1736,102 +1779,6 @@ $ sass --watch --style expanded scss:css
 &lt;h2 id=&#34;important&#34;&gt;!important&lt;/h2&gt;
 
 &lt;p&gt;詳細度が一番大きくなり、インラインCSSを含めすべてを上書きすることができる。&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>MacからLinux（CentOS7）にSSH公開鍵認証で接続する</title>
-      <link>http://mzgkworks.com/post/mac-linux-ssh-rsa-connection/</link>
-      <pubDate>Fri, 16 Sep 2016 18:32:16 +0900</pubDate>
-      
-      <guid>http://mzgkworks.com/post/mac-linux-ssh-rsa-connection/</guid>
-      <description>
-
-&lt;p&gt;MacからSSHの公開鍵認証でLinux（CentOS7）に接続する方法。&lt;/p&gt;
-
-&lt;h2 id=&#34;linux-公開鍵の設置場所作成&#34;&gt;Linux : 公開鍵の設置場所作成&lt;/h2&gt;
-
-&lt;p&gt;Linux側で公開鍵ファイルを設置する場所を作成しておく。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# ホームディレクトリ直下に.sshディレクトリを作成
-$ mkdir ~/.ssh
-
-# パーミッションを700に変更
-$ chmod 700 ~/.ssh
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;mac-公開鍵と秘密鍵の作成&#34;&gt;Mac : 公開鍵と秘密鍵の作成&lt;/h2&gt;
-
-&lt;p&gt;Mac側で &lt;code&gt;$ ssh-keygen&lt;/code&gt;コマンドを使って、公開鍵と秘密鍵ファイルを生成する。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# SSH2-rsa形式で作成
-$ ssh-keygen -t rsa
-Generating public/private rsa key pair.
-Enter file in which to save the key (/Users/[ユーザー名]/.ssh/id_rsa):
-
-# 作成したい場所とファイル名をフルパスで入力する
-# 未入力の場合は、/Users/[ユーザー名]/.ssh/に以下が生成される
-# id_rsa : 秘密鍵
-# id_rsa.pub : 公開鍵
-
-# 任意のパスフレーズを入力する
-Enter passphrase (empty for no passphrase):
-Enter same passphrase again:
-
-# 作成が完了したか確認
-$ ls -la ~/.ssh
--rw-------   1 xxxx  staff  1766  9 16 17:06 id_rsa
--rw-r--r--   1 xxxx  staff   402  9 16 17:06 id_rsa.pub
-
-# 公開鍵ファイルのパーミッションを変更（所有者のみrw）
-$ chmod 600 ~/.ssh/id_rsa.pub
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;mac-ssh接続の設定&#34;&gt;Mac : SSH接続の設定&lt;/h2&gt;
-
-&lt;p&gt;SSH設定ファイル（~/.ssh/Config）に接続情報を追加する。&lt;br /&gt;
-ssh接続時にHOSTに設定した引数で接続ができるようになる。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;HOST 任意の名前（sshコマンドの引数として入力する）
-  HostName 接続先LinuxのIP
-  User Linuxログインユーザー名
-  Port Linux側SSHポート番号
-  IdentityFile Mac内の秘密鍵ファイルのフルパス
-  ServerAliveInterval 60 # 60秒ごとに接続先にmsg送信
-  # これは接続が切れないようにするため
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;公開鍵ファイルの転送&#34;&gt;公開鍵ファイルの転送&lt;/h2&gt;
-
-&lt;p&gt;Macから接続先のLinuxに&lt;code&gt;$ scp&lt;/code&gt;コマンドを使って、公開鍵ファイルを転送する。&lt;br /&gt;
-その際に、公開鍵ファイルの名前を「authorized_keys」に変更する。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ scp -P [SSHポート番号] [公開鍵フルパス] [ユーザー名]@[LinuxのIP]:~/.ssh/authorized_keys
-xxx@xxx&#39;s password: # Linuxのユーザーパスワード
-id_rsa.pub                                                                    100%  402     0.4KB/s   00:00
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;接続&#34;&gt;接続&lt;/h2&gt;
-
-&lt;p&gt;Mac側から接続。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ ssh [HOSTに定義した名前]
-
-# 秘密鍵を作成した際のパスフレーズ入力のダイアログが表示される
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;linux-sshパスワード認証を禁止する&#34;&gt;Linux : SSHパスワード認証を禁止する&lt;/h2&gt;
-
-&lt;p&gt;SSHサーバーの設定を変更し、パスワード認証を無効にする。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo vi /etc/ssh/sshd_config
-
-PassswordAuthentication yes → noに変更
-
-# SSHサービスの設定を再読み込みする
-$ sudo systemctl reload sshd.service
-&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     

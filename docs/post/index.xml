@@ -6,8 +6,51 @@
     <description>Recent content in Posts on mzgkworks.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Wed, 01 Feb 2017 17:06:48 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 10 Feb 2017 17:26:44 +0900</lastBuildDate>
     <atom:link href="http://mzgkworks.com/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Windowsの変換／無変換キーでIMEの日本語/英数モードを切り替える</title>
+      <link>http://mzgkworks.com/post/windows-imemode-like-mac/</link>
+      <pubDate>Fri, 10 Feb 2017 17:26:44 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/windows-imemode-like-mac/</guid>
+      <description>
+
+&lt;p&gt;WindowsのIME変換（日本語／英数）の切り替えを、Mac同様にスペースキーの両隣のキーで切り替えたい。&lt;br&gt;
+そうすることによって、今が日本語入力なのか英数なのかを判断する必要がなくなって、半角/全角キーの連打をしなくてよくなる。&lt;/p&gt;
+
+&lt;h2 id=&#34;目標&#34;&gt;目標&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;変換キー　：日本語入力&lt;/li&gt;
+&lt;li&gt;無変換キー：英数入力&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Windows10 Pro&lt;/li&gt;
+&lt;li&gt;Google日本語入力 -&amp;gt; 未インストール&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;設定方法&#34;&gt;設定方法&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;タスクバーに表示されているIME入力モード（あ／Aとか）を右クリック&lt;/li&gt;
+&lt;li&gt;プロパティ -&amp;gt; 詳細設定&lt;/li&gt;
+&lt;li&gt;「全般」タブ -&amp;gt; 編集操作のキー設定 Microsoft IME -&amp;gt; 変更&lt;/li&gt;
+&lt;li&gt;「キー設定」タブ&lt;/li&gt;
+&lt;li&gt;キー欄の「英数」 -&amp;gt; 「入力/変換済み文字なし」欄をクリック&lt;/li&gt;
+&lt;li&gt;「IME-オン」を選択 -&amp;gt; OK&lt;/li&gt;
+&lt;li&gt;キー欄の「無変換」 -&amp;gt; 「入力/変換済み文字なし」欄をクリック&lt;/li&gt;
+&lt;li&gt;「IME-オフ」を選択 -&amp;gt; OK&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br&gt;
+以上&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>ATOM vim-mode-plusのESCで、autocomplete-plusのポップアップのみ閉じる方法</title>
@@ -1887,128 +1930,6 @@ centuser         pts/0    219.118.174.90   金  9月 16 15:59:23 +0900 2016
 apache                                     **一度もログインしていません**
 mysql                                      **一度もログインしていません**
 &lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Linuxで開いているポートを確認する方法</title>
-      <link>http://mzgkworks.com/post/linux-port-confirm/</link>
-      <pubDate>Thu, 15 Sep 2016 19:08:29 +0900</pubDate>
-      
-      <guid>http://mzgkworks.com/post/linux-port-confirm/</guid>
-      <description>
-
-&lt;p&gt;開いているポートの確認方法。&lt;br /&gt;
-&lt;br&gt;
-ポートはサービス（ソフトウェア）が使用し、そのポートを通る通信をFireWallが監視（制御）している。&lt;br /&gt;
-なので、サービスの登録（ソフトのインストール）をするとポートが使用され、FireWallでそのポートを開放してやると、外部との通信が可能になる。&lt;/p&gt;
-
-&lt;h2 id=&#34;netstat-ss&#34;&gt;netstat（ss）&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;$ netstat&lt;/code&gt;　または &lt;code&gt;$ ss&lt;/code&gt;コマンドで、現在開いているポートを一覧表示することができる。&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;オプション&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;-l&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Listenしているポートのみ表示&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;-t&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;TCPを表示&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;-u&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;UDPを表示&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;-n&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;ポートやホストを数値で表示&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;-p&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;ポートを開いているプロセスを表示（sudo）&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;-4&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;IPv4のみ&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;-6&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;IPv6のみ&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 開いているポートと使用しているプロセス（IPv4）
-$ sudo netstat -ltup4
-sudo netstat -ltup4
-Active Internet connections (only servers)
-Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
-tcp        0      0 0.0.0.0:mysql           0.0.0.0:*               LISTEN      2015/mysqld
-tcp        0      0 localhost:smtp          0.0.0.0:*               LISTEN      2282/master
-tcp        0      0 0.0.0.0:10022           0.0.0.0:*               LISTEN      1274/sshd
-udp        0      0 localhost:323           0.0.0.0:*                           658/chronyd
-
-# 上記を数値で
-sudo netstat -ltunp4
-Active Internet connections (only servers)
-Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
-tcp        0      0 0.0.0.0:3306            0.0.0.0:*               LISTEN      2015/mysqld
-tcp        0      0 127.0.0.1:25            0.0.0.0:*               LISTEN      2282/master
-tcp        0      0 0.0.0.0:10022           0.0.0.0:*               LISTEN      1274/sshd
-udp        0      0 127.0.0.1:323           0.0.0.0:*                           658/chronyd
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;例えば&#34;&gt;例えば&lt;/h2&gt;
-
-&lt;p&gt;例えばhttps通信を許可してやるには、&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;mod_sslをインストール
-
-&lt;ul&gt;
-&lt;li&gt;$ sudo yum install mod_ssl&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;SSLの設定
-
-&lt;ul&gt;
-&lt;li&gt;/etc/httpd/conf.d/sl.conf&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Apaceを再起動する
-
-&lt;ul&gt;
-&lt;li&gt;$ sudo systemctl restart httpd&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;ポート状態を確認する
-
-&lt;ul&gt;
-&lt;li&gt;$ sudo netstat -ltupn&lt;/li&gt;
-&lt;li&gt;443がLISTEN状態になっているか？&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;FireWallにサービスの許可を追加
-
-&lt;ul&gt;
-&lt;li&gt;$ sudo firewall-cmd &amp;ndash;add-service=https&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;関連&#34;&gt;関連&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://mzgkworks.com/post/network-protocol-ipadress/&#34;&gt;ネットワークの基礎知識（プロトコル・IPアドレス・サブネットマスク・ポート）&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     
