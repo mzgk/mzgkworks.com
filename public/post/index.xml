@@ -19,7 +19,9 @@
 
 &lt;p&gt;ATOMでvim-mode-plusとautocomplete-plusを導入済み。&lt;br&gt;
 入力中にautocomplete-plusのポップアップをESCで閉じた際に、Vimのモードをそのままにしたい。&lt;br&gt;
-何も設定しないと、ポップアップが閉じると同時にinsert-mode -&amp;gt; normal-modeになってしまう。&lt;/p&gt;
+何も設定しないと、ポップアップが閉じると同時にinsert-mode -&amp;gt; normal-modeになってしまう。&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+
+&lt;p&gt;追加で、autocomplete-plusの変換候補の移動／確定をTab/Enterに割り当てる。&lt;/p&gt;
 
 &lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
 
@@ -53,6 +55,21 @@ insert-modeのままにしたい&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;&#39;atom-text-editor.vim-mode-plus.insert-mode.autocomplete-active&#39;:
   &#39;escape&#39;: &#39;autocomplete-plus:cancel&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;追加-autocomplete-plusで-tab-次候補-enter-確定-を有効にする&#34;&gt;追加：autocomplete-plusで「Tab：次候補」「Enter：確定」を有効にする&lt;/h2&gt;
+
+&lt;p&gt;以下をkeymap.csonに追加する。&lt;br&gt;
+&lt;strong&gt;ATOM上で、autocomplete-plusの設定から「Use Core Movement Commands」のチェックを外す。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# autocomplete-plusでtab:次候補 Enter:確定にする
+# autocomplete-plusの設定で「Use Core Movement Commandsのチェックを外す
+&#39;body atom-text-editor.autocomplete-active&#39;:
+  &#39;ctrl-p&#39;: &#39;autocomplete-plus:move-up&#39;
+  &#39;ctrl-n&#39;: &#39;autocomplete-plus:move-down&#39;
+  &#39;tab&#39;: &#39;autocomplete-plus:move-down&#39;
+  &#39;shift-tab&#39;: &#39;autocomplete-plus:move-up&#39;
+  &#39;enter&#39;: &#39;autocomplete-plus:confirm&#39;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;br&gt;
