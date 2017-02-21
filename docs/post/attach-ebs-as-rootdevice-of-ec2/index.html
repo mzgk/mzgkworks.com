@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ja-JP">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="keywords" content="Program,Mac,iOS,Web,AWS,Hugo,Books">
+    
+        <meta name="description" content=" プログラマーの備忘録。">
+    
+        <meta name="description" content="どこにもアタッチされていないEBSをEC2のルートデバイスとしてアタッチする方法。">
+    
+
+    <base href="http://mzgkworks.com">
+    
+    <link rel="stylesheet" href="./css/masamune.css">
+
+    <title>
+        
+        既存のEBSをEC2のルートデバイスとしてアタッチする
+         | mzgkworks.com
+    </title>
+
+    <meta name="generator" content="Hugo 0.18.1" />
+</head>
+
+<body>
+    <div class="HeaderContainer">
+        <header class="Header">
+            <div class="Header__head">
+                <h1 class="Header__title"><a href="./index.html">mzgkworks.com</a></h1>
+                <p class="Header__subTitle">Stack the little bets.</p>
+            </div>
+            <nav class="Header__body">
+                <ul class="Navi">
+                    <li class="Navi__item"><a href="./about/about" class="fa fa-smile-o"></a></li>
+                    <li class="Navi__item"><a href="https://github.com/mzgk" target="_blank" rel="noopener noreferrer" class="fa fa-github"></a></li>
+                    <li class="Navi__item"><a href="https://twitter.com/mzgkworks" target="_blank" rel="noopener noreferrer" class="fa fa-twitter"></a></li>
+                    <li class="Navi__item"><a href="#" class="fa fa-rss"></a></li>
+                </ul>
+            </nav>
+        </header>
+    </div>
+
+
+    <div class="ContentsContainer">
+        <main class="MainContainer">
+
+            <article class="PostItem">
+                <div class="PostItem__head">
+                    <div class="PostItem__title">
+                        <h1>
+                            既存のEBSをEC2のルートデバイスとしてアタッチする
+                            
+                        </h1>
+                    </div>
+                    <div class="PostItem__meta">
+                        <time datetime="2017-02-02">
+                            2017.02.21
+                        </time>
+                        &nbsp;&nbsp;
+                        
+                        <span>[<a href="./categories/usage">Usage</a>]</span>
+                        
+                        
+                        &nbsp;&nbsp;
+                        <span>#<a href="./tags/aws">AWS</a></span>
+                        
+                    </div>
+                </div>
+
+                <div class="PostItem__body">
+                    
+
+<p>どこにもアタッチされていないボリューム（EBS）が存在したので、EC2にアタッチして使いたい。<br>
+EC2インスタンスの作成中に、アタッチしたいボリュームを選択できるかと思っていたが、既存ボリュームの追加ができなかった。<br>
+なので、EC2インスタンス作成 -&gt; EBSデタッチ -&gt; 対象EBSアタッチの手順を踏んだ際の備忘録。<br></p>
+
+<p><strong>EC2インスタンスとアタッチしたいボリューム（EBS）が、同じAZ内であることが前提。</strong></p>
+
+<h2 id="手順">手順</h2>
+
+<ol>
+<li>EC2インスタンスを作成
+
+<ul>
+<li>作成時にEBSも作成する（後ほどデタッチ -&gt; 削除）</li>
+</ul></li>
+<li>EC2が起動
+
+<ul>
+<li>ルートデバイスの値を控える /dev/xvdaとか</li>
+<li>ルートデバイスをクリックして表示されるEBS IDを控える</li>
+</ul></li>
+<li>EC2を停止
+
+<ul>
+<li>ルートデバイスをクリックして表示されるEBS IDをクリック</li>
+</ul></li>
+<li>ボリュームのデタッチ
+
+<ul>
+<li>ボリュームが表示される</li>
+<li>アクション（or 右クリック）-&gt; ボリュームのデタッチ</li>
+</ul></li>
+<li>ボリュームのアタッチ
+
+<ul>
+<li>左ペイン -&gt; ボリューム</li>
+<li>アタッチしたいボリュームを選択</li>
+<li>アクション（or 右クリック）-&gt; ボリュームのアタッチ</li>
+<li>インスタンス : アタッチしたいEC2インスタンスを選択</li>
+<li>デバイス : <strong>2.で控えたルートデバイスの値に変更</strong></li>
+<li>アタッチ</li>
+</ul></li>
+<li>確認
+
+<ul>
+<li>左ペイン -&gt; インスタンス</li>
+<li>対象のインスタンスを選択</li>
+<li>ルートデバイスをクリック -&gt; アタッチしたEBSであること</li>
+</ul></li>
+<li>デタッチしたEBSを削除</li>
+</ol>
+
+<h2 id="注意事項">注意事項</h2>
+
+<ul>
+<li>アタッチするEC2とEBSが同じAZであること</li>
+<li>EC2削除時のEBS合わせて削除がオフになるので、EBSは個別で削除すること</li>
+</ul>
+
+                </div>
+            </article>
+
+            <nav class="Pagenation">
+                <div class="Pagenation__older">
+                    
+                    <a href="http://mzgkworks.com/post/windows-imemode-like-mac/">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        Windowsの変換／無変換キーでIMEの日本語/英数モードを切り替える
+                    </a>
+                    
+                </div>
+                <div class="Pagenation__newer">
+                    
+                </div>
+            </nav>
+
+            <div class="Disqus">
+                
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'mzgkworks-com';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+            </div>
+        </main>
+
+        <aside class="SubContainer">
+    <h1 class="AreaTitle">Products</h1>
+    <div class="SubItem">
+        <a href="./products/products">
+            <i class="fa fa-apple fa-2x" aria-hidden="true"></i>
+        </a>
+    </div>
+
+    <h1 class="AreaTitle">Categories</h1>
+    <div class="SubItem">
+        <ul>
+            
+            <li>
+                <a href="./categories/knowledge/">
+                    knowledge : 6
+                </a>
+            </li>
+            
+            <li>
+                <a href="./categories/programing/">
+                    programing : 3
+                </a>
+            </li>
+            
+            <li>
+                <a href="./categories/setting/">
+                    setting : 15
+                </a>
+            </li>
+            
+            <li>
+                <a href="./categories/usage/">
+                    usage : 16
+                </a>
+            </li>
+            
+            <li>
+                <a href="./categories/words/">
+                    words : 1
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+
+    <h1 class="AreaTitle">Tags</h1>
+    <div class="SubItem">
+        <ul>
+            
+            <li>
+                <a href="./tags/apache/">
+                    apache : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/atom/">
+                    atom : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/aws/">
+                    aws : 1
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/bash/">
+                    bash : 3
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/blog/">
+                    blog : 5
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/css/">
+                    css : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/git/">
+                    git : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/golang/">
+                    golang : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/http/">
+                    http : 1
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/hugo/">
+                    hugo : 5
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/ios/">
+                    ios : 3
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/linux/">
+                    linux : 14
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/mac/">
+                    mac : 4
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/network/">
+                    network : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/sass/">
+                    sass : 1
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/swift/">
+                    swift : 3
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/windows/">
+                    windows : 1
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</aside>
+
+
+    </div>
+
+    <div class="FooterContainer">
+    <footer class="Footer">
+        <img  class="Footer__head" src="./images/profile.png" alt="profile-image" />
+        <div class="Footer__body">
+            <i class="fa fa-copyright" aria-hidden="true"></i>
+            <span>2016</span>
+            <span><a href="./about/about">mzgk</a></span>
+        </div>
+    </footer>
+</div>
+
+<script src="./js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-82194549-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+</body>
+</html>
+

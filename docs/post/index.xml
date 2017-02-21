@@ -6,8 +6,76 @@
     <description>Recent content in Posts on mzgkworks.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Fri, 10 Feb 2017 17:26:44 +0900</lastBuildDate>
+    <lastBuildDate>Tue, 21 Feb 2017 11:51:56 +0900</lastBuildDate>
     <atom:link href="http://mzgkworks.com/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>既存のEBSをEC2のルートデバイスとしてアタッチする</title>
+      <link>http://mzgkworks.com/post/attach-ebs-as-rootdevice-of-ec2/</link>
+      <pubDate>Tue, 21 Feb 2017 11:51:56 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/attach-ebs-as-rootdevice-of-ec2/</guid>
+      <description>
+
+&lt;p&gt;どこにもアタッチされていないボリューム（EBS）が存在したので、EC2にアタッチして使いたい。&lt;br&gt;
+EC2インスタンスの作成中に、アタッチしたいボリュームを選択できるかと思っていたが、既存ボリュームの追加ができなかった。&lt;br&gt;
+なので、EC2インスタンス作成 -&amp;gt; EBSデタッチ -&amp;gt; 対象EBSアタッチの手順を踏んだ際の備忘録。&lt;br&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;EC2インスタンスとアタッチしたいボリューム（EBS）が、同じAZ内であることが前提。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;手順&#34;&gt;手順&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;EC2インスタンスを作成
+
+&lt;ul&gt;
+&lt;li&gt;作成時にEBSも作成する（後ほどデタッチ -&amp;gt; 削除）&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;EC2が起動
+
+&lt;ul&gt;
+&lt;li&gt;ルートデバイスの値を控える /dev/xvdaとか&lt;/li&gt;
+&lt;li&gt;ルートデバイスをクリックして表示されるEBS IDを控える&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;EC2を停止
+
+&lt;ul&gt;
+&lt;li&gt;ルートデバイスをクリックして表示されるEBS IDをクリック&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;ボリュームのデタッチ
+
+&lt;ul&gt;
+&lt;li&gt;ボリュームが表示される&lt;/li&gt;
+&lt;li&gt;アクション（or 右クリック）-&amp;gt; ボリュームのデタッチ&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;ボリュームのアタッチ
+
+&lt;ul&gt;
+&lt;li&gt;左ペイン -&amp;gt; ボリューム&lt;/li&gt;
+&lt;li&gt;アタッチしたいボリュームを選択&lt;/li&gt;
+&lt;li&gt;アクション（or 右クリック）-&amp;gt; ボリュームのアタッチ&lt;/li&gt;
+&lt;li&gt;インスタンス : アタッチしたいEC2インスタンスを選択&lt;/li&gt;
+&lt;li&gt;デバイス : &lt;strong&gt;2.で控えたルートデバイスの値に変更&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;アタッチ&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;確認
+
+&lt;ul&gt;
+&lt;li&gt;左ペイン -&amp;gt; インスタンス&lt;/li&gt;
+&lt;li&gt;対象のインスタンスを選択&lt;/li&gt;
+&lt;li&gt;ルートデバイスをクリック -&amp;gt; アタッチしたEBSであること&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;デタッチしたEBSを削除&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;注意事項&#34;&gt;注意事項&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;アタッチするEC2とEBSが同じAZであること&lt;/li&gt;
+&lt;li&gt;EC2削除時のEBS合わせて削除がオフになるので、EBSは個別で削除すること&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
     
     <item>
       <title>Windowsの変換／無変換キーでIMEの日本語/英数モードを切り替える</title>
@@ -1856,79 +1924,6 @@ PassswordAuthentication yes → noに変更
 
 # SSHサービスの設定を再読み込みする
 $ sudo systemctl reload sshd.service
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Linuxでのログインユーザの確認や制御の方法</title>
-      <link>http://mzgkworks.com/post/linux-login-user-management/</link>
-      <pubDate>Fri, 16 Sep 2016 16:21:06 +0900</pubDate>
-      
-      <guid>http://mzgkworks.com/post/linux-login-user-management/</guid>
-      <description>
-
-&lt;p&gt;Linuxにはrootユーザーが必ず存在するため、外部からのログインは一般ユーザーのみに限定し、rootユーザーを禁止する。&lt;/p&gt;
-
-&lt;h2 id=&#34;sshでのrootログインの禁止&#34;&gt;SSHでのrootログインの禁止&lt;/h2&gt;
-
-&lt;p&gt;/etc/ssh/sshd_configファイルを以下に変更。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;PermitRootLogin no
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;ログイン可能なユーザーを限定&#34;&gt;ログイン可能なユーザーを限定&lt;/h2&gt;
-
-&lt;p&gt;/etc/ssh/sshd_configファイルに以下を追記。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# AllowUsers [ユーザー名]
-AllowUsers centuser
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;おまけ-sshポートの変更&#34;&gt;（おまけ）SSHポートの変更&lt;/h2&gt;
-
-&lt;p&gt;/etc/ssh/sshd_configファイルを以下に変更。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# Port [ポート番号]
-Port 10022
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;変更後はsshサーバーの再起動&#34;&gt;変更後はSSHサーバーの再起動&lt;/h2&gt;
-
-&lt;p&gt;設定ファイルの変更後は、SSKサーバーを再起動させる。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo systemctl restart sshd.service
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;過去のログイン情報を確認する&#34;&gt;過去のログイン情報を確認する&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;$ last&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ last
-centuser pts/0        219.118.174.90   Fri Sep 16 15:59   still logged in
-centuser pts/0        219.118.174.90   Fri Sep 16 15:54 - 15:54  (00:00)
-centuser pts/1        219.118.174.90   Thu Sep 15 19:20 - 19:35  (00:15)
-centuser pts/0        219.118.174.90   Thu Sep 15 16:06 - 21:01  (04:54)
-centuser pts/1        219.118.174.90   Tue Sep 13 17:34 - 19:50  (02:16)
-centuser pts/0        219.118.174.90   Tue Sep 13 16:57 - 19:08  (02:11)
-reboot   system boot  3.10.0-327.28.3. Tue Sep 13 16:56 - 16:16 (2+23:19)
-centuser pts/0        219.118.174.90   Tue Sep 13 16:48 - 16:56  (00:07)
-...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;ユーザーごとの最終ログインを確認する&#34;&gt;ユーザーごとの最終ログインを確認する&lt;/h2&gt;
-
-&lt;p&gt;ユーザーごとの最終ログインを表示することによって、覚えのないユーザーのログインを発見できる。&lt;br /&gt;
-&lt;code&gt;$ lastlog&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ lastlog
-ユーザ名         ポート   場所             最近のログイン
-root             pts/0                     金  9月 16 15:54:17 +0900 2016
-bin                                        **一度もログインしていません**
-...
-centuser         pts/0    219.118.174.90   金  9月 16 15:59:23 +0900 2016
-apache                                     **一度もログインしていません**
-mysql                                      **一度もログインしていません**
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
