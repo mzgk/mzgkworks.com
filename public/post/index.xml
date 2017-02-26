@@ -6,8 +6,39 @@
     <description>Recent content in Posts on mzgkworks.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Tue, 21 Feb 2017 11:51:56 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 26 Feb 2017 12:36:02 +0900</lastBuildDate>
     <atom:link href="http://mzgkworks.com/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>トラックパッドで、３本指ドラッグでの選択を可能にする</title>
+      <link>http://mzgkworks.com/post/drag-with-three-fingers-to-select/</link>
+      <pubDate>Sun, 26 Feb 2017 12:36:02 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/drag-with-three-fingers-to-select/</guid>
+      <description>
+
+&lt;p&gt;Webサイトの文章とかを選択する時、マウスだと左クリックしたままでドラッグすれば選択できる。&lt;br /&gt;
+あれをトラックパッド上の３本指ドラッグでやる方法。&lt;br /&gt;
+PopClipを使う時とかにとても便利。&lt;br /&gt;
+たまにしかしない設定なので、忘れないようにメモ。&lt;/p&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;macOS Sierra 10.12.3&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;アクセシビリティから&#34;&gt;アクセシビリティから&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;システム環境設定 → アクセシビリティ&lt;/li&gt;
+&lt;li&gt;左側から「マウスとトラックパッド」 → トラックパッドオプション&lt;/li&gt;
+&lt;li&gt;「ドラッグを有効にする」をチェック → 「３本指のドラッグ」を選択&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://support.apple.com/ja-jp/HT204609&#34;&gt;Apple公式サイト&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>既存のEBSをEC2のルートデバイスとしてアタッチする</title>
@@ -1829,102 +1860,6 @@ $ sass --watch --style expanded scss:css
 &lt;h2 id=&#34;important&#34;&gt;!important&lt;/h2&gt;
 
 &lt;p&gt;詳細度が一番大きくなり、インラインCSSを含めすべてを上書きすることができる。&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>MacからLinux（CentOS7）にSSH公開鍵認証で接続する</title>
-      <link>http://mzgkworks.com/post/mac-linux-ssh-rsa-connection/</link>
-      <pubDate>Fri, 16 Sep 2016 18:32:16 +0900</pubDate>
-      
-      <guid>http://mzgkworks.com/post/mac-linux-ssh-rsa-connection/</guid>
-      <description>
-
-&lt;p&gt;MacからSSHの公開鍵認証でLinux（CentOS7）に接続する方法。&lt;/p&gt;
-
-&lt;h2 id=&#34;linux-公開鍵の設置場所作成&#34;&gt;Linux : 公開鍵の設置場所作成&lt;/h2&gt;
-
-&lt;p&gt;Linux側で公開鍵ファイルを設置する場所を作成しておく。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# ホームディレクトリ直下に.sshディレクトリを作成
-$ mkdir ~/.ssh
-
-# パーミッションを700に変更
-$ chmod 700 ~/.ssh
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;mac-公開鍵と秘密鍵の作成&#34;&gt;Mac : 公開鍵と秘密鍵の作成&lt;/h2&gt;
-
-&lt;p&gt;Mac側で &lt;code&gt;$ ssh-keygen&lt;/code&gt;コマンドを使って、公開鍵と秘密鍵ファイルを生成する。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# SSH2-rsa形式で作成
-$ ssh-keygen -t rsa
-Generating public/private rsa key pair.
-Enter file in which to save the key (/Users/[ユーザー名]/.ssh/id_rsa):
-
-# 作成したい場所とファイル名をフルパスで入力する
-# 未入力の場合は、/Users/[ユーザー名]/.ssh/に以下が生成される
-# id_rsa : 秘密鍵
-# id_rsa.pub : 公開鍵
-
-# 任意のパスフレーズを入力する
-Enter passphrase (empty for no passphrase):
-Enter same passphrase again:
-
-# 作成が完了したか確認
-$ ls -la ~/.ssh
--rw-------   1 xxxx  staff  1766  9 16 17:06 id_rsa
--rw-r--r--   1 xxxx  staff   402  9 16 17:06 id_rsa.pub
-
-# 公開鍵ファイルのパーミッションを変更（所有者のみrw）
-$ chmod 600 ~/.ssh/id_rsa.pub
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;mac-ssh接続の設定&#34;&gt;Mac : SSH接続の設定&lt;/h2&gt;
-
-&lt;p&gt;SSH設定ファイル（~/.ssh/Config）に接続情報を追加する。&lt;br /&gt;
-ssh接続時にHOSTに設定した引数で接続ができるようになる。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;HOST 任意の名前（sshコマンドの引数として入力する）
-  HostName 接続先LinuxのIP
-  User Linuxログインユーザー名
-  Port Linux側SSHポート番号
-  IdentityFile Mac内の秘密鍵ファイルのフルパス
-  ServerAliveInterval 60 # 60秒ごとに接続先にmsg送信
-  # これは接続が切れないようにするため
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;公開鍵ファイルの転送&#34;&gt;公開鍵ファイルの転送&lt;/h2&gt;
-
-&lt;p&gt;Macから接続先のLinuxに&lt;code&gt;$ scp&lt;/code&gt;コマンドを使って、公開鍵ファイルを転送する。&lt;br /&gt;
-その際に、公開鍵ファイルの名前を「authorized_keys」に変更する。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ scp -P [SSHポート番号] [公開鍵フルパス] [ユーザー名]@[LinuxのIP]:~/.ssh/authorized_keys
-xxx@xxx&#39;s password: # Linuxのユーザーパスワード
-id_rsa.pub                                                                    100%  402     0.4KB/s   00:00
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;接続&#34;&gt;接続&lt;/h2&gt;
-
-&lt;p&gt;Mac側から接続。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ ssh [HOSTに定義した名前]
-
-# 秘密鍵を作成した際のパスフレーズ入力のダイアログが表示される
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;linux-sshパスワード認証を禁止する&#34;&gt;Linux : SSHパスワード認証を禁止する&lt;/h2&gt;
-
-&lt;p&gt;SSHサーバーの設定を変更し、パスワード認証を無効にする。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo vi /etc/ssh/sshd_config
-
-PassswordAuthentication yes → noに変更
-
-# SSHサービスの設定を再読み込みする
-$ sudo systemctl reload sshd.service
-&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     

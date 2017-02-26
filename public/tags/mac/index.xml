@@ -9,6 +9,37 @@
     <atom:link href="http://mzgkworks.com/tags/mac/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>トラックパッドで、３本指ドラッグでの選択を可能にする</title>
+      <link>http://mzgkworks.com/post/drag-with-three-fingers-to-select/</link>
+      <pubDate>Sun, 26 Feb 2017 12:36:02 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/drag-with-three-fingers-to-select/</guid>
+      <description>
+
+&lt;p&gt;Webサイトの文章とかを選択する時、マウスだと左クリックしたままでドラッグすれば選択できる。&lt;br /&gt;
+あれをトラックパッド上の３本指ドラッグでやる方法。&lt;br /&gt;
+PopClipを使う時とかにとても便利。&lt;br /&gt;
+たまにしかしない設定なので、忘れないようにメモ。&lt;/p&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;macOS Sierra 10.12.3&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;アクセシビリティから&#34;&gt;アクセシビリティから&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;システム環境設定 → アクセシビリティ&lt;/li&gt;
+&lt;li&gt;左側から「マウスとトラックパッド」 → トラックパッドオプション&lt;/li&gt;
+&lt;li&gt;「ドラッグを有効にする」をチェック → 「３本指のドラッグ」を選択&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://support.apple.com/ja-jp/HT204609&#34;&gt;Apple公式サイト&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>MacにSass環境を構築する（Ruby gem）</title>
       <link>http://mzgkworks.com/post/ruby-gem-install-sass/</link>
       <pubDate>Tue, 04 Oct 2016 18:57:07 +0900</pubDate>

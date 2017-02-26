@@ -9,6 +9,37 @@
     <atom:link href="http://mzgkworks.com/categories/setting/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>トラックパッドで、３本指ドラッグでの選択を可能にする</title>
+      <link>http://mzgkworks.com/post/drag-with-three-fingers-to-select/</link>
+      <pubDate>Sun, 26 Feb 2017 12:36:02 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/drag-with-three-fingers-to-select/</guid>
+      <description>
+
+&lt;p&gt;Webサイトの文章とかを選択する時、マウスだと左クリックしたままでドラッグすれば選択できる。&lt;br /&gt;
+あれをトラックパッド上の３本指ドラッグでやる方法。&lt;br /&gt;
+PopClipを使う時とかにとても便利。&lt;br /&gt;
+たまにしかしない設定なので、忘れないようにメモ。&lt;/p&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;macOS Sierra 10.12.3&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;アクセシビリティから&#34;&gt;アクセシビリティから&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;システム環境設定 → アクセシビリティ&lt;/li&gt;
+&lt;li&gt;左側から「マウスとトラックパッド」 → トラックパッドオプション&lt;/li&gt;
+&lt;li&gt;「ドラッグを有効にする」をチェック → 「３本指のドラッグ」を選択&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://support.apple.com/ja-jp/HT204609&#34;&gt;Apple公式サイト&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Windowsの変換／無変換キーでIMEの日本語/英数モードを切り替える</title>
       <link>http://mzgkworks.com/post/windows-imemode-like-mac/</link>
       <pubDate>Fri, 10 Feb 2017 17:26:44 +0900</pubDate>
@@ -1641,71 +1672,6 @@ $ git commit -m &amp;quot;公開用ファイル生成&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h3 id=&#34;次回は-githubにリモートリポジトリを作成するところから&#34;&gt;次回は、GitHubにリモートリポジトリを作成するところから。&lt;/h3&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Hugo・GitHub Pages・独自ドメインでブログを構築 : 0</title>
-      <link>http://mzgkworks.com/post/build-a-blog-in-hugo-0/</link>
-      <pubDate>Tue, 30 Aug 2016 13:58:05 +0900</pubDate>
-      
-      <guid>http://mzgkworks.com/post/build-a-blog-in-hugo-0/</guid>
-      <description>
-
-&lt;h2 id=&#34;望むこと&#34;&gt;望むこと&lt;/h2&gt;
-
-&lt;ol&gt;
-&lt;li&gt;静的なWebサイト
-
-&lt;ul&gt;
-&lt;li&gt;動的にするほどのコンテンツはないし、WordPressだといろいろ面倒&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;記事はエディタを使ってMarkdown形式で作成し、テキストファイル（.md）として残したい
-
-&lt;ul&gt;
-&lt;li&gt;DBにデータとして保存されているとかだと取り回しが面倒&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;ブログ環境と作成した記事のファイルは、GitHub（or Bitbucket）で管理したい
-
-&lt;ul&gt;
-&lt;li&gt;マシンが変わっても &lt;code&gt;$ git clone&lt;/code&gt; 一発で環境構築ができる&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;独自ドメイン
-
-&lt;ul&gt;
-&lt;li&gt;バックのシステムが変わってもURLを変えたくない&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;サーバーの運用を軽くしたい
-
-&lt;ul&gt;
-&lt;li&gt;VPSとかS3とか契約や運用が面倒（勉強にはなるけど、アプトプットに集中したい）&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&#34;そうなると&#34;&gt;そうなると&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;GitHubにGitHub Pages（プロジェクト版）の機能があるじゃないか！&lt;/li&gt;
-&lt;li&gt;Gitの一連の流れ（add → commit → push）だけで、FTPとか使わずにいける！&lt;/li&gt;
-&lt;li&gt;2016.8の新機能でmasterブランチ/docsディレクトリでもいける
-
-&lt;ul&gt;
-&lt;li&gt;前はgh-pagesブランチが必要&lt;/li&gt;
-&lt;li&gt;１リポジトリで管理運用とかsubtree運用が少し面倒だった&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;独自ドメインも適用できる&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;ブログ遍歴&#34;&gt;ブログ遍歴&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;d.hatena → WordPress → Octopress → hatenaBlog&lt;/li&gt;
-&lt;li&gt;hatenaは手軽でいいが、ブラウザでの作業とファイルの管理は自前&lt;/li&gt;
-&lt;li&gt;WordPressは書いたものがDB格納・機能過剰・WordPress自体の管理運用が面倒&lt;/li&gt;
-&lt;li&gt;Octopressは、Macクリーンインストール等での環境維持が面倒だった&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;次はインストールから&#34;&gt;次はインストールから&lt;/h3&gt;
 </description>
     </item>
     
