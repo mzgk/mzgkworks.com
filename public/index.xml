@@ -6,8 +6,387 @@
     <description>Recent content on mzgkworks.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Sun, 26 Feb 2017 12:36:02 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 27 Feb 2017 13:33:52 +0900</lastBuildDate>
     <atom:link href="http://mzgkworks.com/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Elastic Load Balancingを利用した、EC2-RDS環境の構築</title>
+      <link>http://mzgkworks.com/post/aws-elb-ec2-rds-wordpress/</link>
+      <pubDate>Mon, 27 Feb 2017 13:33:52 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/aws-elb-ec2-rds-wordpress/</guid>
+      <description>
+
+&lt;h2 id=&#34;0-環境&#34;&gt;0. 環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;異なるAZにロードバランシングされるWordPress環境を構築する&lt;/li&gt;
+&lt;li&gt;VPC・Subnet（4）・Internet Gateway・Route Table・Security Group&lt;/li&gt;
+&lt;li&gt;ロードバランサー
+
+&lt;ul&gt;
+&lt;li&gt;異なるAZに配置されたEC2に接続&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Webサーバー
+
+&lt;ul&gt;
+&lt;li&gt;異なるAZにEC2を1台づつ配置&lt;/li&gt;
+&lt;li&gt;Public Subnet&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;DBサーバー
+
+&lt;ul&gt;
+&lt;li&gt;テスト用なのでSingle-AZ&lt;/li&gt;
+&lt;li&gt;EC2からアクセス&lt;/li&gt;
+&lt;li&gt;Private Subnet&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;アクセス制御
+
+&lt;ul&gt;
+&lt;li&gt;各インスタンス用にSecurity Groupを作成して制御&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;1-ネットワーク領域の作成&#34;&gt;1. ネットワーク領域の作成&lt;/h2&gt;
+
+&lt;h3 id=&#34;vpc&#34;&gt;VPC&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Sample_VPC
+
+&lt;ul&gt;
+&lt;li&gt;20.0.0.0/16&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;subnet&#34;&gt;Subnet&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;WebAP用（AZ-A）
+
+&lt;ul&gt;
+&lt;li&gt;Sample_Public_1A&lt;/li&gt;
+&lt;li&gt;ap-northeast-1a&lt;/li&gt;
+&lt;li&gt;20.0.1.0/24&lt;/li&gt;
+&lt;li&gt;パブリックIP : はい&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;WebAP用（AZ-C）
+
+&lt;ul&gt;
+&lt;li&gt;Sample_Public_1C&lt;/li&gt;
+&lt;li&gt;ap-northeast-1c&lt;/li&gt;
+&lt;li&gt;20.0.2.0/24&lt;/li&gt;
+&lt;li&gt;パブリックIP : はい&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;DB用（AZ-A）
+
+&lt;ul&gt;
+&lt;li&gt;Sample_Private_1A&lt;/li&gt;
+&lt;li&gt;ap-northeast-1a&lt;/li&gt;
+&lt;li&gt;20.0.10.0/24&lt;/li&gt;
+&lt;li&gt;パブリックIP : いいえ&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;DB用（AZ-C）
+
+&lt;ul&gt;
+&lt;li&gt;Sample_Private_1C&lt;/li&gt;
+&lt;li&gt;ap-northeast-1c&lt;/li&gt;
+&lt;li&gt;20.0.20.0/24&lt;/li&gt;
+&lt;li&gt;パブリックIP : いいえ&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;internet-gateway&#34;&gt;Internet Gateway&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Sample_IGW
+
+&lt;ul&gt;
+&lt;li&gt;アタッチ : Sample_VPC&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;route-table&#34;&gt;Route Table&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Sample_IGW_RTB&lt;/li&gt;
+&lt;li&gt;VPC : Sample_VPC&lt;/li&gt;
+&lt;li&gt;ルート
+
+&lt;ul&gt;
+&lt;li&gt;送信先 : 0.0.0.0/0&lt;/li&gt;
+&lt;li&gt;ターゲット : Sample_IGW&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;サブネットの関連付け
+
+&lt;ul&gt;
+&lt;li&gt;Sample_Public_1A&lt;/li&gt;
+&lt;li&gt;Sample_Public_1C&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;security-group&#34;&gt;Security Group&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;EC2ダッシュボードから作成すると、送信元の設定が楽。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Sample_ELB_Sec
+
+&lt;ul&gt;
+&lt;li&gt;InBound : HTTP, 80, MyIP（本来は0.0.0.0/0）&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Sample_WebAP_Sec
+
+&lt;ul&gt;
+&lt;li&gt;InBound : HTTP, 80, Sample_ELB_Sec.ID&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Sample_DB_Sec
+
+&lt;ul&gt;
+&lt;li&gt;InBound : MySQL, 3306, Sample_WebAP_Sec.ID&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Sample_Maintenance_Sec
+
+&lt;ul&gt;
+&lt;li&gt;InBound : SSH, 22, MyIP&lt;/li&gt;
+&lt;li&gt;InBound : HTTP, 80, MyIP&lt;/li&gt;
+&lt;li&gt;InBound : MySQL, 3306, MyIP -&amp;gt; いらないかも&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;2-インスタンスの作成&#34;&gt;2. インスタンスの作成&lt;/h2&gt;
+
+&lt;h3 id=&#34;rdsサブネットグループ&#34;&gt;RDSサブネットグループ&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Sample_DB_SubnetG
+
+&lt;ul&gt;
+&lt;li&gt;VPC : Sample_VPC&lt;/li&gt;
+&lt;li&gt;Subnet : Sample_Private_1A, Sample_Private_1C&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;rds&#34;&gt;RDS&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Sample_DB_Master
+
+&lt;ul&gt;
+&lt;li&gt;Multi-AZ用のマスターDB&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;エンジンの選択
+
+&lt;ul&gt;
+&lt;li&gt;MySQL&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;本番稼働用？
+
+&lt;ul&gt;
+&lt;li&gt;開発／テスト&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;詳細の指定
+
+&lt;ul&gt;
+&lt;li&gt;DBエンジン :  mysql&lt;/li&gt;
+&lt;li&gt;ライセンスモデル : General Public License&lt;/li&gt;
+&lt;li&gt;DBエンジンのバージョン : 5.6.27&lt;/li&gt;
+&lt;li&gt;DBインスタンスのクラス : db.t2.micro&lt;/li&gt;
+&lt;li&gt;マルチAZ配置 : いいえ &lt;strong&gt;（開発のため）&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;ストレージタイプ : 汎用（SSD）&lt;/li&gt;
+&lt;li&gt;ストレージ割り当て : 5GB&lt;/li&gt;
+&lt;li&gt;DBインスタンス識別子 : Sample-DB&lt;/li&gt;
+&lt;li&gt;マスターユーザーの名前 : Sample_DB_User&lt;/li&gt;
+&lt;li&gt;マスターパスワード : Sample_DB_Password&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;詳細設定の設定
+
+&lt;ul&gt;
+&lt;li&gt;VPC : Sample_VPC&lt;/li&gt;
+&lt;li&gt;サブネットグループ : Sample_DB_SubnetG&lt;/li&gt;
+&lt;li&gt;パブリックアクセス可能 : いいえ&lt;/li&gt;
+&lt;li&gt;アベイラビリティーゾーン : ap-northeast-1a&lt;/li&gt;
+&lt;li&gt;VPCセキュリティーグループ : Sample_DB_Sec, Sample_Maintenance_Sec&lt;/li&gt;
+&lt;li&gt;データベースの名前 : Sample_DB&lt;/li&gt;
+&lt;li&gt;データベースのポート : 3306&lt;/li&gt;
+&lt;li&gt;DBパラメータグループ : default.mysql5.6&lt;/li&gt;
+&lt;li&gt;オプショングループ : default:mysql-5-6&lt;/li&gt;
+&lt;li&gt;その他はデフォルトのまま&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;ec2-1&#34;&gt;EC2-1&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Sample_Web_01
+
+&lt;ul&gt;
+&lt;li&gt;AMI : Amazon Linux&lt;/li&gt;
+&lt;li&gt;t2.micro&lt;/li&gt;
+&lt;li&gt;EBS : 8GB&lt;/li&gt;
+&lt;li&gt;ネットワーク : Sample_VPC&lt;/li&gt;
+&lt;li&gt;サブネット : Sample_Public_1A&lt;/li&gt;
+&lt;li&gt;自動割り当てパブリックIP : 有効化&lt;/li&gt;
+&lt;li&gt;その他はデフォルト&lt;/li&gt;
+&lt;li&gt;セキュリティグループ : Sample_WebAP_Sec, Sample_Maintenance_Sec&lt;/li&gt;
+&lt;li&gt;キーペア : 作成&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;3-ミドルウェアのセットアップ&#34;&gt;3. ミドルウェアのセットアップ&lt;/h2&gt;
+
+&lt;h3 id=&#34;ec2-sample-web-01&#34;&gt;EC2 : Sample_Web_01&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;基本設定
+
+&lt;ul&gt;
+&lt;li&gt;MacからSSHログイン&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;$ sudo yum update -y&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;$ sudo yum install -y httpd&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;$ sudo chkconfig httpd on&lt;/code&gt; &lt;strong&gt;#EC2起動時に合わせてApacheも起動させる&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;$ sudo service httpd start&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Macからブラウザ経由でアクセスし、Apacheぺージが表示されること&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;$ sudo yum install -y php&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;$ sudo yum install -y php-mysql&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;WordPress
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;$ mkdir ~/ttmp;cd ttmp&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;$ wget https://ja.wordpress.org/latest-ja.tar.gz&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;$ tar xzvf latest-ja.tar.gz&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;$ cd wordpress&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;$ cp wp-config-sample.php wp-config.PHP&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;$ vi wp-config.php&lt;/code&gt;
+
+&lt;ul&gt;
+&lt;li&gt;DB_NAME : Sample_DB&lt;/li&gt;
+&lt;li&gt;DB_USER : Sample_DB_User&lt;/li&gt;
+&lt;li&gt;DB_PASSWORD : Sample_DB_Password&lt;/li&gt;
+&lt;li&gt;DB_HOST : Sample_DB_Masterのエンドポイント:3306&lt;/li&gt;
+&lt;li&gt;認証キー : &lt;a href=&#34;https://api.wordpress.org/secret-key/1.1/salt/&#34;&gt;https://api.wordpress.org/secret-key/1.1/salt/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;$ sudo mv * /var/www/html/&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;$ sudo service httpd restart&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;ブラウザからSample_Web_01のパブリックIPにアクセスして、wordpressの設定を行う&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;4-elbの適用&#34;&gt;4. ELBの適用&lt;/h2&gt;
+
+&lt;h3 id=&#34;elbの作成&#34;&gt;ELBの作成&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Sample-ELB
+
+&lt;ul&gt;
+&lt;li&gt;ロードバランサーの種類 : Classic Load Balancer&lt;/li&gt;
+&lt;li&gt;ロードバランサーを作成する場所 : Sample_VPC&lt;/li&gt;
+&lt;li&gt;リスナー : HTTP 80&lt;/li&gt;
+&lt;li&gt;サブネットの選択 : Sample_Public_1A, Sample_Public_1C&lt;/li&gt;
+&lt;li&gt;セキュリティグループ : Sample_ELB_Sec&lt;/li&gt;
+&lt;li&gt;ヘルスチェック
+
+&lt;ul&gt;
+&lt;li&gt;pingプロトコル : HTTP&lt;/li&gt;
+&lt;li&gt;pingポート : 80&lt;/li&gt;
+&lt;li&gt;pingパス : /&lt;/li&gt;
+&lt;li&gt;正常の閾値 : 5 -&amp;gt; 2&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;EC2インスタンス
+
+&lt;ul&gt;
+&lt;li&gt;Sample_Web_01（Sample_Web_02はAMI作成後）&lt;/li&gt;
+&lt;li&gt;クロスゾーン負荷分散の有効化 : チェック&lt;/li&gt;
+&lt;li&gt;接続のストリーミングの有効化 : 300 -&amp;gt; 30 &lt;strong&gt;（WordPressの場合は必須）&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;タグ
+
+&lt;ul&gt;
+&lt;li&gt;Name : Sample_ELB&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;作成後の確認&#34;&gt;作成後の確認&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;インスタンス タブ : インスタンスがInServiceになっていること&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;wordpressの設定変更&#34;&gt;WordPressの設定変更&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Sample_Web_01のパブリックIPでWordPressにアクセス&lt;/li&gt;
+&lt;li&gt;設定画面にて以下の内容をSample_ELBの「http:// + DNS名」に変更
+
+&lt;ul&gt;
+&lt;li&gt;WordPressアドレス&lt;/li&gt;
+&lt;li&gt;サイトアドレス&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;elb経由での接続確認&#34;&gt;ELB経由での接続確認&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ブラウザからSample_ELBのDNSでアクセスし、WordPressが表示されることを確認&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;5-ec2の追加&#34;&gt;5. EC2の追加&lt;/h2&gt;
+
+&lt;h3 id=&#34;ami作成&#34;&gt;AMI作成&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Sample_Web_01からAMIを作成する
+
+&lt;ul&gt;
+&lt;li&gt;停止 -&amp;gt; イメージの作成&lt;/li&gt;
+&lt;li&gt;イメージ名 : Sample-WebAP-AMI&lt;/li&gt;
+&lt;li&gt;AMI、スナップショットが作成される&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;ec2の作成&#34;&gt;EC2の作成&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Sample_Web_02
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Sample_Web_01のAMIから作成&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;ネットワーク : Sample_VPC&lt;/li&gt;
+&lt;li&gt;サブネット : Sample_Public_1C&lt;/li&gt;
+&lt;li&gt;自動割り当てパブリックIP : 有効化&lt;/li&gt;
+&lt;li&gt;その他はデフォルト&lt;/li&gt;
+&lt;li&gt;セキュリティグループ : Sample_WebAP_Sec, Sample_Maintenance_Sec&lt;/li&gt;
+&lt;li&gt;キーペア : 先に作成したもの&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;ロードバランサー配下に追加&#34;&gt;ロードバランサー配下に追加&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;インスタンス タブ -&amp;gt; インスタンスの編集 -&amp;gt; Sample_Web_02を追加&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;バランシングの確認&#34;&gt;バランシングの確認&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;各EC2上の/var/log/httpd/access_logを確認&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;$ sudo tail -f /var/log/httpd/access_log&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
     
     <item>
       <title>トラックパッドで、３本指ドラッグでの選択を可能にする</title>
@@ -1143,113 +1522,6 @@ print(&amp;quot;wordA = \(wordA), wordZ = \(wordZ)&amp;quot;)
       
       <guid>http://mzgkworks.com/about/about/</guid>
       <description></description>
-    </item>
-    
-    <item>
-      <title>MacにSass環境を構築する（Ruby gem）</title>
-      <link>http://mzgkworks.com/post/ruby-gem-install-sass/</link>
-      <pubDate>Tue, 04 Oct 2016 18:57:07 +0900</pubDate>
-      
-      <guid>http://mzgkworks.com/post/ruby-gem-install-sass/</guid>
-      <description>
-
-&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;OS X 10.11.6 El Capitan&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;望むこと&#34;&gt;望むこと&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;scssで書いて、動的にcssにコンパイル&lt;/li&gt;
-&lt;li&gt;環境周りのコストを少なく&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;選択肢は&#34;&gt;選択肢は&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;gulp : 使うほどタスクないし、プラグインや設定ファイルなどの初期学習コストが高い&lt;/li&gt;
-&lt;li&gt;npm run : package.jsonが面倒&lt;/li&gt;
-&lt;li&gt;Macなのでrubyがインストール済み
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;$ sudo gem install sass&lt;/code&gt; → sassコマンドか！&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;環境構築&#34;&gt;環境構築&lt;/h2&gt;
-
-&lt;h3 id=&#34;ruby&#34;&gt;Ruby&lt;/h3&gt;
-
-&lt;p&gt;存在確認&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ ruby -v
-ruby 2.3.1p112 (2016-04-26 revision 54768) [x86_64-darwin15]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;gemのアップデート&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo gem update --system
-...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;sass&#34;&gt;sass&lt;/h3&gt;
-
-&lt;p&gt;存在確認&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sass -v
--bash: sass: command not found
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;インストール&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo gem install sass
-...
-1 gem installed
-
-$ sass -v
-Sass 3.4.22 (Selective Steve)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;コンパイル&#34;&gt;コンパイル&lt;/h2&gt;
-
-&lt;h3 id=&#34;フォルダ構成&#34;&gt;フォルダ構成&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;.
-|-- css   → ここにコンパイルされたmain.cssが生成される
-`-- scss
-    |-- base
-    |   |-- _reset.scss   → _sanitize.scssを@import
-    |   `-- lib
-    |       `-- _sanitize.scss
-    |-- components
-    |   `-- _component.scss   → いろいろと記述
-    `-- main.scss   → reset,componentのimportのみ
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;コンパイル-1&#34;&gt;コンパイル&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# scssディレクトリ以下のファイル更新を監視し、cssディレクトリへ出力
-$ sass --watch --style expanded scss:css
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;オプション&#34;&gt;オプション&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;watch : ファイルの更新を監視し、更新されたらコンパイル&lt;/li&gt;
-&lt;li&gt;style : 生成されるcssの形式
-
-&lt;ul&gt;
-&lt;li&gt;nested : sassの階層をインデントで残す（デフォルト）&lt;/li&gt;
-&lt;li&gt;expanded : 普通のcss形式&lt;/li&gt;
-&lt;li&gt;compact : セレクタとプロパティが1行形式&lt;/li&gt;
-&lt;li&gt;compressed : 圧縮形式&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;※styleを途中で変更する場合は、一度生成された.cssを削除すること&lt;/p&gt;
-</description>
     </item>
     
   </channel>

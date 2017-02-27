@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="ja-JP">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="keywords" content="Program,Mac,iOS,Web,AWS,Hugo,Books">
+    
+        <meta name="description" content=" プログラマーの備忘録。">
+    
+        <meta name="description" content="AWS上で、ELBを使用してEC2のバランシングを行う環境の構築方法メモ。">
+    
+
+    <base href="http://mzgkworks.com">
+    
+    <link rel="stylesheet" href="./css/masamune.css">
+
+    <title>
+        
+        Elastic Load Balancingを利用した、EC2-RDS環境の構築
+         | mzgkworks.com
+    </title>
+
+    <meta name="generator" content="Hugo 0.18.1" />
+</head>
+
+<body>
+    <div class="HeaderContainer">
+        <header class="Header">
+            <div class="Header__head">
+                <h1 class="Header__title"><a href="./index.html">mzgkworks.com</a></h1>
+                <p class="Header__subTitle">Stack the little bets.</p>
+            </div>
+            <nav class="Header__body">
+                <ul class="Navi">
+                    <li class="Navi__item"><a href="./about/about" class="fa fa-smile-o"></a></li>
+                    <li class="Navi__item"><a href="https://github.com/mzgk" target="_blank" rel="noopener noreferrer" class="fa fa-github"></a></li>
+                    <li class="Navi__item"><a href="https://twitter.com/mzgkworks" target="_blank" rel="noopener noreferrer" class="fa fa-twitter"></a></li>
+                    <li class="Navi__item"><a href="#" class="fa fa-rss"></a></li>
+                </ul>
+            </nav>
+        </header>
+    </div>
+
+
+    <div class="ContentsContainer">
+        <main class="MainContainer">
+
+            <article class="PostItem">
+                <div class="PostItem__head">
+                    <div class="PostItem__title">
+                        <h1>
+                            Elastic Load Balancingを利用した、EC2-RDS環境の構築
+                            
+                        </h1>
+                    </div>
+                    <div class="PostItem__meta">
+                        <time datetime="2017-02-02">
+                            2017.02.27
+                        </time>
+                        &nbsp;&nbsp;
+                        
+                        <span>[<a href="./categories/usage">Usage</a>]</span>
+                        
+                        
+                        &nbsp;&nbsp;
+                        <span>#<a href="./tags/aws">AWS</a></span>
+                        
+                    </div>
+                </div>
+
+                <div class="PostItem__body">
+                    
+
+<h2 id="0-環境">0. 環境</h2>
+
+<ul>
+<li>異なるAZにロードバランシングされるWordPress環境を構築する</li>
+<li>VPC・Subnet（4）・Internet Gateway・Route Table・Security Group</li>
+<li>ロードバランサー
+
+<ul>
+<li>異なるAZに配置されたEC2に接続</li>
+</ul></li>
+<li>Webサーバー
+
+<ul>
+<li>異なるAZにEC2を1台づつ配置</li>
+<li>Public Subnet</li>
+</ul></li>
+<li>DBサーバー
+
+<ul>
+<li>テスト用なのでSingle-AZ</li>
+<li>EC2からアクセス</li>
+<li>Private Subnet</li>
+</ul></li>
+<li>アクセス制御
+
+<ul>
+<li>各インスタンス用にSecurity Groupを作成して制御</li>
+</ul></li>
+</ul>
+
+<hr />
+
+<h2 id="1-ネットワーク領域の作成">1. ネットワーク領域の作成</h2>
+
+<h3 id="vpc">VPC</h3>
+
+<ul>
+<li>Sample_VPC
+
+<ul>
+<li>20.0.0.0/16</li>
+</ul></li>
+</ul>
+
+<h3 id="subnet">Subnet</h3>
+
+<ul>
+<li>WebAP用（AZ-A）
+
+<ul>
+<li>Sample_Public_1A</li>
+<li>ap-northeast-1a</li>
+<li>20.0.1.0/24</li>
+<li>パブリックIP : はい</li>
+</ul></li>
+<li>WebAP用（AZ-C）
+
+<ul>
+<li>Sample_Public_1C</li>
+<li>ap-northeast-1c</li>
+<li>20.0.2.0/24</li>
+<li>パブリックIP : はい</li>
+</ul></li>
+<li>DB用（AZ-A）
+
+<ul>
+<li>Sample_Private_1A</li>
+<li>ap-northeast-1a</li>
+<li>20.0.10.0/24</li>
+<li>パブリックIP : いいえ</li>
+</ul></li>
+<li>DB用（AZ-C）
+
+<ul>
+<li>Sample_Private_1C</li>
+<li>ap-northeast-1c</li>
+<li>20.0.20.0/24</li>
+<li>パブリックIP : いいえ</li>
+</ul></li>
+</ul>
+
+<h3 id="internet-gateway">Internet Gateway</h3>
+
+<ul>
+<li>Sample_IGW
+
+<ul>
+<li>アタッチ : Sample_VPC</li>
+</ul></li>
+</ul>
+
+<h3 id="route-table">Route Table</h3>
+
+<ul>
+<li>Sample_IGW_RTB</li>
+<li>VPC : Sample_VPC</li>
+<li>ルート
+
+<ul>
+<li>送信先 : 0.0.0.0/0</li>
+<li>ターゲット : Sample_IGW</li>
+</ul></li>
+<li>サブネットの関連付け
+
+<ul>
+<li>Sample_Public_1A</li>
+<li>Sample_Public_1C</li>
+</ul></li>
+</ul>
+
+<h3 id="security-group">Security Group</h3>
+
+<p><strong>EC2ダッシュボードから作成すると、送信元の設定が楽。</strong></p>
+
+<ul>
+<li>Sample_ELB_Sec
+
+<ul>
+<li>InBound : HTTP, 80, MyIP（本来は0.0.0.0/0）</li>
+</ul></li>
+<li>Sample_WebAP_Sec
+
+<ul>
+<li>InBound : HTTP, 80, Sample_ELB_Sec.ID</li>
+</ul></li>
+<li>Sample_DB_Sec
+
+<ul>
+<li>InBound : MySQL, 3306, Sample_WebAP_Sec.ID</li>
+</ul></li>
+<li>Sample_Maintenance_Sec
+
+<ul>
+<li>InBound : SSH, 22, MyIP</li>
+<li>InBound : HTTP, 80, MyIP</li>
+<li>InBound : MySQL, 3306, MyIP -&gt; いらないかも</li>
+</ul></li>
+</ul>
+
+<hr />
+
+<h2 id="2-インスタンスの作成">2. インスタンスの作成</h2>
+
+<h3 id="rdsサブネットグループ">RDSサブネットグループ</h3>
+
+<ul>
+<li>Sample_DB_SubnetG
+
+<ul>
+<li>VPC : Sample_VPC</li>
+<li>Subnet : Sample_Private_1A, Sample_Private_1C</li>
+</ul></li>
+</ul>
+
+<h3 id="rds">RDS</h3>
+
+<ul>
+<li>Sample_DB_Master
+
+<ul>
+<li>Multi-AZ用のマスターDB</li>
+</ul></li>
+<li>エンジンの選択
+
+<ul>
+<li>MySQL</li>
+</ul></li>
+<li>本番稼働用？
+
+<ul>
+<li>開発／テスト</li>
+</ul></li>
+<li>詳細の指定
+
+<ul>
+<li>DBエンジン :  mysql</li>
+<li>ライセンスモデル : General Public License</li>
+<li>DBエンジンのバージョン : 5.6.27</li>
+<li>DBインスタンスのクラス : db.t2.micro</li>
+<li>マルチAZ配置 : いいえ <strong>（開発のため）</strong></li>
+<li>ストレージタイプ : 汎用（SSD）</li>
+<li>ストレージ割り当て : 5GB</li>
+<li>DBインスタンス識別子 : Sample-DB</li>
+<li>マスターユーザーの名前 : Sample_DB_User</li>
+<li>マスターパスワード : Sample_DB_Password</li>
+</ul></li>
+<li>詳細設定の設定
+
+<ul>
+<li>VPC : Sample_VPC</li>
+<li>サブネットグループ : Sample_DB_SubnetG</li>
+<li>パブリックアクセス可能 : いいえ</li>
+<li>アベイラビリティーゾーン : ap-northeast-1a</li>
+<li>VPCセキュリティーグループ : Sample_DB_Sec, Sample_Maintenance_Sec</li>
+<li>データベースの名前 : Sample_DB</li>
+<li>データベースのポート : 3306</li>
+<li>DBパラメータグループ : default.mysql5.6</li>
+<li>オプショングループ : default:mysql-5-6</li>
+<li>その他はデフォルトのまま</li>
+</ul></li>
+</ul>
+
+<h3 id="ec2-1">EC2-1</h3>
+
+<ul>
+<li>Sample_Web_01
+
+<ul>
+<li>AMI : Amazon Linux</li>
+<li>t2.micro</li>
+<li>EBS : 8GB</li>
+<li>ネットワーク : Sample_VPC</li>
+<li>サブネット : Sample_Public_1A</li>
+<li>自動割り当てパブリックIP : 有効化</li>
+<li>その他はデフォルト</li>
+<li>セキュリティグループ : Sample_WebAP_Sec, Sample_Maintenance_Sec</li>
+<li>キーペア : 作成</li>
+</ul></li>
+</ul>
+
+<hr />
+
+<h2 id="3-ミドルウェアのセットアップ">3. ミドルウェアのセットアップ</h2>
+
+<h3 id="ec2-sample-web-01">EC2 : Sample_Web_01</h3>
+
+<ul>
+<li>基本設定
+
+<ul>
+<li>MacからSSHログイン</li>
+<li><code>$ sudo yum update -y</code></li>
+<li><code>$ sudo yum install -y httpd</code></li>
+<li><code>$ sudo chkconfig httpd on</code> <strong>#EC2起動時に合わせてApacheも起動させる</strong></li>
+<li><code>$ sudo service httpd start</code></li>
+<li>Macからブラウザ経由でアクセスし、Apacheぺージが表示されること</li>
+<li><code>$ sudo yum install -y php</code></li>
+<li><code>$ sudo yum install -y php-mysql</code></li>
+</ul></li>
+<li>WordPress
+
+<ul>
+<li><code>$ mkdir ~/ttmp;cd ttmp</code></li>
+<li><code>$ wget https://ja.wordpress.org/latest-ja.tar.gz</code></li>
+<li><code>$ tar xzvf latest-ja.tar.gz</code></li>
+<li><code>$ cd wordpress</code></li>
+<li><code>$ cp wp-config-sample.php wp-config.PHP</code></li>
+<li><code>$ vi wp-config.php</code>
+
+<ul>
+<li>DB_NAME : Sample_DB</li>
+<li>DB_USER : Sample_DB_User</li>
+<li>DB_PASSWORD : Sample_DB_Password</li>
+<li>DB_HOST : Sample_DB_Masterのエンドポイント:3306</li>
+<li>認証キー : <a href="https://api.wordpress.org/secret-key/1.1/salt/">https://api.wordpress.org/secret-key/1.1/salt/</a></li>
+</ul></li>
+<li><code>$ sudo mv * /var/www/html/</code></li>
+<li><code>$ sudo service httpd restart</code></li>
+<li>ブラウザからSample_Web_01のパブリックIPにアクセスして、wordpressの設定を行う</li>
+</ul></li>
+</ul>
+
+<hr />
+
+<h2 id="4-elbの適用">4. ELBの適用</h2>
+
+<h3 id="elbの作成">ELBの作成</h3>
+
+<ul>
+<li>Sample-ELB
+
+<ul>
+<li>ロードバランサーの種類 : Classic Load Balancer</li>
+<li>ロードバランサーを作成する場所 : Sample_VPC</li>
+<li>リスナー : HTTP 80</li>
+<li>サブネットの選択 : Sample_Public_1A, Sample_Public_1C</li>
+<li>セキュリティグループ : Sample_ELB_Sec</li>
+<li>ヘルスチェック
+
+<ul>
+<li>pingプロトコル : HTTP</li>
+<li>pingポート : 80</li>
+<li>pingパス : /</li>
+<li>正常の閾値 : 5 -&gt; 2</li>
+</ul></li>
+<li>EC2インスタンス
+
+<ul>
+<li>Sample_Web_01（Sample_Web_02はAMI作成後）</li>
+<li>クロスゾーン負荷分散の有効化 : チェック</li>
+<li>接続のストリーミングの有効化 : 300 -&gt; 30 <strong>（WordPressの場合は必須）</strong></li>
+</ul></li>
+<li>タグ
+
+<ul>
+<li>Name : Sample_ELB</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<h3 id="作成後の確認">作成後の確認</h3>
+
+<ul>
+<li>インスタンス タブ : インスタンスがInServiceになっていること</li>
+</ul>
+
+<h3 id="wordpressの設定変更">WordPressの設定変更</h3>
+
+<ul>
+<li>Sample_Web_01のパブリックIPでWordPressにアクセス</li>
+<li>設定画面にて以下の内容をSample_ELBの「http:// + DNS名」に変更
+
+<ul>
+<li>WordPressアドレス</li>
+<li>サイトアドレス</li>
+</ul></li>
+</ul>
+
+<h3 id="elb経由での接続確認">ELB経由での接続確認</h3>
+
+<ul>
+<li>ブラウザからSample_ELBのDNSでアクセスし、WordPressが表示されることを確認</li>
+</ul>
+
+<hr />
+
+<h2 id="5-ec2の追加">5. EC2の追加</h2>
+
+<h3 id="ami作成">AMI作成</h3>
+
+<ul>
+<li>Sample_Web_01からAMIを作成する
+
+<ul>
+<li>停止 -&gt; イメージの作成</li>
+<li>イメージ名 : Sample-WebAP-AMI</li>
+<li>AMI、スナップショットが作成される</li>
+</ul></li>
+</ul>
+
+<h3 id="ec2の作成">EC2の作成</h3>
+
+<ul>
+<li>Sample_Web_02
+
+<ul>
+<li><strong>Sample_Web_01のAMIから作成</strong></li>
+<li>ネットワーク : Sample_VPC</li>
+<li>サブネット : Sample_Public_1C</li>
+<li>自動割り当てパブリックIP : 有効化</li>
+<li>その他はデフォルト</li>
+<li>セキュリティグループ : Sample_WebAP_Sec, Sample_Maintenance_Sec</li>
+<li>キーペア : 先に作成したもの</li>
+</ul></li>
+</ul>
+
+<h3 id="ロードバランサー配下に追加">ロードバランサー配下に追加</h3>
+
+<ul>
+<li>インスタンス タブ -&gt; インスタンスの編集 -&gt; Sample_Web_02を追加</li>
+</ul>
+
+<h3 id="バランシングの確認">バランシングの確認</h3>
+
+<ul>
+<li>各EC2上の/var/log/httpd/access_logを確認</li>
+<li><code>$ sudo tail -f /var/log/httpd/access_log</code></li>
+</ul>
+
+                </div>
+            </article>
+
+            <nav class="Pagenation">
+                <div class="Pagenation__older">
+                    
+                    <a href="http://mzgkworks.com/post/drag-with-three-fingers-to-select/">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        トラックパッドで、３本指ドラッグでの選択を可能にする
+                    </a>
+                    
+                </div>
+                <div class="Pagenation__newer">
+                    
+                </div>
+            </nav>
+
+            <div class="Disqus">
+                
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'mzgkworks-com';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+            </div>
+        </main>
+
+        <aside class="SubContainer">
+    <h1 class="AreaTitle">Products</h1>
+    <div class="SubItem">
+        <a href="./products/products">
+            <i class="fa fa-apple fa-2x" aria-hidden="true"></i>
+        </a>
+    </div>
+
+    <h1 class="AreaTitle">Categories</h1>
+    <div class="SubItem">
+        <ul>
+            
+            <li>
+                <a href="./categories/knowledge/">
+                    knowledge : 6
+                </a>
+            </li>
+            
+            <li>
+                <a href="./categories/programing/">
+                    programing : 3
+                </a>
+            </li>
+            
+            <li>
+                <a href="./categories/setting/">
+                    setting : 16
+                </a>
+            </li>
+            
+            <li>
+                <a href="./categories/usage/">
+                    usage : 17
+                </a>
+            </li>
+            
+            <li>
+                <a href="./categories/words/">
+                    words : 1
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+
+    <h1 class="AreaTitle">Tags</h1>
+    <div class="SubItem">
+        <ul>
+            
+            <li>
+                <a href="./tags/apache/">
+                    apache : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/atom/">
+                    atom : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/aws/">
+                    aws : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/bash/">
+                    bash : 3
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/blog/">
+                    blog : 5
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/css/">
+                    css : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/git/">
+                    git : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/golang/">
+                    golang : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/http/">
+                    http : 1
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/hugo/">
+                    hugo : 5
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/ios/">
+                    ios : 3
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/linux/">
+                    linux : 14
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/mac/">
+                    mac : 5
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/network/">
+                    network : 2
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/sass/">
+                    sass : 1
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/swift/">
+                    swift : 3
+                </a>
+            </li>
+            
+            <li>
+                <a href="./tags/windows/">
+                    windows : 1
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</aside>
+
+
+    </div>
+
+    <div class="FooterContainer">
+    <footer class="Footer">
+        <img  class="Footer__head" src="./images/profile.png" alt="profile-image" />
+        <div class="Footer__body">
+            <i class="fa fa-copyright" aria-hidden="true"></i>
+            <span>2016</span>
+            <span><a href="./about/about">mzgk</a></span>
+        </div>
+    </footer>
+</div>
+
+<script src="./js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-82194549-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+</body>
+</html>
+
