@@ -10,7 +10,7 @@
     
         <meta name="description" content=" プログラマーの備忘録。">
     
-        <meta name="description" content="SELinuxの基礎知識と確認・設定方法。$ getenforce, $ setenforce">
+        <meta name="description" content="RDSをある時点のスナップショットから復元する方法。">
     
 
     <base href="http://mzgkworks.com">
@@ -19,7 +19,7 @@
 
     <title>
         
-        SELinuxの基礎知識と確認・設定方法
+        RDSをスナップショットから復元する方法
          | mzgkworks.com
     </title>
 
@@ -52,21 +52,21 @@
                 <div class="PostItem__head">
                     <div class="PostItem__title">
                         <h1>
-                            SELinuxの基礎知識と確認・設定方法
+                            RDSをスナップショットから復元する方法
                             
                         </h1>
                     </div>
                     <div class="PostItem__meta">
-                        <time datetime="2016-09-09">
-                            2016.09.13
+                        <time datetime="2017-02-02">
+                            2017.02.27
                         </time>
                         &nbsp;&nbsp;
                         
-                        <span>[<a href="./categories/knowledge">Knowledge</a>]</span>
+                        <span>[<a href="./categories/usage">Usage</a>]</span>
                         
                         
                         &nbsp;&nbsp;
-                        <span>#<a href="./tags/linux">Linux</a></span>
+                        <span>#<a href="./tags/aws">AWS</a></span>
                         
                     </div>
                 </div>
@@ -74,123 +74,78 @@
                 <div class="PostItem__body">
                     
 
-<h2 id="selinux">SELinux</h2>
+<p>以前に取得されたスナップショットからRDSを復元して、現在のRDSと付け替える方法。<br />
+<br>
+ポイントは以下。</p>
 
-<p>Security-Enhanced Linuxの略。<br />
-米NSA（National Security Agency＝米国国家安全保障局）が中心となって、不正侵入の被害を極力少なくすることを目的に開発。<br />
-オープンソースとして提供されており、主要なLinuxディストリビューションに組み込まれている。<br />
-基本的にはすべてのアクセスを拒否し、ポリシー（アクセス制御設定）でアクセスコントロールを行う仕組み。<br />
-root権限も無効化する。</p>
+<ul>
+<li>DBインスンタンス識別子の値は、EC2と接続するためのエンドポイントのprefixを兼ねている</li>
+<li>同じ識別子で復元できない</li>
+<li>別の識別子で復元 -&gt; 既存の識別子を変更 -&gt; 復元分の識別子を元々の識別子に変更</li>
+<li>これでエンドポイントの値は変更されないので、Webサーバー側との接続に影響を与えない</li>
+<li><strong>復元したインスタンスのセキュリティグループを既存と同様にセットし直す</strong></li>
+</ul>
 
-<h2 id="permissiveモード">Permissiveモード</h2>
+<h2 id="スナップショットからインスタンスを復元">スナップショットからインスタンスを復元</h2>
 
-<p>デフォルトのポリシーで通常は動作するが、インストールしたソフトウェアやWebコンテンツなどがうまく動作しない場合がある。<br />
-その際の問題切り分け（SELinuxのせいなのか、他に原因があるか）に、一時的にSELinuxをPermissiveモードにして確認を行ったりする。</p>
+<ul>
+<li>RDSダッシュボード - スナップショット - 復元したいスナップショットを選択</li>
+<li>スナップショットのアクション - スナップショットの復元</li>
+<li>DBインスタンスの復元画面が表示されるので、情報を入力
 
-<h2 id="状態の確認">状態の確認</h2>
+<ul>
+<li>デフォルトになっている部分を抜粋</li>
+<li>マルチAZ配置 : 選択</li>
+<li>DBインスタンス識別子 : <strong>復元して置き換えたい既存インスタンスの値とは別の値</strong></li>
+<li>アベイラビリティゾーン : 選択</li>
+</ul></li>
+<li>DBインスタンスの復元 - 復元される（作業状況はインスタンスで確認）</li>
+</ul>
 
-<h3 id="getenforce">$ getenforce</h3>
+<h2 id="既存のインスタンス">既存のインスタンス</h2>
 
-<p>現在の状態を表示する。</p>
+<ul>
+<li>復元したインスタンスで置き換えたいインスタンス</li>
+<li>DBインスタンス識別子を変更して、エンドポイントを復元インスタンスにゆずる</li>
+<li>変更作業
 
-<table>
-<thead>
-<tr>
-<th align="left">状態</th>
-<th align="left">説明</th>
-</tr>
-</thead>
+<ul>
+<li>インスタンスの操作 - 変更</li>
+<li>DBインスタンス識別子 : 変更</li>
+<li>すぐに適用 : チェック</li>
+<li>次へ - DBインスタンスの変更</li>
+</ul></li>
+<li>変更中 -&gt; 名前変更中 -&gt; 再起動 -&gt; 利用可能</li>
+<li>この時点でWebサーバーからDBが参照されなくなる</li>
+</ul>
 
-<tbody>
-<tr>
-<td align="left">Enforcing</td>
-<td align="left">有効化されており、ポリシーに違反するアクセスを拒否する</td>
-</tr>
+<h2 id="復元インスタンス">復元インスタンス</h2>
 
-<tr>
-<td align="left">Permissive</td>
-<td align="left">有効化されているが、ポリシー違反はログに出力するのみ</td>
-</tr>
+<ul>
+<li>復元したインスタンスのDB識別子を既存の値に変更する（エンドポイント値の復元）</li>
+<li><strong>セキュリティグループを既存同様に付け直す</strong></li>
+<li>変更作業
 
-<tr>
-<td align="left">Disable</td>
-<td align="left">無効化されている</td>
-</tr>
-</tbody>
-</table>
+<ul>
+<li>インスタンスの操作 - 変更</li>
+<li>DBインスタンス識別子 : 変更</li>
+<li>セキュリティグループ : 既存と同様のSGをセット</li>
+<li>すぐに適用 : チェック</li>
+<li>次へ - DBインスタンスの変更</li>
+</ul></li>
+<li>変更中 -&gt; 名前変更中 -&gt; 再起動 -&gt; 利用可能</li>
+<li>これで復元されたDBで置き換えられる</li>
+</ul>
 
-<pre><code class="language-@bash">$ getenforce
-Permissive
-</code></pre>
+<h2 id="rds削除時の注意-スナップショット">RDS削除時の注意（スナップショット）</h2>
 
-<h3 id="etc-sysconfig-selinux">/etc/sysconfig/selinux</h3>
+<ul>
+<li><strong>RDSを削除する際に、過去にとった自動スナップショットは削除されてしまう</strong></li>
+<li><strong>復元したい場合、削除時に聞かれる「最終スナップショット」は作成しておくこと</strong></li>
+</ul>
 
-<p>システム起動時の設定が書かれている。<br />
-<strong>システム再起動後も設定を反映させる場合は、このファイルの定義を変更すること。</strong></p>
-
-<pre><code class="language-@bash">$ sudo vi /etc/sysconfig/selinux
-
-# This file controls the state of SELinux on the system.
-# SELINUX= can take one of these three values:
-#     enforcing - SELinux security policy is enforced.
-#     permissive - SELinux prints warnings instead of enforcing.
-#     disabled - No SELinux policy is loaded.
-SELINUX=permissive
-...
-</code></pre>
-
-<h2 id="設定変更-一時的">設定変更（一時的）</h2>
-
-<p>一時的な変更は <code>$ setenforce</code>コマンドを使用する。<br />
-※Disableにする場合は、/etc/sysconfig/selinuxファイルの値を変更する。</p>
-
-<table>
-<thead>
-<tr>
-<th align="left">引数</th>
-<th align="left">説明</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td align="left">0</td>
-<td align="left">Permissiveへ</td>
-</tr>
-
-<tr>
-<td align="left">1</td>
-<td align="left">Enforcingへ</td>
-</tr>
-</tbody>
-</table>
-
-<pre><code class="language-@bash"># Permissiveに変更
-$ sudo setenforce 0
-
-# Enforcingに変更
-$ sudo setenforce 1
-</code></pre>
-
-<h2 id="設定変更-恒久的">設定変更（恒久的）</h2>
-
-<p>/etc/sysconfig/selinuxファイルの定義を変更する。</p>
-
-<pre><code class="language-@bash"># 変更する
-$ sudo vi /etc/sysconfig/selinux
-
-# This file controls the state of SELinux on the system.
-# SELINUX= can take one of these three values:
-#     enforcing - SELinux security policy is enforced.
-#     permissive - SELinux prints warnings instead of enforcing.
-#     disabled - No SELinux policy is loaded.
-SELINUX=permissive
-...
-
-
-# Linuxを再起動する
-$ shutdown -r now
-</code></pre>
+<p><br><br>
+以上</p>
 
                 </div>
             </article>
@@ -198,18 +153,13 @@ $ shutdown -r now
             <nav class="Pagenation">
                 <div class="Pagenation__older">
                     
-                    <a href="http://mzgkworks.com/post/mac-symbolic-link/">
+                    <a href="http://mzgkworks.com/post/aws-elb-ec2-rds-wordpress/">
                         <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                        Macでシンボリックリンクを活用する : ln -s
+                        Elastic Load Balancingを利用した、EC2-RDS環境の構築
                     </a>
                     
                 </div>
                 <div class="Pagenation__newer">
-                    
-                    <a href="http://mzgkworks.com/post/centos7-systemctl-service/">
-                        CentOS7のsystemctlコマンドの使い方
-                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                    </a>
                     
                 </div>
             </nav>

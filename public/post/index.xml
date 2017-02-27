@@ -6,8 +6,91 @@
     <description>Recent content in Posts on mzgkworks.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Mon, 27 Feb 2017 13:33:52 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 27 Feb 2017 16:16:35 +0900</lastBuildDate>
     <atom:link href="http://mzgkworks.com/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>RDSをスナップショットから復元する方法</title>
+      <link>http://mzgkworks.com/post/aws-rds-restore-from-snapshot/</link>
+      <pubDate>Mon, 27 Feb 2017 16:16:35 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/aws-rds-restore-from-snapshot/</guid>
+      <description>
+
+&lt;p&gt;以前に取得されたスナップショットからRDSを復元して、現在のRDSと付け替える方法。&lt;br /&gt;
+&lt;br&gt;
+ポイントは以下。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;DBインスンタンス識別子の値は、EC2と接続するためのエンドポイントのprefixを兼ねている&lt;/li&gt;
+&lt;li&gt;同じ識別子で復元できない&lt;/li&gt;
+&lt;li&gt;別の識別子で復元 -&amp;gt; 既存の識別子を変更 -&amp;gt; 復元分の識別子を元々の識別子に変更&lt;/li&gt;
+&lt;li&gt;これでエンドポイントの値は変更されないので、Webサーバー側との接続に影響を与えない&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;復元したインスタンスのセキュリティグループを既存と同様にセットし直す&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;スナップショットからインスタンスを復元&#34;&gt;スナップショットからインスタンスを復元&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;RDSダッシュボード - スナップショット - 復元したいスナップショットを選択&lt;/li&gt;
+&lt;li&gt;スナップショットのアクション - スナップショットの復元&lt;/li&gt;
+&lt;li&gt;DBインスタンスの復元画面が表示されるので、情報を入力
+
+&lt;ul&gt;
+&lt;li&gt;デフォルトになっている部分を抜粋&lt;/li&gt;
+&lt;li&gt;マルチAZ配置 : 選択&lt;/li&gt;
+&lt;li&gt;DBインスタンス識別子 : &lt;strong&gt;復元して置き換えたい既存インスタンスの値とは別の値&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;アベイラビリティゾーン : 選択&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;DBインスタンスの復元 - 復元される（作業状況はインスタンスで確認）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;既存のインスタンス&#34;&gt;既存のインスタンス&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;復元したインスタンスで置き換えたいインスタンス&lt;/li&gt;
+&lt;li&gt;DBインスタンス識別子を変更して、エンドポイントを復元インスタンスにゆずる&lt;/li&gt;
+&lt;li&gt;変更作業
+
+&lt;ul&gt;
+&lt;li&gt;インスタンスの操作 - 変更&lt;/li&gt;
+&lt;li&gt;DBインスタンス識別子 : 変更&lt;/li&gt;
+&lt;li&gt;すぐに適用 : チェック&lt;/li&gt;
+&lt;li&gt;次へ - DBインスタンスの変更&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;変更中 -&amp;gt; 名前変更中 -&amp;gt; 再起動 -&amp;gt; 利用可能&lt;/li&gt;
+&lt;li&gt;この時点でWebサーバーからDBが参照されなくなる&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;復元インスタンス&#34;&gt;復元インスタンス&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;復元したインスタンスのDB識別子を既存の値に変更する（エンドポイント値の復元）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;セキュリティグループを既存同様に付け直す&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;変更作業
+
+&lt;ul&gt;
+&lt;li&gt;インスタンスの操作 - 変更&lt;/li&gt;
+&lt;li&gt;DBインスタンス識別子 : 変更&lt;/li&gt;
+&lt;li&gt;セキュリティグループ : 既存と同様のSGをセット&lt;/li&gt;
+&lt;li&gt;すぐに適用 : チェック&lt;/li&gt;
+&lt;li&gt;次へ - DBインスタンスの変更&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;変更中 -&amp;gt; 名前変更中 -&amp;gt; 再起動 -&amp;gt; 利用可能&lt;/li&gt;
+&lt;li&gt;これで復元されたDBで置き換えられる&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;rds削除時の注意-スナップショット&#34;&gt;RDS削除時の注意（スナップショット）&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;RDSを削除する際に、過去にとった自動スナップショットは削除されてしまう&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;復元したい場合、削除時に聞かれる「最終スナップショット」は作成しておくこと&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br&gt;&lt;br&gt;
+以上&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Elastic Load Balancingを利用した、EC2-RDS環境の構築</title>
@@ -1610,504 +1693,6 @@ $ sass --watch --style expanded scss:css
 &lt;/ul&gt;
 
 &lt;p&gt;※styleを途中で変更する場合は、一度生成された.cssを削除すること&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>CSS1〜CSS3までのセレクタのまとめ</title>
-      <link>http://mzgkworks.com/post/css-selector-list/</link>
-      <pubDate>Wed, 21 Sep 2016 18:28:09 +0900</pubDate>
-      
-      <guid>http://mzgkworks.com/post/css-selector-list/</guid>
-      <description>
-
-&lt;h2 id=&#34;全称-タイプ-id-クラスセレクタ&#34;&gt;全称・タイプ・ID・クラスセレクタ&lt;/h2&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;パターン&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;セレクタ名&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;適用範囲&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;*&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;全称&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;すべての要素&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;タイプ&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;E要素&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;例 E, F&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;EとFの要素&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;#id_name&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;ID&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;id_nameというIDを持つすべての要素&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;例 E#id_name&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;id_nameというIDを持つE要素&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;.class_name&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;クラス&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;class_nameというクラスを持つすべての要素&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;例 E.class_name&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;class_nameというクラスを持つE要素&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&#34;属性セレクタ&#34;&gt;属性セレクタ&lt;/h2&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;パターン&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;セレクタ名&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;適用範囲&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E[foo]&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;属性&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;foo属性を持つE要素&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E[foo=&amp;ldquo;bar&amp;rdquo;]&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;foo属性がbarの値だけを持つE要素&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E[foo~=&amp;ldquo;bar&amp;rdquo;]&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;foo属性がbarの値を持つE要素  ※class=&amp;ldquo;bar baz&amp;rdquo;など&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E[foo^=&amp;ldquo;bar&amp;rdquo;]&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;foo属性の値がbarで始まっているE要素  ※class=&amp;ldquo;barbal&amp;rdquo;など&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E[foo$=&amp;ldquo;bar&amp;rdquo;]&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;foo属性の値がbarで終わっているE要素  ※class=&amp;ldquo;balbar&amp;rdquo;など&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E[foo*=&amp;ldquo;bar&amp;rdquo;]&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;foo属性の値にbarが含まれるE要素  ※class=&amp;ldquo;fobarbaz&amp;rdquo;など&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E[foo&amp;#124;=&amp;ldquo;bar&amp;rdquo;]&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;foo属性の値が、bar または bar-bazのE要素&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&#34;結合子セレクタ&#34;&gt;結合子セレクタ&lt;/h2&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;パターン&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;セレクタ名&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;適用範囲&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E F&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;子孫&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;E要素の子孫であるF要素&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E *&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;E要素の子孫すべて&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E .class_name&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;E要素の子孫でclass_nameというクラスを持つ要素&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;.class_name E&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;.class_nameを持つ要素の子孫であるE要素&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E &amp;gt; F&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;子&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;E要素の子となるF要素  ※途中他要素の子になっているのは対象外&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E + F&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;隣接&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;E要素に隣接（直後）しているF要素&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E ~ F&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;間接&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;E要素の後ろにある同じ階層のF要素&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;例 div ~ p&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;divと同階層でdivより後ろにあるpが適用&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;例 h2 ~ h2&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;同階層で２番目のh2から適用&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&#34;構造擬似クラスセレクタ&#34;&gt;構造擬似クラスセレクタ&lt;/h2&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;パターン&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;セレクタ名&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;適用範囲&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E:first-child&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;構造擬似&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;最初のE要素（= nth-child(1)） ※最初のEより前の他要素もカウント&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E:last-child&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;最後のE要素（= nth-last-child(1)） ※最後のEより後ろの他要素もカウント&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E:nth-child(n)&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;n番目のE要素  ※途中の他要素もカウント&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E:nth-last-child(n)&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;最後からn番目のE要素  ※途中の他要素もカウント&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E:nth-of-type(n)&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;最初からn番目に表れるE要素  ※途中の他要素はカウントしない&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E:nth-last-of-type(n)&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;最後からn番目に表れるE要素  ※途中の他要素はカウントしない&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;例 (n) → 2n+1 or odd&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;奇数番目&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;例 (n) → 2n or even&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;偶数番目&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;例 (n) → 3n&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;３の倍数番目&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;例 (n) → 3n+1&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;１、４、７、１０&amp;hellip;番目&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E:first-of-type&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;最初のE要素  ※他の要素はカウントしない&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E:last-of-type&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;最後のE要素  ※他の要素はカウントしない&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E F:only-child&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;E要素内にF要素１つのみ存在の場合  ※他要素・F複数はダメ&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E F:only-of-type&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;E要素内にF要素が１つのみ存在の場合  ※他要素がいても可&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E:empty&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;E要素内がカラの場合&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;:root&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;文書のルート要素（htmlに適用するのと同じ）&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&#34;否定擬似クラスセレクタ&#34;&gt;否定擬似クラスセレクタ&lt;/h2&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;パターン&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;セレクタ名&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;適用範囲&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E:not(s)&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;否定擬似&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;sで指定するセレクタに該当しないE要素&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;例 body *:not(h1)&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;h1以外すべての要素&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;例 p:not(.class_name)&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;class_nameがついているp以外のすべてのp&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&#34;リンク擬似クラスセレクタ&#34;&gt;リンク擬似クラスセレクタ&lt;/h2&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;パターン&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;セレクタ名&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;適用範囲&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E:link&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;リンク擬似&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;未訪問のリンク&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E:visited&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;訪問済みのリンク&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&#34;ユーザーアクション擬似クラスセレクタ&#34;&gt;ユーザーアクション擬似クラスセレクタ&lt;/h2&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;パターン&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;セレクタ名&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;適用範囲&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E:active&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;ユーザーアクション&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;クリック中の要素&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E:hover&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;カーソルが乗っている要素&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E:focus&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;フォーカスされた要素（入力欄で入力可能状態）&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;:target&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;href=&amp;ldquo;#foo&amp;rdquo;のリンクを踏んだ際の、id=&amp;ldquo;foo&amp;rdquo;の要素&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&#34;ui状態擬似クラスセレクタ&#34;&gt;UI状態擬似クラスセレクタ&lt;/h2&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;パターン&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;セレクタ名&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;適用範囲&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E:enabled&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;UI状態擬似&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;E要素が有効状態（textareaなど）&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E:disabled&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;E要素が無効状態（textareaなど）&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E:checked&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;E要素がチェック状態（ラジオ・チェックボックス）&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;例 チェックボックス&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;input[type=&amp;ldquo;checkbox&amp;rdquo;]:checked {}&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&#34;言語情報擬似クラスセレクタ&#34;&gt;言語情報擬似クラスセレクタ&lt;/h2&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;パターン&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;セレクタ名&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;適用範囲&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E:lang(s)&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;言語情報&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;lang=&amp;ldquo;s&amp;rdquo;を持つE要素&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&#34;擬似要素セレクタ&#34;&gt;擬似要素セレクタ&lt;/h2&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;パターン&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;セレクタ名&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;適用範囲&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E::first-letter&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;擬似要素&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;E要素の最初の１文字&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E::first-line&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;E要素の最初の１行&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E::before&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;E要素の直前&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;E::after&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;E要素の直後&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;例 前に☆&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;::before {contet: &amp;ldquo;☆&amp;rdquo;}&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
 </description>
     </item>
     

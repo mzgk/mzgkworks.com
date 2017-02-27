@@ -9,6 +9,89 @@
     <atom:link href="http://mzgkworks.com/categories/usage/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>RDSをスナップショットから復元する方法</title>
+      <link>http://mzgkworks.com/post/aws-rds-restore-from-snapshot/</link>
+      <pubDate>Mon, 27 Feb 2017 16:16:35 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/aws-rds-restore-from-snapshot/</guid>
+      <description>
+
+&lt;p&gt;以前に取得されたスナップショットからRDSを復元して、現在のRDSと付け替える方法。&lt;br /&gt;
+&lt;br&gt;
+ポイントは以下。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;DBインスンタンス識別子の値は、EC2と接続するためのエンドポイントのprefixを兼ねている&lt;/li&gt;
+&lt;li&gt;同じ識別子で復元できない&lt;/li&gt;
+&lt;li&gt;別の識別子で復元 -&amp;gt; 既存の識別子を変更 -&amp;gt; 復元分の識別子を元々の識別子に変更&lt;/li&gt;
+&lt;li&gt;これでエンドポイントの値は変更されないので、Webサーバー側との接続に影響を与えない&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;復元したインスタンスのセキュリティグループを既存と同様にセットし直す&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;スナップショットからインスタンスを復元&#34;&gt;スナップショットからインスタンスを復元&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;RDSダッシュボード - スナップショット - 復元したいスナップショットを選択&lt;/li&gt;
+&lt;li&gt;スナップショットのアクション - スナップショットの復元&lt;/li&gt;
+&lt;li&gt;DBインスタンスの復元画面が表示されるので、情報を入力
+
+&lt;ul&gt;
+&lt;li&gt;デフォルトになっている部分を抜粋&lt;/li&gt;
+&lt;li&gt;マルチAZ配置 : 選択&lt;/li&gt;
+&lt;li&gt;DBインスタンス識別子 : &lt;strong&gt;復元して置き換えたい既存インスタンスの値とは別の値&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;アベイラビリティゾーン : 選択&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;DBインスタンスの復元 - 復元される（作業状況はインスタンスで確認）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;既存のインスタンス&#34;&gt;既存のインスタンス&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;復元したインスタンスで置き換えたいインスタンス&lt;/li&gt;
+&lt;li&gt;DBインスタンス識別子を変更して、エンドポイントを復元インスタンスにゆずる&lt;/li&gt;
+&lt;li&gt;変更作業
+
+&lt;ul&gt;
+&lt;li&gt;インスタンスの操作 - 変更&lt;/li&gt;
+&lt;li&gt;DBインスタンス識別子 : 変更&lt;/li&gt;
+&lt;li&gt;すぐに適用 : チェック&lt;/li&gt;
+&lt;li&gt;次へ - DBインスタンスの変更&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;変更中 -&amp;gt; 名前変更中 -&amp;gt; 再起動 -&amp;gt; 利用可能&lt;/li&gt;
+&lt;li&gt;この時点でWebサーバーからDBが参照されなくなる&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;復元インスタンス&#34;&gt;復元インスタンス&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;復元したインスタンスのDB識別子を既存の値に変更する（エンドポイント値の復元）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;セキュリティグループを既存同様に付け直す&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;変更作業
+
+&lt;ul&gt;
+&lt;li&gt;インスタンスの操作 - 変更&lt;/li&gt;
+&lt;li&gt;DBインスタンス識別子 : 変更&lt;/li&gt;
+&lt;li&gt;セキュリティグループ : 既存と同様のSGをセット&lt;/li&gt;
+&lt;li&gt;すぐに適用 : チェック&lt;/li&gt;
+&lt;li&gt;次へ - DBインスタンスの変更&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;変更中 -&amp;gt; 名前変更中 -&amp;gt; 再起動 -&amp;gt; 利用可能&lt;/li&gt;
+&lt;li&gt;これで復元されたDBで置き換えられる&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;rds削除時の注意-スナップショット&#34;&gt;RDS削除時の注意（スナップショット）&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;RDSを削除する際に、過去にとった自動スナップショットは削除されてしまう&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;復元したい場合、削除時に聞かれる「最終スナップショット」は作成しておくこと&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br&gt;&lt;br&gt;
+以上&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Elastic Load Balancingを利用した、EC2-RDS環境の構築</title>
       <link>http://mzgkworks.com/post/aws-elb-ec2-rds-wordpress/</link>
       <pubDate>Mon, 27 Feb 2017 13:33:52 +0900</pubDate>
@@ -2146,92 +2229,6 @@ $ tar -xjvf test.tar.gz
 $ tar -cJvf test.tar.xz /etc/postfix  # test.tar.xzが作成される
 # test.tar.xzを展開する
 $ tar -xJvf test.tar.gz
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>bashでディレクトリ・ファイルのコピー・移動・削除を行う</title>
-      <link>http://mzgkworks.com/post/bash-directory-operation/</link>
-      <pubDate>Wed, 07 Sep 2016 17:09:45 +0900</pubDate>
-      
-      <guid>http://mzgkworks.com/post/bash-directory-operation/</guid>
-      <description>
-
-&lt;h2 id=&#34;cd-ディレクトリ移動&#34;&gt;cd : ディレクトリ移動&lt;/h2&gt;
-
-&lt;p&gt;引数で指定したディレクトリへ移動する。&lt;br /&gt;
-他に便利な使い方としては、&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 引数なし : ホームディレクトリに移動
-$ cd
-
-# - : １つ前の作業ディレクトリへ移動
-# ２つのディレクトリを交互に操作する際に便利
-$ cd -
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;コピー&#34;&gt;コピー&lt;/h2&gt;
-
-&lt;p&gt;ファイルまたはディレクトリをコピーする。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# A.txtをB.txtの名前でコピーする
-$ cp A.txt B.txt
-
-# DirディレクトリにA.txtの名前でコピーする。
-# Dir部分を「.」にすると、カレントディレクトリを表す。
-$ cp A.txt Dir
-
-# A.txtをDirディレクトリにB.txtとしてコピーする。
-$ cp A.txt Dir/B.txt
-
-# ディレクトリをコピーする際には「-r」が必要
-# A_DirディレクトリをB_Dirディレクトリ配下にコピー
-$ cp -r A_Dir B_Dir
-
-# A_DirディレクトリをB_Dirディレクトリ配下にC_Dirディレクトリとしてコピー
-# B_Dir配下にC_Dirが存在していない場合
-$ cp -r A_Dir B_Dir/C_Dir
-
-# A_Dirディレクトリの中身だけを、B_Dir配下にコピーする
-$ cp -r A_Dir/ B_Dir
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;移動とリネーム&#34;&gt;移動とリネーム&lt;/h2&gt;
-
-&lt;p&gt;移動とリネームを行う。ファイルとディレクトリは同様に実行可能。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# A.txtをB.txtにリネームする（同じディレクトリ内）
-$ mv A.txt B.txt
-
-# A.txtをA_Dirディレクトリに移動する
-$ mv A.txt A_Dir
-
-# A.txtをA_DirディレクトリにB.txtとして移動する
-$ mv A.txt A_Dir/B.txt
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;ディレクトリの作成&#34;&gt;ディレクトリの作成&lt;/h2&gt;
-
-&lt;p&gt;ディレクトリを作成する。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 単独
-$ mkdir A_Dir
-
-# 複数階層分
-$ mkdir -p A_Dir/B_Dir
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;削除&#34;&gt;削除&lt;/h2&gt;
-
-&lt;p&gt;ファイルとディレクトリの削除。&lt;br /&gt;
-&lt;strong&gt;ゴミ箱はない。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 確認つきでファイルを削除する（yで削除）
-$ rm -i A.txt
-
-# ディレクトリの中身ごと削除する
-$ rm -r A_Dir
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
