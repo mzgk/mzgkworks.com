@@ -10,19 +10,16 @@
     
         <meta name="description" content=" プログラマーの備忘録。">
     
-        <meta name="description" content="">
+        <meta name="description" content="MacやWindowsにAWS CLI（コマンドラインインターフェイス）をインストールする方法。">
     
 
     <base href="http://mzgkworks.com">
-    
-        <link href="Page%28%22Blog%22%29" rel="alternate" type="application/rss+xml" title="mzgkworks.com" />
-        <link href="Page%28%22Blog%22%29" rel="feed" type="application/rss+xml" title="mzgkworks.com" />
     
     <link rel="stylesheet" href="./css/masamune.css">
 
     <title>
         
-        Blog
+        AWS CLIのインストール方法（Mac / Windows）
          | mzgkworks.com
     </title>
 
@@ -50,150 +47,130 @@
 
     <div class="ContentsContainer">
         <main class="MainContainer">
-            <h1 class="AreaTitle">Blog</h1>
 
-            
-            
-            <article class="ListItem">
-                <a href="http://mzgkworks.com/post/build-a-blog-in-hugo-4/">
-                    <h2 class="ListItem__head">
-                        Hugo・GitHub Pages・独自ドメインでブログを構築 : 4
+            <article class="PostItem">
+                <div class="PostItem__head">
+                    <div class="PostItem__title">
+                        <h1>
+                            AWS CLIのインストール方法（Mac / Windows）
+                            
+                        </h1>
+                    </div>
+                    <div class="PostItem__meta">
+                        <time datetime="2017-02-02">
+                            2017.02.28
+                        </time>
+                        &nbsp;&nbsp;
                         
-                    </h2>
-                </a>
-                <div class="ListItem__body">
-                    <time datetime="2016-08-08">
-                        2016.08.30
-                    </time>
-                    &nbsp;&nbsp;
+                        <span>[<a href="./categories/setting">Setting</a>]</span>
+                        
+                        
+                        &nbsp;&nbsp;
+                        <span>#<a href="./tags/aws">AWS</a></span>
+                        
+                    </div>
+                </div>
+
+                <div class="PostItem__body">
                     
-                    <span>[<a href="./categories/setting">Setting</a>]</span>
-                    
-                    
-                    &nbsp;&nbsp;
-                    <span>#<a href="./tags/blog">Blog</a></span>
-                    
-                    &nbsp;&nbsp;
-                    <span>#<a href="./tags/hugo">Hugo</a></span>
-                    
-                    <br>
-                    <span>Hugo,GitHub Pages,独自ドメインで静的サイトを構築する。一連の作業を自動化する。</span>
+
+<p>AWS CLI（コマンドラインインターフェイス）をインストールする方法。</p>
+
+<h2 id="環境">環境</h2>
+
+<ul>
+<li>macOS Sierra 10.12.3</li>
+<li>Windows10</li>
+</ul>
+
+<h2 id="mac">Mac</h2>
+
+<ul>
+<li>Homebrewを使ってインストールする</li>
+</ul>
+
+<pre><code># Homebrewアップデート
+$ brew update
+
+# Homebrewに存在するか確認
+$ brew search awscli
+awscli
+
+# インストール
+$ brew install awscli
+...
+==&gt; Summary
+🍺  /usr/local/Cellar/awscli/1.11.55: 3,780 files, 32.7M
+
+# 確認
+$ aws --version
+aws-cli/1.11.55 Python/2.7.10 Darwin/16.4.0 botocore/1.5.18
+
+# 設定
+$ aws configure
+AWS Access Key ID [None]: accessKeys.csvの値
+AWS Secret Access Key [None]: accessKeys.csvの値
+Default region name [None]: ap-northeast-1
+Default output format [None]: json
+</code></pre>
+
+<h2 id="windows">Windows</h2>
+
+<ul>
+<li>アマゾンWebサービスのツール : <a href="https://aws.amazon.com/jp/tools/">https://aws.amazon.com/jp/tools/</a></li>
+<li>コマンドラインツール -&gt; インストール</li>
+<li>左ペイン : Installing the AWS CLIをクリック</li>
+<li>左ペイン : Windowsをクリック</li>
+<li><a href="http://docs.aws.amazon.com/cli/latest/userguide/awscli-install-windows.html">Download the AWS CLI MSI installer for Windows (64-bit)</a></li>
+<li>AWSCLI64.msiがダウンロードされる</li>
+<li>ダブルクリックしてインストール</li>
+<li>完了後に再起動</li>
+<li>コマンドプロンプトから <code>&gt; aws configure</code> で初期設定を行う</li>
+</ul>
+
+<h2 id="aws-cliリファレンス">AWS CLIリファレンス</h2>
+
+<p>リファレンスの場所は以下。</p>
+
+<p><a href="http://docs.aws.amazon.com/cli/latest/reference/">http://docs.aws.amazon.com/cli/latest/reference/</a></p>
+
                 </div>
             </article>
-            
-            <article class="ListItem">
-                <a href="http://mzgkworks.com/post/build-a-blog-in-hugo-3/">
-                    <h2 class="ListItem__head">
-                        Hugo・GitHub Pages・独自ドメインでブログを構築 : 3
-                        
-                    </h2>
-                </a>
-                <div class="ListItem__body">
-                    <time datetime="2016-08-08">
-                        2016.08.30
-                    </time>
-                    &nbsp;&nbsp;
-                    
-                    <span>[<a href="./categories/setting">Setting</a>]</span>
-                    
-                    
-                    &nbsp;&nbsp;
-                    <span>#<a href="./tags/blog">Blog</a></span>
-                    
-                    &nbsp;&nbsp;
-                    <span>#<a href="./tags/hugo">Hugo</a></span>
-                    
-                    <br>
-                    <span>Hugo,GitHub Pages,独自ドメインで静的サイトを構築する。記事の作成から公開まで。</span>
-                </div>
-            </article>
-            
-            <article class="ListItem">
-                <a href="http://mzgkworks.com/post/build-a-blog-in-hugo-2/">
-                    <h2 class="ListItem__head">
-                        Hugo・GitHub Pages・独自ドメインでブログを構築 : 2
-                        
-                    </h2>
-                </a>
-                <div class="ListItem__body">
-                    <time datetime="2016-08-08">
-                        2016.08.30
-                    </time>
-                    &nbsp;&nbsp;
-                    
-                    <span>[<a href="./categories/setting">Setting</a>]</span>
-                    
-                    
-                    &nbsp;&nbsp;
-                    <span>#<a href="./tags/blog">Blog</a></span>
-                    
-                    &nbsp;&nbsp;
-                    <span>#<a href="./tags/hugo">Hugo</a></span>
-                    
-                    <br>
-                    <span>Hugo,GitHub Pages,独自ドメインで静的サイトを構築する。GitHub Pagesと独自ドメインの適用。</span>
-                </div>
-            </article>
-            
-            <article class="ListItem">
-                <a href="http://mzgkworks.com/post/build-a-blog-in-hugo-1/">
-                    <h2 class="ListItem__head">
-                        Hugo・GitHub Pages・独自ドメインでブログを構築 : 1
-                        
-                    </h2>
-                </a>
-                <div class="ListItem__body">
-                    <time datetime="2016-08-08">
-                        2016.08.30
-                    </time>
-                    &nbsp;&nbsp;
-                    
-                    <span>[<a href="./categories/setting">Setting</a>]</span>
-                    
-                    
-                    &nbsp;&nbsp;
-                    <span>#<a href="./tags/blog">Blog</a></span>
-                    
-                    &nbsp;&nbsp;
-                    <span>#<a href="./tags/hugo">Hugo</a></span>
-                    
-                    <br>
-                    <span>Hugo,GitHub Pages,独自ドメインで静的サイトを構築する。インストール〜テーマの適用まで。</span>
-                </div>
-            </article>
-            
-            <article class="ListItem">
-                <a href="http://mzgkworks.com/post/build-a-blog-in-hugo-0/">
-                    <h2 class="ListItem__head">
-                        Hugo・GitHub Pages・独自ドメインでブログを構築 : 0
-                        
-                    </h2>
-                </a>
-                <div class="ListItem__body">
-                    <time datetime="2016-08-08">
-                        2016.08.30
-                    </time>
-                    &nbsp;&nbsp;
-                    
-                    <span>[<a href="./categories/setting">Setting</a>]</span>
-                    
-                    
-                    &nbsp;&nbsp;
-                    <span>#<a href="./tags/blog">Blog</a></span>
-                    
-                    &nbsp;&nbsp;
-                    <span>#<a href="./tags/hugo">Hugo</a></span>
-                    
-                    <br>
-                    <span>Hugo,GitHub Pages,独自ドメインで静的サイトを構築する。方針など。</span>
-                </div>
-            </article>
-            
 
             <nav class="Pagenation">
-                
-                
+                <div class="Pagenation__older">
+                    
+                    <a href="http://mzgkworks.com/post/aws-change-timezone-on-linux/">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        EC2上のLinuxタイムゾーンを変更する
+                    </a>
+                    
+                </div>
+                <div class="Pagenation__newer">
+                    
+                </div>
             </nav>
+
+            <div class="Disqus">
+                
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'mzgkworks-com';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+            </div>
         </main>
 
         <aside class="SubContainer">

@@ -9,6 +9,76 @@
     <atom:link href="http://mzgkworks.com/tags/aws/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>AWS CLIのインストール方法（Mac / Windows）</title>
+      <link>http://mzgkworks.com/post/aws-install-cli/</link>
+      <pubDate>Tue, 28 Feb 2017 17:53:18 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/aws-install-cli/</guid>
+      <description>
+
+&lt;p&gt;AWS CLI（コマンドラインインターフェイス）をインストールする方法。&lt;/p&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;macOS Sierra 10.12.3&lt;/li&gt;
+&lt;li&gt;Windows10&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;mac&#34;&gt;Mac&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Homebrewを使ってインストールする&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;# Homebrewアップデート
+$ brew update
+
+# Homebrewに存在するか確認
+$ brew search awscli
+awscli
+
+# インストール
+$ brew install awscli
+...
+==&amp;gt; Summary
+🍺  /usr/local/Cellar/awscli/1.11.55: 3,780 files, 32.7M
+
+# 確認
+$ aws --version
+aws-cli/1.11.55 Python/2.7.10 Darwin/16.4.0 botocore/1.5.18
+
+# 設定
+$ aws configure
+AWS Access Key ID [None]: accessKeys.csvの値
+AWS Secret Access Key [None]: accessKeys.csvの値
+Default region name [None]: ap-northeast-1
+Default output format [None]: json
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;windows&#34;&gt;Windows&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;アマゾンWebサービスのツール : &lt;a href=&#34;https://aws.amazon.com/jp/tools/&#34;&gt;https://aws.amazon.com/jp/tools/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;コマンドラインツール -&amp;gt; インストール&lt;/li&gt;
+&lt;li&gt;左ペイン : Installing the AWS CLIをクリック&lt;/li&gt;
+&lt;li&gt;左ペイン : Windowsをクリック&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://docs.aws.amazon.com/cli/latest/userguide/awscli-install-windows.html&#34;&gt;Download the AWS CLI MSI installer for Windows (64-bit)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;AWSCLI64.msiがダウンロードされる&lt;/li&gt;
+&lt;li&gt;ダブルクリックしてインストール&lt;/li&gt;
+&lt;li&gt;完了後に再起動&lt;/li&gt;
+&lt;li&gt;コマンドプロンプトから &lt;code&gt;&amp;gt; aws configure&lt;/code&gt; で初期設定を行う&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;aws-cliリファレンス&#34;&gt;AWS CLIリファレンス&lt;/h2&gt;
+
+&lt;p&gt;リファレンスの場所は以下。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://docs.aws.amazon.com/cli/latest/reference/&#34;&gt;http://docs.aws.amazon.com/cli/latest/reference/&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>EC2上のLinuxタイムゾーンを変更する</title>
       <link>http://mzgkworks.com/post/aws-change-timezone-on-linux/</link>
       <pubDate>Tue, 28 Feb 2017 16:55:07 +0900</pubDate>

@@ -9,6 +9,76 @@
     <atom:link href="http://mzgkworks.com/categories/setting/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>AWS CLIのインストール方法（Mac / Windows）</title>
+      <link>http://mzgkworks.com/post/aws-install-cli/</link>
+      <pubDate>Tue, 28 Feb 2017 17:53:18 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/aws-install-cli/</guid>
+      <description>
+
+&lt;p&gt;AWS CLI（コマンドラインインターフェイス）をインストールする方法。&lt;/p&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;macOS Sierra 10.12.3&lt;/li&gt;
+&lt;li&gt;Windows10&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;mac&#34;&gt;Mac&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Homebrewを使ってインストールする&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;# Homebrewアップデート
+$ brew update
+
+# Homebrewに存在するか確認
+$ brew search awscli
+awscli
+
+# インストール
+$ brew install awscli
+...
+==&amp;gt; Summary
+🍺  /usr/local/Cellar/awscli/1.11.55: 3,780 files, 32.7M
+
+# 確認
+$ aws --version
+aws-cli/1.11.55 Python/2.7.10 Darwin/16.4.0 botocore/1.5.18
+
+# 設定
+$ aws configure
+AWS Access Key ID [None]: accessKeys.csvの値
+AWS Secret Access Key [None]: accessKeys.csvの値
+Default region name [None]: ap-northeast-1
+Default output format [None]: json
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;windows&#34;&gt;Windows&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;アマゾンWebサービスのツール : &lt;a href=&#34;https://aws.amazon.com/jp/tools/&#34;&gt;https://aws.amazon.com/jp/tools/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;コマンドラインツール -&amp;gt; インストール&lt;/li&gt;
+&lt;li&gt;左ペイン : Installing the AWS CLIをクリック&lt;/li&gt;
+&lt;li&gt;左ペイン : Windowsをクリック&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://docs.aws.amazon.com/cli/latest/userguide/awscli-install-windows.html&#34;&gt;Download the AWS CLI MSI installer for Windows (64-bit)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;AWSCLI64.msiがダウンロードされる&lt;/li&gt;
+&lt;li&gt;ダブルクリックしてインストール&lt;/li&gt;
+&lt;li&gt;完了後に再起動&lt;/li&gt;
+&lt;li&gt;コマンドプロンプトから &lt;code&gt;&amp;gt; aws configure&lt;/code&gt; で初期設定を行う&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;aws-cliリファレンス&#34;&gt;AWS CLIリファレンス&lt;/h2&gt;
+
+&lt;p&gt;リファレンスの場所は以下。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://docs.aws.amazon.com/cli/latest/reference/&#34;&gt;http://docs.aws.amazon.com/cli/latest/reference/&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>トラックパッドで、３本指ドラッグでの選択を可能にする</title>
       <link>http://mzgkworks.com/post/drag-with-three-fingers-to-select/</link>
       <pubDate>Sun, 26 Feb 2017 12:36:02 +0900</pubDate>
@@ -1401,277 +1471,6 @@ $ git push origin master
 &lt;p&gt;しばらくしてブラウザから設定したドメインにアクセスし、反映されていることを確認する。&lt;/p&gt;
 
 &lt;h3 id=&#34;次は-記事の作成から&#34;&gt;次は、記事の作成から。&lt;/h3&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Hugo・GitHub Pages・独自ドメインでブログを構築 : 1</title>
-      <link>http://mzgkworks.com/post/build-a-blog-in-hugo-1/</link>
-      <pubDate>Tue, 30 Aug 2016 14:20:11 +0900</pubDate>
-      
-      <guid>http://mzgkworks.com/post/build-a-blog-in-hugo-1/</guid>
-      <description>
-
-&lt;ul&gt;
-&lt;li&gt;Hugoのインストール&lt;/li&gt;
-&lt;li&gt;ブログ環境の構築&lt;/li&gt;
-&lt;li&gt;Git管理&lt;/li&gt;
-&lt;li&gt;テーマの適用&lt;/li&gt;
-&lt;li&gt;公開ファイルの生成&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;構築環境&#34;&gt;構築環境&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;OS X 10.11.6&lt;/li&gt;
-&lt;li&gt;Homebrew 0.9.9&lt;/li&gt;
-&lt;li&gt;Hugo 0.16&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/&#34;&gt;GitHub&lt;/a&gt;はアカウントを作成済み&lt;/li&gt;
-&lt;li&gt;ドメインは&lt;a href=&#34;https://muumuu-domain.com/&#34;&gt;ムームードメイン&lt;/a&gt;で取得済み&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;homebrew&#34;&gt;Homebrew&lt;/h2&gt;
-
-&lt;p&gt;アップデート（インストールは&lt;a href=&#34;http://brew.sh/index_ja.html&#34;&gt;公式サイト&lt;/a&gt;を参照）。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ brew update
-$ brew upgrade
-$ brew cleanup
-$ brew doctor
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;hugo&#34;&gt;Hugo&lt;/h2&gt;
-
-&lt;p&gt;Homebrew経由でインストールを行う。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ brew install hugo
-# 確認
-$ hugo version
-Hugo Static Site Generator v0.16 BuildDate: 2016-06-06T21:37:59+09:00
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;ブログ環境の作成&#34;&gt;ブログ環境の作成&lt;/h2&gt;
-
-&lt;p&gt;Hugoコマンドを使って、ローカルにブログ作業ディレクトリを作成する。&lt;br /&gt;
-今回の例では、Home直下にmyblogディレクトリ（~/myblog）として作成。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 環境作成
-$ hugo new site ~/myblog # 任意のディレクトリ名
-Congratulations! Your new Hugo site is created in &amp;quot;&amp;lt;作成された場所&amp;gt;&amp;quot;.
-...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;サイト名のディレクトリが作成される。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ cd ~/myblog
-$ tree -a
-.
-|-- archetypes  # 記事のテンプレートを格納（空）
-|-- config.toml # サイト全体の設定ファイル
-|-- content     # 記事を格納（空）
-|-- data        # データファイルを格納（空）
-|-- layouts     # レイアウトファイルを格納（空）
-|-- static      # 画像等の静的ファイルを格納（空）
-`-- themes      # テーマを格納（空）
-
-6 directories, 1 file
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;github-pages用の公開ディレクトリを追加&#34;&gt;GitHub Pages用の公開ディレクトリを追加&lt;/h2&gt;
-
-&lt;p&gt;GitHub Pagesのmasterブランチでの公開用に &lt;strong&gt;docs&lt;/strong&gt; ディレクトリを追加する。&lt;br /&gt;
-Hugoコマンドでの公開ファイル生成後に、publicディレクトリの中身をこのdocsディレクトリにコピーする。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# GitHub pages用の公開ディレクトリを作成
-$ mkdir docs
-
-$ tree -a
-.
-|-- archetypes
-|-- config.toml
-|-- content
-|-- data
-|-- docs       # 公開用ディレクトリ（GitHub Pages用）
-|-- layouts
-|-- static
-`-- themes
-
-7 directories, 1 file
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;git管理を開始する&#34;&gt;Git管理を開始する&lt;/h2&gt;
-
-&lt;p&gt;作成された初期状態の環境をGit管理下におく。&lt;br /&gt;
-空ディレクトリも管理対象となるように「.gitkeep」の名前で空ファイルを格納しておく。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 空ディレクトリに対して.gitkeepファイルを作成しておく
-$ touch archetypes/.gitkeep
-$ touch content/.gitkeep
-...
-.
-|-- archetypes
-|   `-- .gitkeep
-|-- config.toml
-|-- content
-|   `-- .gitkeep
-|-- data
-|   `-- .gitkeep
-|-- docs
-|   `-- .gitkeep
-|-- layouts
-|   `-- .gitkeep
-|-- static
-|   `-- .gitkeep
-`-- themes
-    `-- .gitkeep
-
-7 directories, 8 files
-
-# Git初期化
-$ git init
-
-# コミット
-$ git add .
-$ git commit -m &amp;quot;Initial : 環境作成直後&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;テーマのインストール&#34;&gt;テーマのインストール&lt;/h2&gt;
-
-&lt;h3 id=&#34;既存のテーマを使う場合&#34;&gt;既存のテーマを使う場合&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://themes.gohugo.io/&#34;&gt;公式テーマサイト&lt;/a&gt;でテーマを選び、インストールをする。&lt;br /&gt;
-インストールしたいテーマを選んだら、テーマのリポジトリを &lt;code&gt;git clone&lt;/code&gt; してくる。&lt;br /&gt;
-今回はシンプルできれいな『&lt;a href=&#34;http://themes.gohugo.io/angels-ladder/&#34;&gt;Angel&amp;rsquo;s Ladder&lt;/a&gt;』を例に。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# themesディレクトリに移動
-$ cd themes
-
-# テーマのリポジトリからcloneしてくる
-$ git clone https://github.com/tanksuzuki/angels-ladder
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;もしくは、テーマのリポジトリから.zip形式でダウンロードし、themesディレクトリに解凍する。&lt;br /&gt;
-&lt;strong&gt;解凍したディレクトリ名はテーマの名称に変更する（angels-ladder-master → angels-ladder）。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;自作テーマの場合&#34;&gt;自作テーマの場合&lt;/h3&gt;
-
-&lt;p&gt;自作のテーマがGitHub上の別リポジトリに存在する場合。例としてこのサイトのテーマ（masamune）。&lt;br /&gt;
-同じように &lt;code&gt;git clone&lt;/code&gt; でもいいが、この環境でテーマの改修作業もする場合は &lt;code&gt;git subtree&lt;/code&gt; の仕組みを利用する。&lt;br /&gt;
-前提として、myblogディレクトリがGit管理下に置かれていること。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 環境のトップに移動（ここではmyblogディレクトリ）
-$ cd ~/myblog
-
-# テーマのリポジトリをリモートに追加（リモート名 : masamuneとする）
-$ git remote add masamune &amp;lt;テーマのリポジトリURL&amp;gt;
-
-# テーマmasamuneをsubtreeとして取り込む
-# --prefix=themesディレクトリの下にmasamuneというディレクトリで
-# --squash : 履歴なし
-# リモートリポジトリ名（masamune） master
-$ git subtree add --prefix=themes/masamune --squash masamune master
-git fetch masamune master
-warning: no common commits
-...
- * branch            master     -&amp;gt; FETCH_HEAD
- * [new branch]      master     -&amp;gt; masamune/master
-Added dir &#39;themes/masamune&#39;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これで、themesディレクトリの配下にmasamuneディレクトリが作成されて、テーマが配置（インストール）される。&lt;/p&gt;
-
-&lt;h2 id=&#34;テーマの設定&#34;&gt;テーマの設定&lt;/h2&gt;
-
-&lt;p&gt;インストールしたテーマに即した設定を『config.toml』に行う。&lt;br /&gt;
-内容はテーマのサイトを参照すると記載されている。&lt;br /&gt;
-&lt;a href=&#34;https://github.com/tanksuzuki/angels-ladder&#34;&gt;Angel&amp;rsquo;s Ladder&lt;/a&gt;は丁寧に記載されている。&lt;/p&gt;
-
-&lt;h2 id=&#34;サイトの設定-config-toml&#34;&gt;サイトの設定（config.toml）&lt;/h2&gt;
-
-&lt;p&gt;サイト自体の設定は『config.toml』に記述する。&lt;br /&gt;
-&lt;a href=&#34;http://gohugo.io/overview/configuration/&#34;&gt;本家サイト&lt;/a&gt;に記載されている。&lt;br /&gt;
-また、テーマごとに設定する項目が存在するので、テーマの公式サイトを参照すること。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@yaml&#34;&gt;baseurl = &amp;quot;GitHub PagesのURL（https://&amp;lt;アカウント&amp;gt;.github.io/&amp;lt;リポジトリ名&amp;gt;）&amp;quot;
-title = &amp;quot;サイトのタイトル&amp;quot;
-theme = &amp;quot;テーマ名&amp;quot; ← 確認・生成時に『-t テーマ名』が不要になる
-languageCode = &amp;quot;ja-JP&amp;quot;
-canonifyurls = true
-hasCJKLanguage = true
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;テーマの確認&#34;&gt;テーマの確認&lt;/h2&gt;
-
-&lt;p&gt;ローカルサーバーを起動し、テーマが適用されているかブラウザで確認を行う。&lt;br /&gt;
-起動したら、ブラウザを立ち上げlocalhost:1313/myblogにアクセスする（起動時に表示される宛先を参照）。&lt;br /&gt;
-localhost:1313部分は、&lt;strong&gt;「Web Server is available at」&lt;/strong&gt; の部分を参照すること。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 環境のトップに移動
-$ cd ~/myblog
-# config.tomlにthemeを設定している場合は、-t masamuneは不要
-$ hugo server -t masamune -D -w
-...
-Web Server is available at http://localhost:1313/ (bind address 127.0.0.1)
-
-# 停止する場合は『Ctrl + c』
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;テーマの確認ができたらコミット&#34;&gt;テーマの確認ができたらコミット&lt;/h2&gt;
-
-&lt;p&gt;テーマの設定まで確認ができたら、一旦コミットしておく。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ git status
-On branch master
-Changes not staged for commit:
-  (use &amp;quot;git add &amp;lt;file&amp;gt;...&amp;quot; to update what will be committed)
-  (use &amp;quot;git checkout -- &amp;lt;file&amp;gt;...&amp;quot; to discard changes in working directory)
-
-       	modified:   config.toml
-
-no changes added to commit (use &amp;quot;git add&amp;quot; and/or &amp;quot;git commit -a&amp;quot;)
-
-# コミット
-$ git commit -am &amp;quot;テーマの設定&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;公開ファイルの生成&#34;&gt;公開ファイルの生成&lt;/h2&gt;
-
-&lt;p&gt;公開用のファイルを生成する（記事なし。テーマ適用のみ）。&lt;br /&gt;
-publicディレクトリが作成され、公開用のファイル類が生成される。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 環境のトップで行うこと
-$ cd ~/myblog
-
-# 生成（-t テーマ名）
-$ hugo -t masamune
-Started building site
-0 draft content
-0 future content
-0 pages created
-0 non-page files copied
-0 paginator pages created
-0 tags created
-0 categories created
-in 12 ms
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;publicディレクトリの中身をdocsディレクトリにコピー&#34;&gt;publicディレクトリの中身をdocsディレクトリにコピー&lt;/h2&gt;
-
-&lt;p&gt;GitHub Pagesの機能で公開するため、publicディレクトリの中身をdocsディレクトリにコピーする。&lt;br /&gt;
-これは記事作成後の生成時に必須の作業となる。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# publicディレクトリの中身をdocsディレクトリにコピーする
-# -p : コピー元の情報を引き継ぐ
-# -f : 上書き等の問い合わせをしない
-# -R : ディレクトリも
-$ cp -p -f -R public/* docs
-
-# コミット
-$ git add .
-$ git commit -m &amp;quot;公開用ファイル生成&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;次回は-githubにリモートリポジトリを作成するところから&#34;&gt;次回は、GitHubにリモートリポジトリを作成するところから。&lt;/h3&gt;
 </description>
     </item>
     
