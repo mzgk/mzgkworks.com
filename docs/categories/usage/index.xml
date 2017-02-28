@@ -9,6 +9,145 @@
     <atom:link href="http://mzgkworks.com/categories/usage/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>EC2のスナップショットを自動作成する</title>
+      <link>http://mzgkworks.com/post/aws-automatically-create-snapshot-of-ec2/</link>
+      <pubDate>Tue, 28 Feb 2017 16:28:32 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/aws-automatically-create-snapshot-of-ec2/</guid>
+      <description>
+
+&lt;p&gt;EC2のスナップショットを自動（AWS CLI + Cron）で採取するための設定方法。&lt;/p&gt;
+
+&lt;h2 id=&#34;手順&#34;&gt;手順&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;アクセス権（EC2FullAccess）があるIAMユーザーで、AWS CLIをセットアップ&lt;/li&gt;
+&lt;li&gt;EC2上でawsコマンドを実行して、スナップショットが作成されていることを確認&lt;/li&gt;
+&lt;li&gt;awsコマンドをシェルスクリプトファイルにして、EC2のcrontabに設定&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;1-aws-cliのセットアップ&#34;&gt;1. AWS CLIのセットアップ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;IAMダッシュボードで、使用するIAMユーザーを選択&lt;/li&gt;
+&lt;li&gt;認証情報タブ -&amp;gt; アクセスキーの作成 -&amp;gt; 新規アクセスキーが作成され、.csvのダウンロードができる&lt;/li&gt;
+&lt;li&gt;EC2にsshでログイン&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;# EC2（Amazon Linux）上で、AWS CLIの初期設定
+$ aws configure
+AWS Access Key ID [None]: .csvのAccess key ID
+AWS Secret Access Key [None]: .csvのSecret access key
+Default region name [None]: ap-northeast-1
+Default output format [None]: json
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;2-ec2のスナップショットを採取確認&#34;&gt;2. EC2のスナップショットを採取確認&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;EC2ダッシュボードで対象インスタンスの情報を確認する
+
+&lt;ul&gt;
+&lt;li&gt;EC2.Name : 対象のEC2インスタンス&lt;/li&gt;
+&lt;li&gt;EBS.ID : vol-xxxxxxxxxc0c&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;対象のEC2にssh接続をする&lt;/li&gt;
+&lt;li&gt;以下のawsコマンドを実行する&lt;/li&gt;
+&lt;li&gt;コマンド実行後に、EC2ダッシュボードでスナップショットを確認すると作成を実行している&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;# スナップショットを作成する
+$ aws ec2 create-snapshot --volume-id vol-xxxxxxxxxc0c --description &amp;quot;説明&amp;quot;
+
+# 結果が返ってくる
+{
+    &amp;quot;Description&amp;quot;: &amp;quot;入力した説明&amp;quot;,
+    &amp;quot;Encrypted&amp;quot;: false,
+    &amp;quot;VolumeId&amp;quot;: &amp;quot;vol-xxxxxxxxxc0c&amp;quot;,
+    &amp;quot;State&amp;quot;: &amp;quot;pending&amp;quot;,
+    &amp;quot;VolumeSize&amp;quot;: 8,
+    &amp;quot;Progress&amp;quot;: &amp;quot;&amp;quot;,
+    &amp;quot;StartTime&amp;quot;: &amp;quot;2017-02-28T01:39:43.000Z&amp;quot;,
+    &amp;quot;SnapshotId&amp;quot;: &amp;quot;snap-021be12d0fc9abf3a&amp;quot;,
+    &amp;quot;OwnerId&amp;quot;: &amp;quot;xxxxxx&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;3-crontabを設定&#34;&gt;3. crontabを設定&lt;/h2&gt;
+
+&lt;h3 id=&#34;採取コマンドをシェルスクリプト化&#34;&gt;採取コマンドをシェルスクリプト化&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;backup.shというファイル名で保存する&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/sh
+aws ec2 create-snapshot --volume-id vol-xxxxxxxxxc0c --description &amp;quot;説明&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;crontab-txtを作成&#34;&gt;crontab.txtを作成&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;毎朝４時にスナップショットを作成する設定&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ファイルの最後は改行をいれること&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;0 4 * * * /bin/sh /home/ec2-user/backup.sh
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;ec2へのアップロードと設定&#34;&gt;EC2へのアップロードと設定&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;作成した２ファイルをEC2のホーム直下にアップロード&lt;/li&gt;
+&lt;li&gt;EC2上でbackup.shにec2-userのアクセス権を付与&lt;/li&gt;
+&lt;li&gt;crontabに設定&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;# MacからSCPコマンドでファイルをアップロード
+$ scp -i ~/.ssh/キーペアファイル.pem backup.sh crontab.txt ec2-user@EC2.IP:~/
+backup.sh  100%  115    19.9KB/s   00:00
+crontab.txt  100%   37     7.1KB/s   00:00
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;# EC2上で
+# 実行権限を付与
+$ chmod 700 backup.sh
+
+# crontabに設定
+$ crontab crontab.txt
+
+# 確認
+$ crontab -l
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;実行確認&#34;&gt;実行確認&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;実行されるとEC2上でCronからec2-user宛てにメールが届く&lt;/li&gt;
+&lt;li&gt;EC2ダッシュボードでもスナップショット作成が確認できる&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;# EC2にmailコマンドをインストール
+$ sudo yum install -y mailx
+
+# mailを確認
+$ mail
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;停止-crontabの削除&#34;&gt;停止（crontabの削除）&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;定期実行を停止するにはcrontabから削除を行う&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;# 削除
+$ crontab -r
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
       <title>RDSをスナップショットから復元する方法</title>
       <link>http://mzgkworks.com/post/aws-rds-restore-from-snapshot/</link>
       <pubDate>Mon, 27 Feb 2017 16:16:35 +0900</pubDate>
@@ -2060,175 +2199,6 @@ $ chmod 644 sample.txt
 
 # 所有者:rwx グループ:r-x その他:r-x
 $ chmod 755 sample.txt
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>bashでの圧縮と展開（zip, gz, bz2, xz, tar）</title>
-      <link>http://mzgkworks.com/post/bash-zip-unzip/</link>
-      <pubDate>Wed, 07 Sep 2016 17:18:07 +0900</pubDate>
-      
-      <guid>http://mzgkworks.com/post/bash-zip-unzip/</guid>
-      <description>
-
-&lt;h2 id=&#34;圧縮と展開&#34;&gt;圧縮と展開&lt;/h2&gt;
-
-&lt;p&gt;よく使われる拡張子とコマンド。&lt;br /&gt;
-圧縮率 : .zip &amp;lt; .gz &amp;lt; .bz2 &amp;lt; .xz&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;拡張子&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;圧縮コマンド&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;展開コマンド&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;.zip&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;zip&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;unzip&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;.gz&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;gzip&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;gunzip&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;.bz2&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;bzip2&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;bunzip2&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;.xz&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;xz&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;xz -d&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&#34;ファイルの圧縮と展開&#34;&gt;ファイルの圧縮と展開&lt;/h2&gt;
-
-&lt;p&gt;基本的な使い方のみ。&lt;br /&gt;
-zipのみ &lt;code&gt;-r&lt;/code&gt;指定で書庫を作らずにディレクトリごと圧縮が可能。&lt;/p&gt;
-
-&lt;h3 id=&#34;zip&#34;&gt;zip&lt;/h3&gt;
-
-&lt;p&gt;zipは圧縮後のファイル名を指定したり、ディレクトリごとの圧縮を行う。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# archive.zipという名前で、A.txtとB.txtを圧縮
-# 圧縮したファイルは残る
-$ zip archive A.txt B.txt
-$ ls
-archive.zip  A.txt  B.txt
-
-# ディレクトリごと圧縮する
-$ zip -r archive A_Dir
-
-# workディレクトリ（なければ作成）に展開する
-$ unzip -d work archive.zip
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;gz-bz2-xz&#34;&gt;gz, bz2, xz&lt;/h3&gt;
-
-&lt;p&gt;元ファイルは残らない。ディレクトリの圧縮には書庫作成が必要。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# .gz
-$ gzip A.txt  # A.txt.gzで圧縮される
-$ gunzip A.txt.gz
-
-# .bz2
-$ bzip2 A.txt  # A.txt.bz2で圧縮される
-$ bunzip2 A.txt.bz2
-
-# .xz
-$ xz A.txt  # A.txt.xzで圧縮される
-$ xz -d A.txt.xz
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;ディレクトリの圧縮と展開&#34;&gt;ディレクトリの圧縮と展開&lt;/h2&gt;
-
-&lt;p&gt;ディレクトリを圧縮する際の手順は、&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;tarコマンドで、複数ファイルを１つのファイルにまとめたアーカイブ（書庫）を作成&lt;/li&gt;
-&lt;li&gt;作成したアーカイブを圧縮する&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;tarコマンドの主なオプション&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;オプション&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;- c&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;アーカイブを作成&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;-x&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;アーカイブを展開&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;-f アーカイブ名&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;アーカイブ名&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;-v&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;詳細表示&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;-z&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;gzip圧縮を行う&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;-j&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;bzip2圧縮を行う&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;-J&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;xz圧縮を行う&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# /etc/postfixディレクトリのアーカイブをカレントディレクトリに作成する
-# .tarまで指定すること
-$ tar -cvf test.tar /etc/postfix  # test.tarが作成される（作成元は残る）
-# test.tarを展開する
-$ tar -xvf test.tar
-
-# アーカイブ作成と同時に.gzで圧縮する
-$ tar -czvf test.tar.gz /etc/postfix  # test.tar.gzが作成される
-# test.tar.gzを展開する（ファイルと違い、test.tar.gzは残る）
-$ tar -xzvf test.tar.gz
-
-# アーカイブ作成と同時に.bz2で圧縮する
-$ tar -cjvf test.tar.bz2 /etc/postfix  # test.tar.bz2が作成される
-# test.tar.bz2を展開する
-$ tar -xjvf test.tar.gz
-
-# アーカイブ作成と同時に.xzで圧縮する
-$ tar -cJvf test.tar.xz /etc/postfix  # test.tar.xzが作成される
-# test.tar.xzを展開する
-$ tar -xJvf test.tar.gz
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>

@@ -10,7 +10,7 @@
     
         <meta name="description" content=" プログラマーの備忘録。">
     
-        <meta name="description" content="CSSの適用優先度の考え方。">
+        <meta name="description" content="AWS EC2のスナップショットを定期的に自動で作成する方法。">
     
 
     <base href="http://mzgkworks.com">
@@ -19,7 +19,7 @@
 
     <title>
         
-        CSSの適用優先度の考え方
+        EC2のスナップショットを自動作成する
          | mzgkworks.com
     </title>
 
@@ -52,21 +52,21 @@
                 <div class="PostItem__head">
                     <div class="PostItem__title">
                         <h1>
-                            CSSの適用優先度の考え方
+                            EC2のスナップショットを自動作成する
                             
                         </h1>
                     </div>
                     <div class="PostItem__meta">
-                        <time datetime="2016-09-09">
-                            2016.09.20
+                        <time datetime="2017-02-02">
+                            2017.02.28
                         </time>
                         &nbsp;&nbsp;
                         
-                        <span>[<a href="./categories/knowledge">Knowledge</a>]</span>
+                        <span>[<a href="./categories/usage">Usage</a>]</span>
                         
                         
                         &nbsp;&nbsp;
-                        <span>#<a href="./tags/css">CSS</a></span>
+                        <span>#<a href="./tags/aws">AWS</a></span>
                         
                     </div>
                 </div>
@@ -74,126 +74,134 @@
                 <div class="PostItem__body">
                     
 
-<h2 id="cssが適用される優先度">CSSが適用される優先度</h2>
+<p>EC2のスナップショットを自動（AWS CLI + Cron）で採取するための設定方法。</p>
 
-<p>詳細度の大きい順（点数例）に適用が優先される。</p>
+<h2 id="手順">手順</h2>
 
-<table>
-<thead>
-<tr>
-<th align="left">セレクタ名</th>
-<th align="left">セレクタ例</th>
-<th align="left">ページ内での複数指定</th>
-<th align="left">詳細度</th>
-<th align="left">点数例</th>
-</tr>
-</thead>
+<ol>
+<li>アクセス権（EC2FullAccess）があるIAMユーザーで、AWS CLIをセットアップ</li>
+<li>EC2上でawsコマンドを実行して、スナップショットが作成されていることを確認</li>
+<li>awsコマンドをシェルスクリプトファイルにして、EC2のcrontabに設定</li>
+</ol>
 
-<tbody>
-<tr>
-<td align="left">idセレクタ</td>
-<td align="left">#id</td>
-<td align="left">１度のみ</td>
-<td align="left">大</td>
-<td align="left">100</td>
-</tr>
+<h2 id="1-aws-cliのセットアップ">1. AWS CLIのセットアップ</h2>
 
-<tr>
-<td align="left">classセレクタ</td>
-<td align="left">.class</td>
-<td align="left">複数可</td>
-<td align="left">中</td>
-<td align="left">10</td>
-</tr>
+<ul>
+<li>IAMダッシュボードで、使用するIAMユーザーを選択</li>
+<li>認証情報タブ -&gt; アクセスキーの作成 -&gt; 新規アクセスキーが作成され、.csvのダウンロードができる</li>
+<li>EC2にsshでログイン</li>
+</ul>
 
-<tr>
-<td align="left">要素セレクタ</td>
-<td align="left">div, p</td>
-<td align="left">複数可</td>
-<td align="left">小</td>
-<td align="left">1</td>
-</tr>
-
-<tr>
-<td align="left">擬似セレクタ</td>
-<td align="left">:first-child</td>
-<td align="left">複数可</td>
-<td align="left">小</td>
-<td align="left">1</td>
-</tr>
-
-<tr>
-<td align="left">全称セレクタ</td>
-<td align="left">*</td>
-<td align="left">１度</td>
-<td align="left">最小</td>
-<td align="left">0</td>
-</tr>
-</tbody>
-</table>
-
-<h2 id="組合せなしの場合">組合せなしの場合</h2>
-
-<p>「idセレクタ ＞ classセレクタ ＞ 要素セレクタ ＞ 全称セレクタ」の順で適用される。<br />
-セレクタが同じ場合（詳細度が同じなので）、あとに書かれたものが優先される。</p>
-
-<h2 id="組合せ等がある場合">組合せ等がある場合</h2>
-
-<p>組合せたセレクタ名の詳細度の合計が高い順に、適用される。<br />
-　classセレクタ＋要素セレクタ ＞ classセレクタ<br />
-※ただし、同じレベルのセレクタを重ねていっても、上位のセレクタに勝つことはない。</p>
-
-<pre><code class="language-@html">&lt;div class=&quot;box&quot;&gt;
-  &lt;p class=&quot;text&quot;&gt;内側のテキスト&lt;/p&gt;
-&lt;/div&gt;
-&lt;p class=&quot;text&quot;&gt;外側のテキスト&lt;/p&gt;
+<pre><code># EC2（Amazon Linux）上で、AWS CLIの初期設定
+$ aws configure
+AWS Access Key ID [None]: .csvのAccess key ID
+AWS Secret Access Key [None]: .csvのSecret access key
+Default region name [None]: ap-northeast-1
+Default output format [None]: json
 </code></pre>
 
-<pre><code class="language-@css">.text {
-  color: red;
-}
-.box p {
-  color: blue;
+<h2 id="2-ec2のスナップショットを採取確認">2. EC2のスナップショットを採取確認</h2>
+
+<ul>
+<li>EC2ダッシュボードで対象インスタンスの情報を確認する
+
+<ul>
+<li>EC2.Name : 対象のEC2インスタンス</li>
+<li>EBS.ID : vol-xxxxxxxxxc0c</li>
+</ul></li>
+<li>対象のEC2にssh接続をする</li>
+<li>以下のawsコマンドを実行する</li>
+<li>コマンド実行後に、EC2ダッシュボードでスナップショットを確認すると作成を実行している</li>
+</ul>
+
+<pre><code># スナップショットを作成する
+$ aws ec2 create-snapshot --volume-id vol-xxxxxxxxxc0c --description &quot;説明&quot;
+
+# 結果が返ってくる
+{
+    &quot;Description&quot;: &quot;入力した説明&quot;,
+    &quot;Encrypted&quot;: false,
+    &quot;VolumeId&quot;: &quot;vol-xxxxxxxxxc0c&quot;,
+    &quot;State&quot;: &quot;pending&quot;,
+    &quot;VolumeSize&quot;: 8,
+    &quot;Progress&quot;: &quot;&quot;,
+    &quot;StartTime&quot;: &quot;2017-02-28T01:39:43.000Z&quot;,
+    &quot;SnapshotId&quot;: &quot;snap-021be12d0fc9abf3a&quot;,
+    &quot;OwnerId&quot;: &quot;xxxxxx&quot;
 }
 </code></pre>
 
-<p>上記の場合、<p>には同じclassが指定されているが<br />
-「 .box(10) + p(1) ＞ .text(10) 」となるので、<br />
-<br>
-内側のテキスト : blue<br />
-外側のテキスト : red<br />
-<br>
-となる。</p>
+<h2 id="3-crontabを設定">3. crontabを設定</h2>
 
-<h2 id="要素-親要素">要素 ＞ 親要素</h2>
+<h3 id="採取コマンドをシェルスクリプト化">採取コマンドをシェルスクリプト化</h3>
 
-<p>親要素から受け継ぐ指定より、要素そのものへの指定が優先して適用される。</p>
+<ul>
+<li>backup.shというファイル名で保存する</li>
+</ul>
 
-<pre><code class="language-@html">&lt;div class=&quot;box&quot;&gt;
-  &lt;p class=&quot;text&quot;&gt;内側のテキスト&lt;/p&gt;
-&lt;/div&gt;
-&lt;p class=&quot;text&quot;&gt;外側のテキスト&lt;/p&gt;
+<pre><code>#!/bin/sh
+aws ec2 create-snapshot --volume-id vol-xxxxxxxxxc0c --description &quot;説明&quot;
 </code></pre>
 
-<pre><code class="language-@css">p {
-  color: red;
-}
-.box {
-  color: blue;
-}
+<h3 id="crontab-txtを作成">crontab.txtを作成</h3>
+
+<ul>
+<li>毎朝４時にスナップショットを作成する設定</li>
+<li><strong>ファイルの最後は改行をいれること</strong></li>
+</ul>
+
+<pre><code>0 4 * * * /bin/sh /home/ec2-user/backup.sh
+
 </code></pre>
 
-<p>上記の場合、詳細度的には「.box(10) ＞ p(1)」だが、「.box」は p の親要素 div のクラスセレクタであり、p には直接指定がある。<br />
-なので、直接の指定 ＞ 親要素の指定 となり、<br />
-<br>
-内側のテキスト : red<br />
-外側のテキスト : red<br />
-<br>
-となる。</p>
+<h3 id="ec2へのアップロードと設定">EC2へのアップロードと設定</h3>
 
-<h2 id="important">!important</h2>
+<ul>
+<li>作成した２ファイルをEC2のホーム直下にアップロード</li>
+<li>EC2上でbackup.shにec2-userのアクセス権を付与</li>
+<li>crontabに設定</li>
+</ul>
 
-<p>詳細度が一番大きくなり、インラインCSSを含めすべてを上書きすることができる。</p>
+<pre><code># MacからSCPコマンドでファイルをアップロード
+$ scp -i ~/.ssh/キーペアファイル.pem backup.sh crontab.txt ec2-user@EC2.IP:~/
+backup.sh  100%  115    19.9KB/s   00:00
+crontab.txt  100%   37     7.1KB/s   00:00
+</code></pre>
+
+<pre><code># EC2上で
+# 実行権限を付与
+$ chmod 700 backup.sh
+
+# crontabに設定
+$ crontab crontab.txt
+
+# 確認
+$ crontab -l
+</code></pre>
+
+<h3 id="実行確認">実行確認</h3>
+
+<ul>
+<li>実行されるとEC2上でCronからec2-user宛てにメールが届く</li>
+<li>EC2ダッシュボードでもスナップショット作成が確認できる</li>
+</ul>
+
+<pre><code># EC2にmailコマンドをインストール
+$ sudo yum install -y mailx
+
+# mailを確認
+$ mail
+</code></pre>
+
+<h2 id="停止-crontabの削除">停止（crontabの削除）</h2>
+
+<ul>
+<li>定期実行を停止するにはcrontabから削除を行う</li>
+</ul>
+
+<pre><code># 削除
+$ crontab -r
+</code></pre>
 
                 </div>
             </article>
@@ -201,18 +209,13 @@
             <nav class="Pagenation">
                 <div class="Pagenation__older">
                     
-                    <a href="http://mzgkworks.com/post/mac-linux-ssh-rsa-connection/">
+                    <a href="http://mzgkworks.com/post/aws-rds-restore-from-snapshot/">
                         <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                        MacからLinux（CentOS7）にSSH公開鍵認証で接続する
+                        RDSをスナップショットから復元する方法
                     </a>
                     
                 </div>
                 <div class="Pagenation__newer">
-                    
-                    <a href="http://mzgkworks.com/post/css-selector-list/">
-                        CSS1〜CSS3までのセレクタのまとめ
-                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                    </a>
                     
                 </div>
             </nav>

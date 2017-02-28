@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://mzgkworks.com/post/aws-automatically-create-snapshot-of-ec2/</loc>
+    <lastmod>2017-02-28T16:28:32+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://mzgkworks.com/post/aws-rds-restore-from-snapshot/</loc>
     <lastmod>2017-02-27T16:16:35+09:00</lastmod>
   </url>
@@ -251,7 +256,7 @@
   
   <url>
     <loc>http://mzgkworks.com/tags/aws/</loc>
-    <lastmod>2017-02-27T16:16:35+09:00</lastmod>
+    <lastmod>2017-02-28T16:28:32+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -334,7 +339,7 @@
   
   <url>
     <loc>http://mzgkworks.com/post/</loc>
-    <lastmod>2017-02-27T16:16:35+09:00</lastmod>
+    <lastmod>2017-02-28T16:28:32+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -375,7 +380,7 @@
   
   <url>
     <loc>http://mzgkworks.com/categories/usage/</loc>
-    <lastmod>2017-02-27T16:16:35+09:00</lastmod>
+    <lastmod>2017-02-28T16:28:32+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -393,7 +398,7 @@
   
   <url>
     <loc>http://mzgkworks.com/</loc>
-    <lastmod>2017-02-27T16:16:35+09:00</lastmod>
+    <lastmod>2017-02-28T16:28:32+09:00</lastmod>
     <priority>0</priority>
   </url>
   

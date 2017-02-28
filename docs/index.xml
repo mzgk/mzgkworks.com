@@ -6,8 +6,147 @@
     <description>Recent content on mzgkworks.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Mon, 27 Feb 2017 16:16:35 +0900</lastBuildDate>
+    <lastBuildDate>Tue, 28 Feb 2017 16:28:32 +0900</lastBuildDate>
     <atom:link href="http://mzgkworks.com/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>EC2のスナップショットを自動作成する</title>
+      <link>http://mzgkworks.com/post/aws-automatically-create-snapshot-of-ec2/</link>
+      <pubDate>Tue, 28 Feb 2017 16:28:32 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/aws-automatically-create-snapshot-of-ec2/</guid>
+      <description>
+
+&lt;p&gt;EC2のスナップショットを自動（AWS CLI + Cron）で採取するための設定方法。&lt;/p&gt;
+
+&lt;h2 id=&#34;手順&#34;&gt;手順&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;アクセス権（EC2FullAccess）があるIAMユーザーで、AWS CLIをセットアップ&lt;/li&gt;
+&lt;li&gt;EC2上でawsコマンドを実行して、スナップショットが作成されていることを確認&lt;/li&gt;
+&lt;li&gt;awsコマンドをシェルスクリプトファイルにして、EC2のcrontabに設定&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;1-aws-cliのセットアップ&#34;&gt;1. AWS CLIのセットアップ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;IAMダッシュボードで、使用するIAMユーザーを選択&lt;/li&gt;
+&lt;li&gt;認証情報タブ -&amp;gt; アクセスキーの作成 -&amp;gt; 新規アクセスキーが作成され、.csvのダウンロードができる&lt;/li&gt;
+&lt;li&gt;EC2にsshでログイン&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;# EC2（Amazon Linux）上で、AWS CLIの初期設定
+$ aws configure
+AWS Access Key ID [None]: .csvのAccess key ID
+AWS Secret Access Key [None]: .csvのSecret access key
+Default region name [None]: ap-northeast-1
+Default output format [None]: json
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;2-ec2のスナップショットを採取確認&#34;&gt;2. EC2のスナップショットを採取確認&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;EC2ダッシュボードで対象インスタンスの情報を確認する
+
+&lt;ul&gt;
+&lt;li&gt;EC2.Name : 対象のEC2インスタンス&lt;/li&gt;
+&lt;li&gt;EBS.ID : vol-xxxxxxxxxc0c&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;対象のEC2にssh接続をする&lt;/li&gt;
+&lt;li&gt;以下のawsコマンドを実行する&lt;/li&gt;
+&lt;li&gt;コマンド実行後に、EC2ダッシュボードでスナップショットを確認すると作成を実行している&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;# スナップショットを作成する
+$ aws ec2 create-snapshot --volume-id vol-xxxxxxxxxc0c --description &amp;quot;説明&amp;quot;
+
+# 結果が返ってくる
+{
+    &amp;quot;Description&amp;quot;: &amp;quot;入力した説明&amp;quot;,
+    &amp;quot;Encrypted&amp;quot;: false,
+    &amp;quot;VolumeId&amp;quot;: &amp;quot;vol-xxxxxxxxxc0c&amp;quot;,
+    &amp;quot;State&amp;quot;: &amp;quot;pending&amp;quot;,
+    &amp;quot;VolumeSize&amp;quot;: 8,
+    &amp;quot;Progress&amp;quot;: &amp;quot;&amp;quot;,
+    &amp;quot;StartTime&amp;quot;: &amp;quot;2017-02-28T01:39:43.000Z&amp;quot;,
+    &amp;quot;SnapshotId&amp;quot;: &amp;quot;snap-021be12d0fc9abf3a&amp;quot;,
+    &amp;quot;OwnerId&amp;quot;: &amp;quot;xxxxxx&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;3-crontabを設定&#34;&gt;3. crontabを設定&lt;/h2&gt;
+
+&lt;h3 id=&#34;採取コマンドをシェルスクリプト化&#34;&gt;採取コマンドをシェルスクリプト化&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;backup.shというファイル名で保存する&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/sh
+aws ec2 create-snapshot --volume-id vol-xxxxxxxxxc0c --description &amp;quot;説明&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;crontab-txtを作成&#34;&gt;crontab.txtを作成&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;毎朝４時にスナップショットを作成する設定&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ファイルの最後は改行をいれること&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;0 4 * * * /bin/sh /home/ec2-user/backup.sh
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;ec2へのアップロードと設定&#34;&gt;EC2へのアップロードと設定&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;作成した２ファイルをEC2のホーム直下にアップロード&lt;/li&gt;
+&lt;li&gt;EC2上でbackup.shにec2-userのアクセス権を付与&lt;/li&gt;
+&lt;li&gt;crontabに設定&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;# MacからSCPコマンドでファイルをアップロード
+$ scp -i ~/.ssh/キーペアファイル.pem backup.sh crontab.txt ec2-user@EC2.IP:~/
+backup.sh  100%  115    19.9KB/s   00:00
+crontab.txt  100%   37     7.1KB/s   00:00
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;# EC2上で
+# 実行権限を付与
+$ chmod 700 backup.sh
+
+# crontabに設定
+$ crontab crontab.txt
+
+# 確認
+$ crontab -l
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;実行確認&#34;&gt;実行確認&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;実行されるとEC2上でCronからec2-user宛てにメールが届く&lt;/li&gt;
+&lt;li&gt;EC2ダッシュボードでもスナップショット作成が確認できる&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;# EC2にmailコマンドをインストール
+$ sudo yum install -y mailx
+
+# mailを確認
+$ mail
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;停止-crontabの削除&#34;&gt;停止（crontabの削除）&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;定期実行を停止するにはcrontabから削除を行う&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;# 削除
+$ crontab -r
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
     
     <item>
       <title>RDSをスナップショットから復元する方法</title>
@@ -1587,15 +1726,6 @@ print(&amp;quot;wordA = \(wordA), wordZ = \(wordZ)&amp;quot;)
 
 &lt;/code&gt;&lt;/pre&gt;
 </description>
-    </item>
-    
-    <item>
-      <title>products</title>
-      <link>http://mzgkworks.com/products/products/</link>
-      <pubDate>Wed, 19 Oct 2016 19:14:47 +0900</pubDate>
-      
-      <guid>http://mzgkworks.com/products/products/</guid>
-      <description></description>
     </item>
     
   </channel>
