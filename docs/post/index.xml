@@ -6,8 +6,35 @@
     <description>Recent content in Posts on mzgkworks.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Tue, 28 Feb 2017 16:28:32 +0900</lastBuildDate>
+    <lastBuildDate>Tue, 28 Feb 2017 16:55:07 +0900</lastBuildDate>
     <atom:link href="http://mzgkworks.com/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>EC2上のLinuxタイムゾーンを変更する</title>
+      <link>http://mzgkworks.com/post/aws-change-timezone-on-linux/</link>
+      <pubDate>Tue, 28 Feb 2017 16:55:07 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/aws-change-timezone-on-linux/</guid>
+      <description>
+
+&lt;p&gt;EC2インスタンスを作成した際に、タイムゾーンをUTC -&amp;gt; JSTに変更する方法。&lt;br /&gt;
+（Amazon Linux限定ではない。）&lt;/p&gt;
+
+&lt;h2 id=&#34;タイムゾーンを変更する&#34;&gt;タイムゾーンを変更する&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;# 確認
+$ date
+2017年  2月 28日 火曜日 01:06:29 UTC
+
+# UTC -&amp;gt; JSTに変更
+$ sudo cp /usr/share/zoneinfo/Japan /etc/localtime
+
+# 確認
+$ date
+2017年  2月 28日 火曜日 10:07:48 JST
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
     
     <item>
       <title>EC2のスナップショットを自動作成する</title>
@@ -1547,183 +1574,6 @@ d7f14ec 4 commit
 00d216a 2 commit
 a22ab93 3 commit file add
 8a337e8 1 commit
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Swiftの引数についてのメモ</title>
-      <link>http://mzgkworks.com/post/swift-argument/</link>
-      <pubDate>Wed, 26 Oct 2016 16:27:37 +0900</pubDate>
-      
-      <guid>http://mzgkworks.com/post/swift-argument/</guid>
-      <description>
-
-&lt;p&gt;Swiftの引数について、1.x時代から変わったりうろ覚えだった部分もあったのでメモ。&lt;/p&gt;
-
-&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Swift 3.0&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;ラベル&#34;&gt;ラベル&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;argument label : 関数呼び出し用（呼び出し時に使用）
-
-&lt;ul&gt;
-&lt;li&gt;「_」をつけることで省略可&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;parameter label : 関数定義用（関数内部で使用）&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;argument-label-あり&#34;&gt;argument label : あり&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@Swift&#34;&gt;// argument label : first, second
-// parameter label : a, b
-func addTwo(first a: Int, second b: Int)-&amp;gt; Int {
-    return a + b
-}
-
-// 呼び出し
-var value = addTwo(first: 1, second: 2)
-// 結果 : 3
-print(value)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;argument-label-なし&#34;&gt;argument label : なし&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@Swift&#34;&gt;// parameter label : a, b
-func addTwo(_ a: Int, _ b: Int)-&amp;gt; Int {
-    return a + b
-}
-
-// 呼び出し
-var value = addTwo(1, 2)
-// 結果 : 3
-print(value)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;デフォルト引数&#34;&gt;デフォルト引数&lt;/h2&gt;
-
-&lt;p&gt;あたかじめ引数に値を設定しておくことで、呼び出し時に引数の省略が可能となる。&lt;br /&gt;
-省略された場合、定義されているデフォルト値が適用される。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@Swift&#34;&gt;// aとbの文字列連結。セパレーターのcにデフォルト値（, ）を定義
-func connectTwo(first a: String, second b: String, separator c: String = &amp;quot;, &amp;quot;)-&amp;gt; String {
-    return a + c + b
-}
-
-
-// デフォルト引数を使う
-var val = connectTwo(first: &amp;quot;A&amp;quot;, second: &amp;quot;B&amp;quot;)
-// 結果 : A, B
-print(val)
-
-
-// デフォルト値を使わない
-val = connectTwo(first: &amp;quot;A&amp;quot;, second: &amp;quot;B&amp;quot;, separator: &amp;quot;/ &amp;quot;)
-// 結果 : A/ B
-print(val)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;可変引数&#34;&gt;可変引数&lt;/h2&gt;
-
-&lt;p&gt;あらかじめ引数の数がわからない場合などに使用する。&lt;br /&gt;
-定義時は、型の後ろに「&amp;hellip;」をつける。&lt;br /&gt;
-呼び出し時は、複数の値を「,（カンマ）」で区切って設定する。&lt;br /&gt;
-可変引数の定義は、１関数につき１つまで。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@Swift&#34;&gt;// 最初の引数が可変
-// 引数の値をセパレーターで区切って連結する関数
-func write(inWord a: String..., separator c: String = &amp;quot;, &amp;quot;)-&amp;gt; String {
-    var output = &amp;quot;&amp;quot;
-    for index in 0..&amp;lt;a.count {
-        output += a[index] + c
-    }
-    return output
-}
-
-// １つの場合
-var val = write(inWord: &amp;quot;ABC&amp;quot;)
-// 結果 : ABC,
-print(val)
-
-
-// ３つの場合
-val = write(inWord: &amp;quot;ABC&amp;quot;, &amp;quot;DEF&amp;quot;, &amp;quot;GHI&amp;quot;)
-// 結果 : ABC, DEF, GHI,
-print(val)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;引数の値の変更&#34;&gt;引数の値の変更&lt;/h2&gt;
-
-&lt;p&gt;引数の値は定数となるので、関数内での変更は不可。&lt;br /&gt;
-ただし、インスタンスの場合は参照値が格納されているので、インスタンスの参照値は変更不可だが、中のプロパティ値の変更は可能。&lt;br /&gt;
-※プロパティがvarで宣言されている場合のみ&lt;/p&gt;
-
-&lt;h3 id=&#34;通常&#34;&gt;通常&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@Swift&#34;&gt;// 引数aの値は変更できない
-func change(_ a: String)-&amp;gt; String {
-  a = &amp;quot;XYZ&amp;quot;   // ← Cannot assign to value &#39;a&#39; is a &#39;let&#39; constant
-}
-
-change(&amp;quot;ABC&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;インスタンスの場合&#34;&gt;インスタンスの場合&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@Swift&#34;&gt;class Person {
-    let name: String
-    var age: Int    // ※ここがletの場合は、変更できない
-
-    init(inName name:String, inAge age: Int) {
-        self.name = name
-        self.age = age
-    }
-}
-
-// 引数で渡されたPerson型の引数のageプロパティを変更する関数
-func update(inPerson person: Person) {
-    person.age = 20
-}
-
-// Tomを10才で生成（Tom : 10）
-var tom = Person(inName: &amp;quot;Tom&amp;quot;, inAge: 10)
-print(&amp;quot;\(tom.name) : \(tom.age)&amp;quot;)
-
-
-// 更新する関数に渡す
-update(inPerson: tom)
-// 結果 : Tom : 20
-print(&amp;quot;\(tom.name) : \(tom.age)&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;inoutparameter&#34;&gt;InOutParameter&lt;/h2&gt;
-
-&lt;p&gt;定義時に型の前に「inout」をつけることで、引数の値を関数内で変更し呼び出し元に連携することができる。&lt;br /&gt;
-呼び出し時は、引数の前に「&amp;amp;」をつける。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@Swift&#34;&gt;// 引数の値を入れ替える
-func swap(first a: inout String, second b: inout String) {
-    let tmp = a
-    a = b
-    b = tmp
-}
-
-var wordA = &amp;quot;ABC&amp;quot;
-var wordZ = &amp;quot;XYZ&amp;quot;
-
-// 入れ替え前 : wordA = ABC, wordZ = XYZ
-print(&amp;quot;wordA = \(wordA), wordZ = \(wordZ)&amp;quot;)
-
-// 入れ替え（引数に&amp;amp;がつく）
-swap(first: &amp;amp;wordA, second: &amp;amp;wordZ)
-// 入れ替え後 : wordA = XYZ, wordZ = ABC
-print(&amp;quot;wordA = \(wordA), wordZ = \(wordZ)&amp;quot;)
-
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>

@@ -9,6 +9,33 @@
     <atom:link href="http://mzgkworks.com/tags/aws/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>EC2上のLinuxタイムゾーンを変更する</title>
+      <link>http://mzgkworks.com/post/aws-change-timezone-on-linux/</link>
+      <pubDate>Tue, 28 Feb 2017 16:55:07 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/aws-change-timezone-on-linux/</guid>
+      <description>
+
+&lt;p&gt;EC2インスタンスを作成した際に、タイムゾーンをUTC -&amp;gt; JSTに変更する方法。&lt;br /&gt;
+（Amazon Linux限定ではない。）&lt;/p&gt;
+
+&lt;h2 id=&#34;タイムゾーンを変更する&#34;&gt;タイムゾーンを変更する&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;# 確認
+$ date
+2017年  2月 28日 火曜日 01:06:29 UTC
+
+# UTC -&amp;gt; JSTに変更
+$ sudo cp /usr/share/zoneinfo/Japan /etc/localtime
+
+# 確認
+$ date
+2017年  2月 28日 火曜日 10:07:48 JST
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
       <title>EC2のスナップショットを自動作成する</title>
       <link>http://mzgkworks.com/post/aws-automatically-create-snapshot-of-ec2/</link>
       <pubDate>Tue, 28 Feb 2017 16:28:32 +0900</pubDate>

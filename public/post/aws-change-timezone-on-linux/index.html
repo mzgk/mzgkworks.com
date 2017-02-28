@@ -10,7 +10,7 @@
     
         <meta name="description" content=" プログラマーの備忘録。">
     
-        <meta name="description" content="CentOS 7でのネットワークの確認と設定方法。IPアドレスやホスト名変更。">
+        <meta name="description" content="Amazon LinuxでタイムゾーンをUTCからJSTに変更する方法。">
     
 
     <base href="http://mzgkworks.com">
@@ -19,7 +19,7 @@
 
     <title>
         
-        CentOS 7でのネットワーク設定・確認方法
+        EC2上のLinuxタイムゾーンを変更する
          | mzgkworks.com
     </title>
 
@@ -52,13 +52,13 @@
                 <div class="PostItem__head">
                     <div class="PostItem__title">
                         <h1>
-                            CentOS 7でのネットワーク設定・確認方法
+                            EC2上のLinuxタイムゾーンを変更する
                             
                         </h1>
                     </div>
                     <div class="PostItem__meta">
-                        <time datetime="2016-09-09">
-                            2016.09.08
+                        <time datetime="2017-02-02">
+                            2017.02.28
                         </time>
                         &nbsp;&nbsp;
                         
@@ -66,10 +66,7 @@
                         
                         
                         &nbsp;&nbsp;
-                        <span>#<a href="./tags/network">Network</a></span>
-                        
-                        &nbsp;&nbsp;
-                        <span>#<a href="./tags/linux">Linux</a></span>
+                        <span>#<a href="./tags/aws">AWS</a></span>
                         
                     </div>
                 </div>
@@ -77,100 +74,21 @@
                 <div class="PostItem__body">
                     
 
-<h2 id="ネットワークインターフェース">ネットワークインターフェース</h2>
+<p>EC2インスタンスを作成した際に、タイムゾーンをUTC -&gt; JSTに変更する方法。<br />
+（Amazon Linux限定ではない。）</p>
 
-<p>CentOS 7では、ネットワークの処理を「NetworkManager」というサービスが担っている。<br />
-NetworkManagerは <code>nmcli</code>コマンドで管理をする。</p>
+<h2 id="タイムゾーンを変更する">タイムゾーンを変更する</h2>
 
-<h3 id="ネットワークインターフェースの一覧表示">ネットワークインターフェースの一覧表示</h3>
+<pre><code># 確認
+$ date
+2017年  2月 28日 火曜日 01:06:29 UTC
 
-<p><code>$ nmcli device</code>で確認できる。</p>
+# UTC -&gt; JSTに変更
+$ sudo cp /usr/share/zoneinfo/Japan /etc/localtime
 
-<pre><code class="language-@bash">$ nmcli device
-デバイス  タイプ    状態      接続
-eth0      ethernet  接続済み  System eth0
-eth1      ethernet  切断済み  --
-eth2      ethernet  切断済み  --
-lo        loopback  管理無し  --
-</code></pre>
-
-<h3 id="詳細表示">詳細表示</h3>
-
-<p><code>$ nmcli device show デバイス</code>で確認できる。</p>
-
-<pre><code class="language-@bash"># eth0を詳細表示
-$ nmcli device show eth0
-GENERAL.デバイス:                        eth0
-GENERAL.タイプ:                         ethernet
-GENERAL.ハードウェアアドレス:               xx:xx:xx:xx:xx:xx
-GENERAL.MTU:                          1500
-GENERAL.状態:                          100 (接続済み)
-GENERAL.接続:                          System eth0
-GENERAL.CON パス:                      /xxx/NetworkManager/xxx
-WIRED-PROPERTIES.キャリア:              オン
-IP4.アドレス[1]:                        xxx.xx.xx.xxx/23 #IPアドレス
-IP4.ゲートウェイ:                        xxx.xx.xx.x #デフォルトゲートウェイ
-IP4.DNS[1]:                           xxx.xx.xx.xxx #DNSサーバー１
-IP4.DNS[2]:                           xxx.xx.xx.xxx #DNSサーバー２
-IP6.アドレス[1]:                        xx:xx:xx:xx:xx:xx/64
-IP6.アドレス[2]:                        xx:xx:xx:xx:xx:xx/64
-IP6.ゲートウェイ:                        xx::xx
-IP6.DNS[1]:                           xx:xx:::xx
-</code></pre>
-
-<h3 id="他には">他には</h3>
-
-<p>以下でもネットワークインターフェースの確認が可能。</p>
-
-<ul>
-<li><code>$ ifconfig</code></li>
-<li><code>$ ip addr</code>（CentOS 7ではこちらが推奨）</li>
-</ul>
-
-<h2 id="ホスト名の確認-変更">ホスト名の確認・変更</h2>
-
-<p>ホスト名の確認と変更をする方法。</p>
-
-<ul>
-<li>ファイル : /etc/sysconfig/network</li>
-<li>ファイル（CnetOS 7） : /etc/hostname</li>
-</ul>
-
-<pre><code class="language-@bash"># 確認
-$ hostname
-centos7.sample.com
-
-# 変更（root権限が必要）
-$ nmcli general hostname 変更後のホスト名
-#または
-$ hostnamectl set-hostname 変更後のホスト名
-</code></pre>
-
-<h2 id="ipアドレスの設定">IPアドレスの設定</h2>
-
-<p><strong>VPSではしないこと。</strong><br />
-<code># nmcli connection modify &quot;ネットワークインターフェース名&quot; ipv4.address IPアドレス/サブネットマスクビット数</code></p>
-
-<pre><code class="language-@bash"># 固定IP（root権限）
-$ nmcli connection modify &quot;System eth0&quot; ipv4.address 192.168.0.10/24
-
-# DHCP（root権限）
-$ nmcli c modify &quot;System eth0&quot; ipv4.address auto
-</code></pre>
-
-<h2 id="デフォルトdnsサーバーの設定">デフォルトDNSサーバーの設定</h2>
-
-<p><code># nmcli connection modify &quot;ネットワークインターフェース名&quot; ipv4.dns IPアドレス</code></p>
-
-<ul>
-<li>ファイル : /etc/resolv.conf</li>
-</ul>
-
-<pre><code class="language-@bash"># Google提供のDNSサーバー8.8.8.8と8.8.4.4に変更（root権限）
-$ nmcli connection modify &quot;System eth0&quot; ipv4.dns &quot;8.8.8.8 8.8.4.4&quot;
-
-# 設定を反映
-$ systemctl restart NetworkManager
+# 確認
+$ date
+2017年  2月 28日 火曜日 10:07:48 JST
 </code></pre>
 
                 </div>
@@ -179,18 +97,13 @@ $ systemctl restart NetworkManager
             <nav class="Pagenation">
                 <div class="Pagenation__older">
                     
-                    <a href="http://mzgkworks.com/post/network-protocol-ipadress/">
+                    <a href="http://mzgkworks.com/post/aws-automatically-create-snapshot-of-ec2/">
                         <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                        ネットワークの基礎知識（プロトコル・IPアドレス・サブネットマスク・ポート）
+                        EC2のスナップショットを自動作成する
                     </a>
                     
                 </div>
                 <div class="Pagenation__newer">
-                    
-                    <a href="http://mzgkworks.com/post/linux-su-sudo/">
-                        Linuxでrootユーザーへの切替えやroot権限で実行する方法
-                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                    </a>
                     
                 </div>
             </nav>

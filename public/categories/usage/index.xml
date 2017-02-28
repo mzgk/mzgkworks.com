@@ -9,6 +9,33 @@
     <atom:link href="http://mzgkworks.com/categories/usage/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>EC2上のLinuxタイムゾーンを変更する</title>
+      <link>http://mzgkworks.com/post/aws-change-timezone-on-linux/</link>
+      <pubDate>Tue, 28 Feb 2017 16:55:07 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/aws-change-timezone-on-linux/</guid>
+      <description>
+
+&lt;p&gt;EC2インスタンスを作成した際に、タイムゾーンをUTC -&amp;gt; JSTに変更する方法。&lt;br /&gt;
+（Amazon Linux限定ではない。）&lt;/p&gt;
+
+&lt;h2 id=&#34;タイムゾーンを変更する&#34;&gt;タイムゾーンを変更する&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;# 確認
+$ date
+2017年  2月 28日 火曜日 01:06:29 UTC
+
+# UTC -&amp;gt; JSTに変更
+$ sudo cp /usr/share/zoneinfo/Japan /etc/localtime
+
+# 確認
+$ date
+2017年  2月 28日 火曜日 10:07:48 JST
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
       <title>EC2のスナップショットを自動作成する</title>
       <link>http://mzgkworks.com/post/aws-automatically-create-snapshot-of-ec2/</link>
       <pubDate>Tue, 28 Feb 2017 16:28:32 +0900</pubDate>
@@ -1956,249 +1983,6 @@ $ nmcli connection modify &amp;quot;System eth0&amp;quot; ipv4.dns &amp;quot;8.8
 
 # 設定を反映
 $ systemctl restart NetworkManager
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>パーミッションの操作方法（記号と数値）</title>
-      <link>http://mzgkworks.com/post/linux-permission-operation/</link>
-      <pubDate>Wed, 07 Sep 2016 19:35:21 +0900</pubDate>
-      
-      <guid>http://mzgkworks.com/post/linux-permission-operation/</guid>
-      <description>
-
-&lt;h2 id=&#34;所有者と所有グループ&#34;&gt;所有者と所有グループ&lt;/h2&gt;
-
-&lt;p&gt;基本的にファイルやディレクトリを作成したユーザーが所有者となる。&lt;br /&gt;
-所有グループは、ユーザーを作成した際に同じ名前で作成される。&lt;/p&gt;
-
-&lt;h3 id=&#34;確認&#34;&gt;確認&lt;/h3&gt;
-
-&lt;p&gt;ファイルやディレクトリの所有者を確認する。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# ファイルモード・リンク数・所有者・所有グループ・サイズ・最終更新日・名前
-$ ls -l
--rw-rw-r--. 1 couser couser 0  9月  7 18:40 A.txt
-drwxrwxr-x. 2 couser couser 6  9月  7 18:40 Sample
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;所有者の変更&#34;&gt;所有者の変更&lt;/h3&gt;
-
-&lt;p&gt;rootユーザーのみ変更操作が行える。&lt;br /&gt;
-ディレクトリの場合は、&lt;code&gt;-R&lt;/code&gt;オプションを指定する。&lt;br /&gt;
-指定しない場合、ディレクトリ配下には変更が適用されない。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# ファイルの所有者をtesterAに変更
-$ chown testerA A.txt
-
-# ファイルの所有者とグループ（tester）を変更
-$ chown testerA:tester A.txt
-
-# グループだけ変更（所有者を省略すればよい）
-$ chown :tester A.txt
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;アクセス権&#34;&gt;アクセス権&lt;/h2&gt;
-
-&lt;p&gt;「読み取り : r」「書き込み : w」「実行 : x」の３種類。&lt;br /&gt;
-「所有者」「所有グループ」「その他」それぞれに対して設定できる。&lt;br /&gt;
-&lt;code&gt;$ ls -l&lt;/code&gt;で表示されたファイルモード部分で確認可能。&lt;br /&gt;
-並び順は、「所有者rwx」「所有グループrwx」「その他rwx」。&lt;/p&gt;
-
-&lt;h3 id=&#34;アクセス権-1&#34;&gt;アクセス権&lt;/h3&gt;
-
-&lt;p&gt;アルファベットと数値で表す。&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;アクセス権&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;アルファベット&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;数値&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;読み取り&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;r&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;4&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;書き込み&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;w&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;2&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;実行&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;x&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;1&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&#34;ファイルのアクセス権&#34;&gt;ファイルのアクセス権&lt;/h3&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;アクセス権&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;読み取り&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;ファイルの内容をcat等で読むことができる&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;書き込み&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;ファイルの内容を変更できる&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;実行&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;ファイルを実行できる&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&#34;ディレクトリのアクセス権&#34;&gt;ディレクトリのアクセス権&lt;/h3&gt;
-
-&lt;p&gt;基本的には実行権は付与するのが普通なので、「rwx」「r-x」「&amp;ndash;x」のどれか。&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;アクセス権&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;読み取り&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;ファイルの一覧を表示できる&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;書き込み&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;ファイルの作成や削除ができる&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;実行&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;ディレクトリ内のファイルにアクセスできる&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&#34;アクセス権の変更&#34;&gt;アクセス権の変更&lt;/h2&gt;
-
-&lt;p&gt;変更ができるのは、所有者とrootユーザーのみ。&lt;br /&gt;
-記号を使うか、数値で指定することができる。&lt;br /&gt;
-ディレクトリの場合は&lt;code&gt;-R&lt;/code&gt;を指定することで、配下まで適用される。&lt;/p&gt;
-
-&lt;h3 id=&#34;アクセス権記号&#34;&gt;アクセス権記号&lt;/h3&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;記号&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;操作対象&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;u&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;所有者&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;操作対象&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;g&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;所有グループ&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;操作対象&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;o&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;その他&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;操作対象&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;a&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;全ユーザー&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;操作&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;+&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;権限追加&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;操作&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;-&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;権限削除&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;操作&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;=&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;権限指定&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;アクセス権&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;r&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;読み取り&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;アクセス権&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;w&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;書き込み&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;アクセス権&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;x&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;実行&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&#34;記号方式&#34;&gt;記号方式&lt;/h3&gt;
-
-&lt;p&gt;現在のアクセス権を基準に、権限の追加や削除をする場合に有効。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 所有グループとその他に書き込み権を追加
-$ chmod uo+w sample.txt
-
-# その他から書き込み権を削除
-$ chmod o-w sample.txt
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;数値方式&#34;&gt;数値方式&lt;/h3&gt;
-
-&lt;p&gt;元のアクセス権がどうであっても、指定した数値のアクセス権に変更される。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 所有者:rw- グループ:r-- その他:r--
-$ chmod 644 sample.txt
-
-# 所有者:rwx グループ:r-x その他:r-x
-$ chmod 755 sample.txt
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
