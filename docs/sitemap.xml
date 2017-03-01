@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://mzgkworks.com/post/aws-ec2-windows-rdp/</loc>
+    <lastmod>2017-03-01T14:37:33+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://mzgkworks.com/post/aws-install-cli/</loc>
     <lastmod>2017-02-28T17:53:18+09:00</lastmod>
   </url>
@@ -266,7 +271,7 @@
   
   <url>
     <loc>http://mzgkworks.com/tags/aws/</loc>
-    <lastmod>2017-02-28T17:53:18+09:00</lastmod>
+    <lastmod>2017-03-01T14:37:33+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -349,7 +354,7 @@
   
   <url>
     <loc>http://mzgkworks.com/post/</loc>
-    <lastmod>2017-02-28T17:53:18+09:00</lastmod>
+    <lastmod>2017-03-01T14:37:33+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -390,7 +395,7 @@
   
   <url>
     <loc>http://mzgkworks.com/categories/usage/</loc>
-    <lastmod>2017-02-28T16:55:07+09:00</lastmod>
+    <lastmod>2017-03-01T14:37:33+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -408,7 +413,7 @@
   
   <url>
     <loc>http://mzgkworks.com/</loc>
-    <lastmod>2017-02-28T17:53:18+09:00</lastmod>
+    <lastmod>2017-03-01T14:37:33+09:00</lastmod>
     <priority>0</priority>
   </url>
   

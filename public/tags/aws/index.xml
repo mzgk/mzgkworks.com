@@ -9,6 +9,48 @@
     <atom:link href="http://mzgkworks.com/tags/aws/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>AWS EC2でWindowsインスタンスの起動とRDP接続</title>
+      <link>http://mzgkworks.com/post/aws-ec2-windows-rdp/</link>
+      <pubDate>Wed, 01 Mar 2017 14:37:33 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/aws-ec2-windows-rdp/</guid>
+      <description>
+
+&lt;p&gt;EC2インスタンスのOSをWindowsで作成し、RDP（リモートデスクトップ）接続する手順。&lt;br /&gt;
+いつもEC2はLinuxが多かったので、忘れないようにメモ。&lt;/p&gt;
+
+&lt;h2 id=&#34;インスタンス起動&#34;&gt;インスタンス起動&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;他OSと変わらず&lt;/li&gt;
+&lt;li&gt;Active Directory関係でいくつか追加項目あり&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;接続&#34;&gt;接続&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;EC2ダシュボード -&amp;gt; インスタンスを選択 -&amp;gt; 上部の「接続ボタン」&lt;/li&gt;
+&lt;li&gt;「インスタンスへの接続」画面が表示される&lt;/li&gt;
+&lt;li&gt;「パスワードの取得」ボタンを押下&lt;/li&gt;
+&lt;li&gt;インスタンス作成時に指定したキーペアファイルの場所を指定&lt;/li&gt;
+&lt;li&gt;「パスワードの復号」ボタンを押下&lt;/li&gt;
+&lt;li&gt;パスワードが表示される -&amp;gt; メモ or コピー&lt;/li&gt;
+&lt;li&gt;「リモートデスクトップファイルのダウンロード」ボタンを押下&lt;/li&gt;
+&lt;li&gt;.rdpファイルがダウンロードされる -&amp;gt; ダブルクリック -&amp;gt; 接続ボタンを押下&lt;/li&gt;
+&lt;li&gt;パスワードを入力　-&amp;gt; 接続&lt;/li&gt;
+&lt;li&gt;リモートコンピューターのIDを識別できません -&amp;gt; はい&lt;/li&gt;
+&lt;li&gt;インスタンスにリモートデスクトップ接続される&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;リモートデスクトップ環境でのctrl-alt-delete&#34;&gt;リモートデスクトップ環境でのCtrl + Alt + Delete&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Ctrl + Alt + End&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
       <title>AWS CLIのインストール方法（Mac / Windows）</title>
       <link>http://mzgkworks.com/post/aws-install-cli/</link>
       <pubDate>Tue, 28 Feb 2017 17:53:18 +0900</pubDate>

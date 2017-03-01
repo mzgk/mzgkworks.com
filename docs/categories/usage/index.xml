@@ -9,6 +9,48 @@
     <atom:link href="http://mzgkworks.com/categories/usage/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>AWS EC2でWindowsインスタンスの起動とRDP接続</title>
+      <link>http://mzgkworks.com/post/aws-ec2-windows-rdp/</link>
+      <pubDate>Wed, 01 Mar 2017 14:37:33 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/aws-ec2-windows-rdp/</guid>
+      <description>
+
+&lt;p&gt;EC2インスタンスのOSをWindowsで作成し、RDP（リモートデスクトップ）接続する手順。&lt;br /&gt;
+いつもEC2はLinuxが多かったので、忘れないようにメモ。&lt;/p&gt;
+
+&lt;h2 id=&#34;インスタンス起動&#34;&gt;インスタンス起動&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;他OSと変わらず&lt;/li&gt;
+&lt;li&gt;Active Directory関係でいくつか追加項目あり&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;接続&#34;&gt;接続&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;EC2ダシュボード -&amp;gt; インスタンスを選択 -&amp;gt; 上部の「接続ボタン」&lt;/li&gt;
+&lt;li&gt;「インスタンスへの接続」画面が表示される&lt;/li&gt;
+&lt;li&gt;「パスワードの取得」ボタンを押下&lt;/li&gt;
+&lt;li&gt;インスタンス作成時に指定したキーペアファイルの場所を指定&lt;/li&gt;
+&lt;li&gt;「パスワードの復号」ボタンを押下&lt;/li&gt;
+&lt;li&gt;パスワードが表示される -&amp;gt; メモ or コピー&lt;/li&gt;
+&lt;li&gt;「リモートデスクトップファイルのダウンロード」ボタンを押下&lt;/li&gt;
+&lt;li&gt;.rdpファイルがダウンロードされる -&amp;gt; ダブルクリック -&amp;gt; 接続ボタンを押下&lt;/li&gt;
+&lt;li&gt;パスワードを入力　-&amp;gt; 接続&lt;/li&gt;
+&lt;li&gt;リモートコンピューターのIDを識別できません -&amp;gt; はい&lt;/li&gt;
+&lt;li&gt;インスタンスにリモートデスクトップ接続される&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;リモートデスクトップ環境でのctrl-alt-delete&#34;&gt;リモートデスクトップ環境でのCtrl + Alt + Delete&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Ctrl + Alt + End&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
       <title>EC2上のLinuxタイムゾーンを変更する</title>
       <link>http://mzgkworks.com/post/aws-change-timezone-on-linux/</link>
       <pubDate>Tue, 28 Feb 2017 16:55:07 +0900</pubDate>
@@ -1877,112 +1919,6 @@ centuser ALL=(ALL) ALL
 &lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 一般ユーザーでは使用できなかったvisudoコマンドを実行する
 $ sudo visudo
 [sudo] password for centuser: # 実行したユーザーのパスワード
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>CentOS 7でのネットワーク設定・確認方法</title>
-      <link>http://mzgkworks.com/post/linux-centos7-network-setting/</link>
-      <pubDate>Thu, 08 Sep 2016 18:45:54 +0900</pubDate>
-      
-      <guid>http://mzgkworks.com/post/linux-centos7-network-setting/</guid>
-      <description>
-
-&lt;h2 id=&#34;ネットワークインターフェース&#34;&gt;ネットワークインターフェース&lt;/h2&gt;
-
-&lt;p&gt;CentOS 7では、ネットワークの処理を「NetworkManager」というサービスが担っている。&lt;br /&gt;
-NetworkManagerは &lt;code&gt;nmcli&lt;/code&gt;コマンドで管理をする。&lt;/p&gt;
-
-&lt;h3 id=&#34;ネットワークインターフェースの一覧表示&#34;&gt;ネットワークインターフェースの一覧表示&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;$ nmcli device&lt;/code&gt;で確認できる。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ nmcli device
-デバイス  タイプ    状態      接続
-eth0      ethernet  接続済み  System eth0
-eth1      ethernet  切断済み  --
-eth2      ethernet  切断済み  --
-lo        loopback  管理無し  --
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;詳細表示&#34;&gt;詳細表示&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;$ nmcli device show デバイス&lt;/code&gt;で確認できる。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# eth0を詳細表示
-$ nmcli device show eth0
-GENERAL.デバイス:                        eth0
-GENERAL.タイプ:                         ethernet
-GENERAL.ハードウェアアドレス:               xx:xx:xx:xx:xx:xx
-GENERAL.MTU:                          1500
-GENERAL.状態:                          100 (接続済み)
-GENERAL.接続:                          System eth0
-GENERAL.CON パス:                      /xxx/NetworkManager/xxx
-WIRED-PROPERTIES.キャリア:              オン
-IP4.アドレス[1]:                        xxx.xx.xx.xxx/23 #IPアドレス
-IP4.ゲートウェイ:                        xxx.xx.xx.x #デフォルトゲートウェイ
-IP4.DNS[1]:                           xxx.xx.xx.xxx #DNSサーバー１
-IP4.DNS[2]:                           xxx.xx.xx.xxx #DNSサーバー２
-IP6.アドレス[1]:                        xx:xx:xx:xx:xx:xx/64
-IP6.アドレス[2]:                        xx:xx:xx:xx:xx:xx/64
-IP6.ゲートウェイ:                        xx::xx
-IP6.DNS[1]:                           xx:xx:::xx
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;他には&#34;&gt;他には&lt;/h3&gt;
-
-&lt;p&gt;以下でもネットワークインターフェースの確認が可能。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;$ ifconfig&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ ip addr&lt;/code&gt;（CentOS 7ではこちらが推奨）&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;ホスト名の確認-変更&#34;&gt;ホスト名の確認・変更&lt;/h2&gt;
-
-&lt;p&gt;ホスト名の確認と変更をする方法。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;ファイル : /etc/sysconfig/network&lt;/li&gt;
-&lt;li&gt;ファイル（CnetOS 7） : /etc/hostname&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 確認
-$ hostname
-centos7.sample.com
-
-# 変更（root権限が必要）
-$ nmcli general hostname 変更後のホスト名
-#または
-$ hostnamectl set-hostname 変更後のホスト名
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;ipアドレスの設定&#34;&gt;IPアドレスの設定&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;VPSではしないこと。&lt;/strong&gt;&lt;br /&gt;
-&lt;code&gt;# nmcli connection modify &amp;quot;ネットワークインターフェース名&amp;quot; ipv4.address IPアドレス/サブネットマスクビット数&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 固定IP（root権限）
-$ nmcli connection modify &amp;quot;System eth0&amp;quot; ipv4.address 192.168.0.10/24
-
-# DHCP（root権限）
-$ nmcli c modify &amp;quot;System eth0&amp;quot; ipv4.address auto
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;デフォルトdnsサーバーの設定&#34;&gt;デフォルトDNSサーバーの設定&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;# nmcli connection modify &amp;quot;ネットワークインターフェース名&amp;quot; ipv4.dns IPアドレス&lt;/code&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;ファイル : /etc/resolv.conf&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# Google提供のDNSサーバー8.8.8.8と8.8.4.4に変更（root権限）
-$ nmcli connection modify &amp;quot;System eth0&amp;quot; ipv4.dns &amp;quot;8.8.8.8 8.8.4.4&amp;quot;
-
-# 設定を反映
-$ systemctl restart NetworkManager
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
