@@ -10,7 +10,7 @@
     
         <meta name="description" content=" プログラマーの備忘録。">
     
-        <meta name="description" content="Atom（vim-mode-plus）で、ノーマルモード移行時に日本語を自動的にオフにする方法。">
+        <meta name="description" content="Windowsクライアント → EC2 Linux踏み台 → EC2 WindowsServerにRDP接続を行う方法。">
     
 
     <base href="http://mzgkworks.com">
@@ -19,7 +19,7 @@
 
     <title>
         
-        Atom（vim-mode-plus）で、ノーマルモード移行時に日本語オフにする方法。
+        SSHポートフォワーディングで、Windows → Linux → WindowsServerにRDP接続する
          | mzgkworks.com
     </title>
 
@@ -52,13 +52,13 @@
                 <div class="PostItem__head">
                     <div class="PostItem__title">
                         <h1>
-                            Atom（vim-mode-plus）で、ノーマルモード移行時に日本語オフにする方法。
+                            SSHポートフォワーディングで、Windows → Linux → WindowsServerにRDP接続する
                             
                         </h1>
                     </div>
                     <div class="PostItem__meta">
-                        <time datetime="2016-09-09">
-                            2016.09.01
+                        <time datetime="2017-03-03">
+                            2017.03.18
                         </time>
                         &nbsp;&nbsp;
                         
@@ -66,10 +66,10 @@
                         
                         
                         &nbsp;&nbsp;
-                        <span>#<a href="./tags/atom">Atom</a></span>
+                        <span>#<a href="./tags/aws">AWS</a></span>
                         
                         &nbsp;&nbsp;
-                        <span>#<a href="./tags/mac">Mac</a></span>
+                        <span>#<a href="./tags/windows">Windows</a></span>
                         
                     </div>
                 </div>
@@ -77,68 +77,46 @@
                 <div class="PostItem__body">
                     
 
-<p>Atomにvim-mode-plusをインストールして使っているが、ノーマルモードに移行する時に日本語入力モードを引きずったままになるのが面倒。<br />
-ノーマルモードになった時には、自動で英数入力モードになって、そのままカーソル移動とかしたい。</p>
+<h2 id="やりたいこと">やりたいこと</h2>
+
+<p>作業PC（Windows7）のTeraTermを使って、AWS上のEC2（WindowsServer2016）へ踏み台サーバー（Linux:EC2）経由でRDP接続をする。<br>
+SSHポートフォワーディングの機能を利用する。</p>
 
 <h2 id="環境">環境</h2>
 
 <ul>
-<li>OS X 10.11.6</li>
-<li>Atom 1.10.0</li>
-<li>karabiner 10.21.0</li>
+<li>AWS EC2 : AmazonLinux -&gt; 踏み台サーバー</li>
+<li>AWS EC2 : Windows Server 2016 -&gt; RDP接続先</li>
+<li>Windows7 : ローカル作業PC TeraTerm4.9.4</li>
 </ul>
 
-<h2 id="方法">方法</h2>
+<h2 id="準備">準備</h2>
 
 <ul>
-<li><a href="https://pqrs.org/osx/karabiner/index.html.ja">Karabiner</a>をMacにインストールする</li>
-<li>private.xmlに設定を書く</li>
+<li>RDP接続先のWindowsServer（EC2）は、<strong>パブリックIPでなくても可</strong></li>
+<li>事前に、AWSコンソールから接続ボタンでWindowsServerのパスワードを取得しておく</li>
+<li><a href="http://mzgkworks.com/post/aws-ec2-windows-rdp/">AWS EC2でWindowsインスタンスの起動とRDP接続</a></li>
 </ul>
 
-<h2 id="設定方法">設定方法</h2>
+<h2 id="やり方">やり方</h2>
 
-<p>設定の追加方法は、Karabiner公式サイトのマニュアルを参照のこと。<br />
-<a href="https://pqrs.org/osx/karabiner/document.html.ja#privatexml">https://pqrs.org/osx/karabiner/document.html.ja#privatexml</a></p>
+<ol>
+<li>TeraTermで、踏み台EC2（Linux）にSSH接続</li>
+<li>接続したら、上部メニューの［設定］-&gt; ［SSH転送］を選択</li>
+<li>SSHポート転送のダイアログが表示される -&gt; ［追加］ボタン</li>
+<li>［ローカルポート］: 適当なポート（13389）を入力</li>
+<li>［リモート側ホスト］: RDP接続先のIP（WindowsServer EC2のプライベートIP）</li>
+<li>［ポート］: RDP接続先のポート（3389）</li>
+<li>［OK］</li>
+<li>リモートデスクトップクライアント（mstsc）を起動</li>
+<li>［コンピュータ］127.0.0.1:13389 -&gt; ［接続］</li>
+</ol>
 
-<h3 id="private-xml">private.xml</h3>
+<p><strong>※RDP中はTeraTermで踏み台に接続されている必要がある。</strong>
+<br><br></p>
 
-<p>記述する内容は以下。</p>
-
-<pre><code class="language-@xml">&lt;?xml version=&quot;1.0&quot;?&gt;
-&lt;root&gt;
-    &lt;appdef&gt;
-        &lt;appname&gt;ATOM&lt;/appname&gt;
-        &lt;equal&gt;com.github.atom&lt;/equal&gt;
-    &lt;/appdef&gt;
-    &lt;item&gt;
-        &lt;name&gt;Atom Into NormalMode With Eisuu&lt;/name&gt;
-        &lt;identifier&gt;private.app_atom_into_normalmode_with_eisuu&lt;/identifier&gt;
-        &lt;only&gt;ATOM&lt;/only&gt;
-        &lt;autogen&gt;
-            --KeyToKey--
-            KeyCode::ESCAPE,
-            KeyCode::ESCAPE, KeyCode::JIS_EISUU
-        &lt;/autogen&gt;
-        &lt;autogen&gt;
-            --KeyToKey--
-            KeyCode::BRACKET_LEFT, VK_CONTROL,
-            KeyCode::ESCAPE, KeyCode::JIS_EISUU
-        &lt;/autogen&gt;
-        &lt;autogen&gt;
-            --KeyToKey--
-            KeyCode::C, VK_CONTROL,
-            KeyCode::ESCAPE, KeyCode::JIS_EISUU
-        &lt;/autogen&gt;
-    &lt;/item&gt;
-&lt;/root&gt;
-</code></pre>
-
-<h2 id="おまけ">おまけ</h2>
-
-<p>Karabinerの設定で、jklhでの移動を他アプリでも使えるようにする方法。<br />
-<code>s + jklh</code> でカーソル移動ができるようになる。<br />
-公式サイトのマニュアルにあった。<br />
-<a href="https://pqrs.org/osx/karabiner/gallery.html.ja#simple-vi-mode-v2">Simple Vi Mode v2</a></p>
+<p>久々に開発クライアントでWindows7 32bitを使わざるをえないことになったのでメモ。作業効率が悪い。<br><br>
+以上</p>
 
                 </div>
             </article>
@@ -146,18 +124,13 @@
             <nav class="Pagenation">
                 <div class="Pagenation__older">
                     
-                    <a href="http://mzgkworks.com/post/build-a-blog-in-hugo-4/">
+                    <a href="http://mzgkworks.com/post/aws-ec2-windows-rdp/">
                         <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                        Hugo・GitHub Pages・独自ドメインでブログを構築 : 4
+                        AWS EC2でWindowsインスタンスの起動とRDP接続
                     </a>
                     
                 </div>
                 <div class="Pagenation__newer">
-                    
-                    <a href="http://mzgkworks.com/post/http-request-response/">
-                        HTTPのリクエストとレスポンスのメモ
-                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                    </a>
                     
                 </div>
             </nav>

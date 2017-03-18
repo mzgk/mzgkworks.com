@@ -6,8 +6,59 @@
     <description>Recent content on mzgkworks.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Wed, 01 Mar 2017 14:37:33 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 18 Mar 2017 11:47:00 +0900</lastBuildDate>
     <atom:link href="http://mzgkworks.com/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>SSHポートフォワーディングで、Windows → Linux → WindowsServerにRDP接続する</title>
+      <link>http://mzgkworks.com/post/aws-windows-ssh-portfowarding/</link>
+      <pubDate>Sat, 18 Mar 2017 11:47:00 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/aws-windows-ssh-portfowarding/</guid>
+      <description>
+
+&lt;h2 id=&#34;やりたいこと&#34;&gt;やりたいこと&lt;/h2&gt;
+
+&lt;p&gt;作業PC（Windows7）のTeraTermを使って、AWS上のEC2（WindowsServer2016）へ踏み台サーバー（Linux:EC2）経由でRDP接続をする。&lt;br&gt;
+SSHポートフォワーディングの機能を利用する。&lt;/p&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;AWS EC2 : AmazonLinux -&amp;gt; 踏み台サーバー&lt;/li&gt;
+&lt;li&gt;AWS EC2 : Windows Server 2016 -&amp;gt; RDP接続先&lt;/li&gt;
+&lt;li&gt;Windows7 : ローカル作業PC TeraTerm4.9.4&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;準備&#34;&gt;準備&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;RDP接続先のWindowsServer（EC2）は、&lt;strong&gt;パブリックIPでなくても可&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;事前に、AWSコンソールから接続ボタンでWindowsServerのパスワードを取得しておく&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://mzgkworks.com/post/aws-ec2-windows-rdp/&#34;&gt;AWS EC2でWindowsインスタンスの起動とRDP接続&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;やり方&#34;&gt;やり方&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;TeraTermで、踏み台EC2（Linux）にSSH接続&lt;/li&gt;
+&lt;li&gt;接続したら、上部メニューの［設定］-&amp;gt; ［SSH転送］を選択&lt;/li&gt;
+&lt;li&gt;SSHポート転送のダイアログが表示される -&amp;gt; ［追加］ボタン&lt;/li&gt;
+&lt;li&gt;［ローカルポート］: 適当なポート（13389）を入力&lt;/li&gt;
+&lt;li&gt;［リモート側ホスト］: RDP接続先のIP（WindowsServer EC2のプライベートIP）&lt;/li&gt;
+&lt;li&gt;［ポート］: RDP接続先のポート（3389）&lt;/li&gt;
+&lt;li&gt;［OK］&lt;/li&gt;
+&lt;li&gt;リモートデスクトップクライアント（mstsc）を起動&lt;/li&gt;
+&lt;li&gt;［コンピュータ］127.0.0.1:13389 -&amp;gt; ［接続］&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;※RDP中はTeraTermで踏み台に接続されている必要がある。&lt;/strong&gt;
+&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+
+&lt;p&gt;久々に開発クライアントでWindows7 32bitを使わざるをえないことになったのでメモ。作業効率が悪い。&lt;br&gt;&lt;br&gt;
+以上&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>AWS EC2でWindowsインスタンスの起動とRDP接続</title>
@@ -1368,86 +1419,6 @@ $ source ~/.bash_profile
 &lt;br&gt;
 SegueとModalの使い分け方針とデータの受け渡し方法をすっきりさせるためのアウトプット。&lt;br /&gt;
 ライフサイクルに関しては、シュミュレーターで実行したからなのかLayoutSubView()系が複数回コールされているのが、ちょっと違和感を感じる。&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Swift3 ViewControllerのライフサイクル</title>
-      <link>http://mzgkworks.com/post/swift3-viewcontroller-lifecycle/</link>
-      <pubDate>Mon, 21 Nov 2016 17:42:49 +0900</pubDate>
-      
-      <guid>http://mzgkworks.com/post/swift3-viewcontroller-lifecycle/</guid>
-      <description>
-
-&lt;p&gt;ViewControllerのルートViewのライフサイクルを再確認。&lt;br /&gt;
-各メソッドに以下のようなデバッグログを埋め込んで確認。&lt;br /&gt;
-&lt;br&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@Swift&#34;&gt;override func loadView() {
-    super.loadView()
-    print(&amp;quot;VC1 :&amp;quot;, #function)
-    // #functionで関数名が表示される
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Xcode 8.1&lt;/li&gt;
-&lt;li&gt;Swift 3&lt;/li&gt;
-&lt;li&gt;シュミュレーターで確認（iPhone6s 10.1）&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;起動-ホームボタン-アプリアイコン&#34;&gt;起動 → ホームボタン → アプリアイコン&lt;/h2&gt;
-
-&lt;h3 id=&#34;起動&#34;&gt;起動&lt;/h3&gt;
-
-&lt;ol&gt;
-&lt;li&gt;application(_:didFinishLaunchingWithOptions:)&lt;/li&gt;
-&lt;li&gt;VC1 : loadView()&lt;/li&gt;
-&lt;li&gt;VC1 : viewDidLoad()&lt;/li&gt;
-&lt;li&gt;VC1 : viewWillAppear&lt;/li&gt;
-&lt;li&gt;applicationDidBecomeActive&lt;/li&gt;
-&lt;li&gt;VC1 : viewWillLayoutSubviews()&lt;/li&gt;
-&lt;li&gt;VC1 : viewDidLayoutSubviews()&lt;/li&gt;
-&lt;li&gt;VC1 : viewWillLayoutSubviews()&lt;/li&gt;
-&lt;li&gt;VC1 : viewDidLayoutSubviews()&lt;/li&gt;
-&lt;li&gt;VC1 : viewDidAppear&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&#34;ホームボタンをタップ&#34;&gt;ホームボタンをタップ&lt;/h3&gt;
-
-&lt;ol&gt;
-&lt;li&gt;applicationWillResignActive&lt;/li&gt;
-&lt;li&gt;applicationDidEnterBackground&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&#34;アプリアイコンをタップ&#34;&gt;アプリアイコンをタップ&lt;/h3&gt;
-
-&lt;ol&gt;
-&lt;li&gt;applicationWillEnterForeground&lt;/li&gt;
-&lt;li&gt;applicationDidBecomeActive&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&#34;vc1-ボタンタップ-vc2-モーダル表示&#34;&gt;VC1（ボタンタップ） → VC2（モーダル表示）&lt;/h2&gt;
-
-&lt;h3 id=&#34;画面遷移&#34;&gt;画面遷移&lt;/h3&gt;
-
-&lt;ol&gt;
-&lt;li&gt;VC1 : prepare(for:sender:)&lt;/li&gt;
-&lt;li&gt;VC2 : loadView()&lt;/li&gt;
-&lt;li&gt;VC2 : viewDidLoad()&lt;/li&gt;
-&lt;li&gt;VC1 : viewWillDisappear&lt;/li&gt;
-&lt;li&gt;VC2 : viewWillAppear&lt;/li&gt;
-&lt;li&gt;VC2 : viewWillLayoutSubviews()&lt;/li&gt;
-&lt;li&gt;VC2 : viewDidLayoutSubviews()&lt;/li&gt;
-&lt;li&gt;VC1 : viewWillLayoutSubviews()  ← 謎&lt;/li&gt;
-&lt;li&gt;VC1 : viewDidLayoutSubviews()   ← 謎&lt;/li&gt;
-&lt;li&gt;VC2 : viewWillLayoutSubviews()  ← 謎&lt;/li&gt;
-&lt;li&gt;VC2 : viewDidLayoutSubviews()   ← 謎&lt;/li&gt;
-&lt;li&gt;VC2 : viewDidAppear&lt;/li&gt;
-&lt;li&gt;VC1 : viewDidDisappear&lt;/li&gt;
-&lt;/ol&gt;
 </description>
     </item>
     

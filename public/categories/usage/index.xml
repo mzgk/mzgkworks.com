@@ -9,6 +9,57 @@
     <atom:link href="http://mzgkworks.com/categories/usage/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>SSHポートフォワーディングで、Windows → Linux → WindowsServerにRDP接続する</title>
+      <link>http://mzgkworks.com/post/aws-windows-ssh-portfowarding/</link>
+      <pubDate>Sat, 18 Mar 2017 11:47:00 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/aws-windows-ssh-portfowarding/</guid>
+      <description>
+
+&lt;h2 id=&#34;やりたいこと&#34;&gt;やりたいこと&lt;/h2&gt;
+
+&lt;p&gt;作業PC（Windows7）のTeraTermを使って、AWS上のEC2（WindowsServer2016）へ踏み台サーバー（Linux:EC2）経由でRDP接続をする。&lt;br&gt;
+SSHポートフォワーディングの機能を利用する。&lt;/p&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;AWS EC2 : AmazonLinux -&amp;gt; 踏み台サーバー&lt;/li&gt;
+&lt;li&gt;AWS EC2 : Windows Server 2016 -&amp;gt; RDP接続先&lt;/li&gt;
+&lt;li&gt;Windows7 : ローカル作業PC TeraTerm4.9.4&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;準備&#34;&gt;準備&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;RDP接続先のWindowsServer（EC2）は、&lt;strong&gt;パブリックIPでなくても可&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;事前に、AWSコンソールから接続ボタンでWindowsServerのパスワードを取得しておく&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://mzgkworks.com/post/aws-ec2-windows-rdp/&#34;&gt;AWS EC2でWindowsインスタンスの起動とRDP接続&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;やり方&#34;&gt;やり方&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;TeraTermで、踏み台EC2（Linux）にSSH接続&lt;/li&gt;
+&lt;li&gt;接続したら、上部メニューの［設定］-&amp;gt; ［SSH転送］を選択&lt;/li&gt;
+&lt;li&gt;SSHポート転送のダイアログが表示される -&amp;gt; ［追加］ボタン&lt;/li&gt;
+&lt;li&gt;［ローカルポート］: 適当なポート（13389）を入力&lt;/li&gt;
+&lt;li&gt;［リモート側ホスト］: RDP接続先のIP（WindowsServer EC2のプライベートIP）&lt;/li&gt;
+&lt;li&gt;［ポート］: RDP接続先のポート（3389）&lt;/li&gt;
+&lt;li&gt;［OK］&lt;/li&gt;
+&lt;li&gt;リモートデスクトップクライアント（mstsc）を起動&lt;/li&gt;
+&lt;li&gt;［コンピュータ］127.0.0.1:13389 -&amp;gt; ［接続］&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;※RDP中はTeraTermで踏み台に接続されている必要がある。&lt;/strong&gt;
+&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+
+&lt;p&gt;久々に開発クライアントでWindows7 32bitを使わざるをえないことになったのでメモ。作業効率が悪い。&lt;br&gt;&lt;br&gt;
+以上&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>AWS EC2でWindowsインスタンスの起動とRDP接続</title>
       <link>http://mzgkworks.com/post/aws-ec2-windows-rdp/</link>
       <pubDate>Wed, 01 Mar 2017 14:37:33 +0900</pubDate>
@@ -1853,72 +1904,6 @@ $ sudo systemctl start yum-cron.service
 
 # システム起動時の自動起動設定
 $ sudo systemctl enable yum-cron.service
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Linuxでrootユーザーへの切替えやroot権限で実行する方法</title>
-      <link>http://mzgkworks.com/post/linux-su-sudo/</link>
-      <pubDate>Fri, 09 Sep 2016 14:39:27 +0900</pubDate>
-      
-      <guid>http://mzgkworks.com/post/linux-su-sudo/</guid>
-      <description>
-
-&lt;h2 id=&#34;rootユーザーに切り替える&#34;&gt;rootユーザーに切り替える&lt;/h2&gt;
-
-&lt;p&gt;ログイン中のユーザーをrootユーザーに切り替える。&lt;br /&gt;
-管理者のパスワードが必要。&lt;br /&gt;
-&lt;strong&gt;オプション「-」をつけると、カレントディレクトリもrootユーザーのホームディレクトリになる。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 一般ユーザー
-[centuser@centos7 ~] $ pwd
-/home/centuser
-
-# rootユーザーに切り替え
-[centuser@centos7 ~] $ su -   # オプション「-」つき
-Password: # 管理者のパスワード
-[root@centos7 ~] #
-[root@centos7 ~] # pwd
-/root     # rootユーザーのホームディレクトリに移動している
-
-# 元のユーザーに戻る
-[root@centos7 ~] # exit
-logout
-[centuser@centos7 ~] $
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;管理者権限でコマンドを実行する&#34;&gt;管理者権限でコマンドを実行する&lt;/h2&gt;
-
-&lt;p&gt;ユーザーの切り替えを行わずに、コマンド実行時のみ管理者権限で実行する。&lt;br /&gt;
-管理者のパスワードは不要。&lt;br /&gt;
-あらかじめ設定が必要。&lt;/p&gt;
-
-&lt;h3 id=&#34;設定&#34;&gt;設定&lt;/h3&gt;
-
-&lt;p&gt;設定ファイル「/etc/sudoers」にユーザーを追加する。&lt;br /&gt;
-rootユーザーで実行する。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ visudo
-...
-...
-## Read drop-in files from /etc/sudoers.d (the # here does not mean a comment)
-#includedir /etc/sudoers.d
-
-# 以下を追加する（centuser : sudoを許可したいユーザー）
-# ユーザー名 ホスト名=(実行ユーザー名) 許可するコマンド
-centuser ALL=(ALL) ALL
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;sudo&#34;&gt;sudo&lt;/h3&gt;
-
-&lt;p&gt;実行したいコマンドの前につけて使用する。&lt;br /&gt;
-求められるパスワードは、sudoコマンドを実行したユーザーのコマンド。&lt;br /&gt;
-パスワードが認証されると「５分間」は、再入力が不要となる。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 一般ユーザーでは使用できなかったvisudoコマンドを実行する
-$ sudo visudo
-[sudo] password for centuser: # 実行したユーザーのパスワード
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
