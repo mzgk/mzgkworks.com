@@ -2,11 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Golang on mzgkworks.com</title>
-    <link>http://mzgkworks.com/tags/golang/index.xml</link>
+    <link>http://mzgkworks.com/tags/golang/</link>
     <description>Recent content in Golang on mzgkworks.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <atom:link href="http://mzgkworks.com/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 27 Jan 2017 17:19:47 +0900</lastBuildDate>
+    
+	<atom:link href="http://mzgkworks.com/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>Visual Studio CodeにGolang向けの開発デバッグ環境を設定する</title>
@@ -14,124 +17,7 @@
       <pubDate>Fri, 27 Jan 2017 17:19:47 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/golang-vscode-setting/</guid>
-      <description>
-
-&lt;p&gt;Visual Studio CodeにGolang向けの開発環境の設定をする。&lt;br /&gt;
-補完・デバッグ実行までできるのは便利。&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;VSCodeのインストール&lt;/li&gt;
-&lt;li&gt;Golangの拡張機能をインストール&lt;/li&gt;
-&lt;li&gt;Golangのデバッグ実行ができるようにする&lt;/li&gt;
-&lt;li&gt;おまけ&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;MacBook Pro (15-inch, Mid 2012)&lt;/li&gt;
-&lt;li&gt;macOS Sierra 10.12.3&lt;/li&gt;
-&lt;li&gt;Golang 1.7.4 darwin/amd64&lt;/li&gt;
-&lt;li&gt;Visual Studio Code 1.8.1&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;1-visual-studio-codeのインストール&#34;&gt;1. Visual Studio Codeのインストール&lt;/h2&gt;
-
-&lt;h3 id=&#34;インストール&#34;&gt;インストール&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;公式 : &lt;a href=&#34;https://code.visualstudio.com/&#34;&gt;https://code.visualstudio.com/&lt;/a&gt;&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;Mac版をダウンロードしてインストール&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;vscodeをターミナルから起動できるように設定する&#34;&gt;VSCodeをターミナルから起動できるように設定する&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;公式 : &lt;a href=&#34;https://code.visualstudio.com/docs/setup/mac&#34;&gt;https://code.visualstudio.com/docs/setup/mac&lt;/a&gt;&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;VSCode起動 -&amp;gt; Shift+Cmd+P -&amp;gt; Shell Command: Install &amp;lsquo;code&amp;rsquo; command in PATH command.&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;ターミナルを起動&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ code&lt;/code&gt; でVSCodeが起動するか確認&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;2-golangの拡張機能をインストール&#34;&gt;2. Golangの拡張機能をインストール&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://marketplace.visualstudio.com/items?itemName=lukehoban.Go&#34;&gt;https://marketplace.visualstudio.com/items?itemName=lukehoban.Go&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;必要パッケージが不足している場合は、VSCodeの上部からInstallを促すダイアログが都度表示される&lt;/li&gt;
-&lt;li&gt;もしくは、右下にメッセージ「Analysis Tools Missing」が表示されるので、クリックして不足分をインストール&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;golangのデバッグ実行を可能にする&#34;&gt;Golangのデバッグ実行を可能にする&lt;/h2&gt;
-
-&lt;h3 id=&#34;delve公式サイト&#34;&gt;Delve公式サイト&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/derekparker/delve/blob/master/Documentation/installation/osx/install.md&#34;&gt;https://github.com/derekparker/delve/blob/master/Documentation/installation/osx/install.md&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;公式サイトにHomebrewでいけるとあったけど、ダメだった（証明書作成とHomebrew領域へのインストールはされた）&lt;/li&gt;
-&lt;li&gt;たぶん$GOPATH配下に生成されたdlvを移さないとダメだったのかも（未検証）&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;基本的にはここを参照&#34;&gt;基本的にはここを参照&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://dev.classmethod.jp/go/visual-studio-code-golang-debug/&#34;&gt;http://dev.classmethod.jp/go/visual-studio-code-golang-debug/&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;証明書の作成&#34;&gt;証明書の作成&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;MacでDELVEを使う場合は証明書の作成が必要とのことなので、KeyChainで証明書を作成&lt;/li&gt;
-&lt;li&gt;証明書名はDELVEインストール時に使用する（今回はdlv-certで作成）。&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://dev.classmethod.jp/go/visual-studio-code-golang-debug/&#34;&gt;http://dev.classmethod.jp/go/visual-studio-code-golang-debug/&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;delveのインストール&#34;&gt;DELVEのインストール&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;ここも上記に同じ。もしくは公式サイトの「Manual install -&amp;gt; 2)Install the binary」を参照&lt;/li&gt;
-&lt;li&gt;MacにXcodeがインストールされていない場合は、Command Line Toolのインストールが必要かも&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;# 必要に応じて
-$ xcode-select --install
-
-# ディレクトリ作成と移動
-$ mkdir $GOPATH/src/github.com/derekparker &amp;amp;&amp;amp; cd $GOPATH/src/github.com/derekparker
-
-# GitHubからcloneして、移動
-$ git clone https://github.com/derekparker/delve.git &amp;amp;&amp;amp; cd delve
-
-# 証明書と紐付けてmake。dlv-certは証明書の名前
-$ CERT=dlv-cert make install
-
-# KeyChainの変更を有効化
-$ sudo kill `pgrep taskgated`
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;vscodeでのデバッグ&#34;&gt;VSCodeでのデバッグ&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;デバッグをしたい場合は、プロジェクトのフォルダーを指定する必要あり&lt;/li&gt;
-&lt;li&gt;フォルダーを作成 -&amp;gt; VSCodeで開く -&amp;gt; main.goファイルを作成の流れ&lt;/li&gt;
-&lt;li&gt;ブレークポイント張って、F5で実行&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;おまけ&#34;&gt;おまけ&lt;/h2&gt;
-
-&lt;h3 id=&#34;vscode内でターミナルを開く&#34;&gt;VSCode内でターミナルを開く&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;メニューバー -&amp;gt; 表示 -&amp;gt; 統合ターミナルでターミナルを表示できる&lt;/li&gt;
-&lt;li&gt;使用するターミナルは、基本設定 -&amp;gt; ユーザー設定 -&amp;gt; 外部ターミナルで変更ができる&lt;/li&gt;
-&lt;li&gt;&amp;ldquo;terminal.external.osxExec&amp;rdquo;: &amp;ldquo;iTerm.app&amp;rdquo;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;vscodeの使い方&#34;&gt;VSCodeの使い方&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.atmarkit.co.jp/ait/subtop/features/dotnet/all.html#xe789b9e99b86efbc9aVisualStudioCodee697a9e58886e3818be3828ae382ace382a4e38389&#34;&gt;@IT 特集：Visual Studio Code早分かりガイド&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>Visual Studio CodeにGolang向けの開発環境の設定をする。 補完・デバッグ実行までできるのは便利。 VSCodeのインストール Golangの拡張機能</description>
     </item>
     
     <item>
@@ -140,74 +26,7 @@ $ sudo kill `pgrep taskgated`
       <pubDate>Thu, 26 Jan 2017 18:00:25 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/golang-install-mac/</guid>
-      <description>
-
-&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;MacBook Pro (15-inch, Mid 2012)&lt;/li&gt;
-&lt;li&gt;macOS Sierra 10.12.3&lt;/li&gt;
-&lt;li&gt;Homebrew 1.1.8&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;goインストール&#34;&gt;Goインストール&lt;/h2&gt;
-
-&lt;p&gt;Homebrewを利用してインストール&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;# Homebrewのメンテ
-$ brew update
-$ brew upgrade
-$ brew doctor
-Your system is ready to brew.
-
-
-# Golangのインストール
-$ brew install go
-==&amp;gt; Downloading https://homebrew.bintray.com/bottles/go-1.7.4_2.sierra.bottle.tar.gz
-######################################################################## 100.0%
-==&amp;gt; Pouring go-1.7.4_2.sierra.bottle.tar.gz
-==&amp;gt; Caveats
-As of go 1.2, a valid GOPATH is required to use the `go get` command:
-  https://golang.org/doc/code.html#GOPATH
-
-You may wish to add the GOROOT-based install location to your PATH:
-  export PATH=$PATH:/usr/local/opt/go/libexec/bin
-==&amp;gt; Summary
-🍺  /usr/local/Cellar/go/1.7.4_2: 6,438 files, 250.7M
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;インストールの確認&#34;&gt;インストールの確認&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;$ go version
-go version go1.7.4 darwin/amd64
-
-$ go env GOROOT
-/usr/local/Cellar/go/1.7.4_2/libexec
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;gopathの設定&#34;&gt;GOPATHの設定&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Go言語で開発するためのワークスペース&lt;/li&gt;
-&lt;li&gt;Goが外部のライブラリが格納されている場所を知るために必要&lt;/li&gt;
-&lt;li&gt;今回は「$HOME/Development/Go」&lt;/li&gt;
-&lt;li&gt;設定は必須&lt;/li&gt;
-&lt;li&gt;~/.bash_profileに設定する&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;# ~/.bash_profileを開く
-$ vim ~/.bash_profile
-
-
-# 以下を追記する
-export GOPATH=$HOME/Development/Go
-export PATH=$PATH:$GOPATH/bin
-
-
-# 保存後に反映
-$ source ~/.bash_profile
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>環境 MacBook Pro (15-inch, Mid 2012) macOS Sierra 10.12.3 Homebrew 1.1.8 Goインストール Homebrewを利用してインストール # Homebrewのメンテ $ brew update $ brew upgrade $ brew doctor Your system is ready to brew. # Go</description>
     </item>
     
   </channel>

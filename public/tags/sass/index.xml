@@ -2,11 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Sass on mzgkworks.com</title>
-    <link>http://mzgkworks.com/tags/sass/index.xml</link>
+    <link>http://mzgkworks.com/tags/sass/</link>
     <description>Recent content in Sass on mzgkworks.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <atom:link href="http://mzgkworks.com/tags/sass/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 04 Oct 2016 18:57:07 +0900</lastBuildDate>
+    
+	<atom:link href="http://mzgkworks.com/tags/sass/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>MacにSass環境を構築する（Ruby gem）</title>
@@ -14,105 +17,7 @@
       <pubDate>Tue, 04 Oct 2016 18:57:07 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/ruby-gem-install-sass/</guid>
-      <description>
-
-&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;OS X 10.11.6 El Capitan&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;望むこと&#34;&gt;望むこと&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;scssで書いて、動的にcssにコンパイル&lt;/li&gt;
-&lt;li&gt;環境周りのコストを少なく&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;選択肢は&#34;&gt;選択肢は&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;gulp : 使うほどタスクないし、プラグインや設定ファイルなどの初期学習コストが高い&lt;/li&gt;
-&lt;li&gt;npm run : package.jsonが面倒&lt;/li&gt;
-&lt;li&gt;Macなのでrubyがインストール済み
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;$ sudo gem install sass&lt;/code&gt; → sassコマンドか！&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;環境構築&#34;&gt;環境構築&lt;/h2&gt;
-
-&lt;h3 id=&#34;ruby&#34;&gt;Ruby&lt;/h3&gt;
-
-&lt;p&gt;存在確認&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ ruby -v
-ruby 2.3.1p112 (2016-04-26 revision 54768) [x86_64-darwin15]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;gemのアップデート&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo gem update --system
-...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;sass&#34;&gt;sass&lt;/h3&gt;
-
-&lt;p&gt;存在確認&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sass -v
--bash: sass: command not found
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;インストール&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo gem install sass
-...
-1 gem installed
-
-$ sass -v
-Sass 3.4.22 (Selective Steve)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;コンパイル&#34;&gt;コンパイル&lt;/h2&gt;
-
-&lt;h3 id=&#34;フォルダ構成&#34;&gt;フォルダ構成&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;.
-|-- css   → ここにコンパイルされたmain.cssが生成される
-`-- scss
-    |-- base
-    |   |-- _reset.scss   → _sanitize.scssを@import
-    |   `-- lib
-    |       `-- _sanitize.scss
-    |-- components
-    |   `-- _component.scss   → いろいろと記述
-    `-- main.scss   → reset,componentのimportのみ
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;コンパイル-1&#34;&gt;コンパイル&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# scssディレクトリ以下のファイル更新を監視し、cssディレクトリへ出力
-$ sass --watch --style expanded scss:css
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;オプション&#34;&gt;オプション&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;watch : ファイルの更新を監視し、更新されたらコンパイル&lt;/li&gt;
-&lt;li&gt;style : 生成されるcssの形式
-
-&lt;ul&gt;
-&lt;li&gt;nested : sassの階層をインデントで残す（デフォルト）&lt;/li&gt;
-&lt;li&gt;expanded : 普通のcss形式&lt;/li&gt;
-&lt;li&gt;compact : セレクタとプロパティが1行形式&lt;/li&gt;
-&lt;li&gt;compressed : 圧縮形式&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;※styleを途中で変更する場合は、一度生成された.cssを削除すること&lt;/p&gt;
-</description>
+      <description>環境 OS X 10.11.6 El Capitan 望むこと scssで書いて、動的にcssにコンパイル 環境周りのコストを少なく 選択肢は gulp : 使うほどタスクないし、プラグインや設定フ</description>
     </item>
     
   </channel>

@@ -2,11 +2,23 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Usage on mzgkworks.com</title>
-    <link>http://mzgkworks.com/categories/usage/index.xml</link>
+    <link>http://mzgkworks.com/categories/usage/</link>
     <description>Recent content in Usage on mzgkworks.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <atom:link href="http://mzgkworks.com/categories/usage/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 29 Apr 2017 18:01:49 +0900</lastBuildDate>
+    
+	<atom:link href="http://mzgkworks.com/categories/usage/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>AWS EBSスナップショットからのEC2リストア</title>
+      <link>http://mzgkworks.com/post/ec2-restore-from-ebs-snapshot/</link>
+      <pubDate>Sat, 29 Apr 2017 18:01:49 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/ec2-restore-from-ebs-snapshot/</guid>
+      <description>EC2の状態をある時点に巻き戻したい（ある時点のEC2を再現したい）時に、EBSのスナップショットからリストアする方法。 復元したい時点のスナ</description>
+    </item>
     
     <item>
       <title>SSHポートフォワーディングで、Windows → Linux → WindowsServerにRDP接続する</title>
@@ -14,49 +26,7 @@
       <pubDate>Sat, 18 Mar 2017 11:47:00 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/aws-windows-ssh-portfowarding/</guid>
-      <description>
-
-&lt;h2 id=&#34;やりたいこと&#34;&gt;やりたいこと&lt;/h2&gt;
-
-&lt;p&gt;作業PC（Windows7）のTeraTermを使って、AWS上のEC2（WindowsServer2016）へ踏み台サーバー（Linux:EC2）経由でRDP接続をする。&lt;br&gt;
-SSHポートフォワーディングの機能を利用する。&lt;/p&gt;
-
-&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;AWS EC2 : AmazonLinux -&amp;gt; 踏み台サーバー&lt;/li&gt;
-&lt;li&gt;AWS EC2 : Windows Server 2016 -&amp;gt; RDP接続先&lt;/li&gt;
-&lt;li&gt;Windows7 : ローカル作業PC TeraTerm4.9.4&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;準備&#34;&gt;準備&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;RDP接続先のWindowsServer（EC2）は、&lt;strong&gt;パブリックIPでなくても可&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;事前に、AWSコンソールから接続ボタンでWindowsServerのパスワードを取得しておく&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://mzgkworks.com/post/aws-ec2-windows-rdp/&#34;&gt;AWS EC2でWindowsインスタンスの起動とRDP接続&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;やり方&#34;&gt;やり方&lt;/h2&gt;
-
-&lt;ol&gt;
-&lt;li&gt;TeraTermで、踏み台EC2（Linux）にSSH接続&lt;/li&gt;
-&lt;li&gt;接続したら、上部メニューの［設定］-&amp;gt; ［SSH転送］を選択&lt;/li&gt;
-&lt;li&gt;SSHポート転送のダイアログが表示される -&amp;gt; ［追加］ボタン&lt;/li&gt;
-&lt;li&gt;［ローカルポート］: 適当なポート（13389）を入力&lt;/li&gt;
-&lt;li&gt;［リモート側ホスト］: RDP接続先のIP（WindowsServer EC2のプライベートIP）&lt;/li&gt;
-&lt;li&gt;［ポート］: RDP接続先のポート（3389）&lt;/li&gt;
-&lt;li&gt;［OK］&lt;/li&gt;
-&lt;li&gt;リモートデスクトップクライアント（mstsc）を起動&lt;/li&gt;
-&lt;li&gt;［コンピュータ］127.0.0.1:13389 -&amp;gt; ［接続］&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;strong&gt;※RDP中はTeraTermで踏み台に接続されている必要がある。&lt;/strong&gt;
-&lt;br&gt;&lt;br&gt;&lt;/p&gt;
-
-&lt;p&gt;久々に開発クライアントでWindows7 32bitを使わざるをえないことになったのでメモ。作業効率が悪い。&lt;br&gt;&lt;br&gt;
-以上&lt;/p&gt;
-</description>
+      <description>やりたいこと 作業PC（Windows7）のTeraTermを使って、AWS上のEC2（WindowsServer2016）へ踏み台サーバー（</description>
     </item>
     
     <item>
@@ -65,40 +35,7 @@ SSHポートフォワーディングの機能を利用する。&lt;/p&gt;
       <pubDate>Wed, 01 Mar 2017 14:37:33 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/aws-ec2-windows-rdp/</guid>
-      <description>
-
-&lt;p&gt;EC2インスタンスのOSをWindowsで作成し、RDP（リモートデスクトップ）接続する手順。&lt;br /&gt;
-いつもEC2はLinuxが多かったので、忘れないようにメモ。&lt;/p&gt;
-
-&lt;h2 id=&#34;インスタンス起動&#34;&gt;インスタンス起動&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;他OSと変わらず&lt;/li&gt;
-&lt;li&gt;Active Directory関係でいくつか追加項目あり&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;接続&#34;&gt;接続&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;EC2ダシュボード -&amp;gt; インスタンスを選択 -&amp;gt; 上部の「接続ボタン」&lt;/li&gt;
-&lt;li&gt;「インスタンスへの接続」画面が表示される&lt;/li&gt;
-&lt;li&gt;「パスワードの取得」ボタンを押下&lt;/li&gt;
-&lt;li&gt;インスタンス作成時に指定したキーペアファイルの場所を指定&lt;/li&gt;
-&lt;li&gt;「パスワードの復号」ボタンを押下&lt;/li&gt;
-&lt;li&gt;パスワードが表示される -&amp;gt; メモ or コピー&lt;/li&gt;
-&lt;li&gt;「リモートデスクトップファイルのダウンロード」ボタンを押下&lt;/li&gt;
-&lt;li&gt;.rdpファイルがダウンロードされる -&amp;gt; ダブルクリック -&amp;gt; 接続ボタンを押下&lt;/li&gt;
-&lt;li&gt;パスワードを入力　-&amp;gt; 接続&lt;/li&gt;
-&lt;li&gt;リモートコンピューターのIDを識別できません -&amp;gt; はい&lt;/li&gt;
-&lt;li&gt;インスタンスにリモートデスクトップ接続される&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;リモートデスクトップ環境でのctrl-alt-delete&#34;&gt;リモートデスクトップ環境でのCtrl + Alt + Delete&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Ctrl + Alt + End&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>EC2インスタンスのOSをWindowsで作成し、RDP（リモートデスクトップ）接続する手順。 いつもEC2はLinuxが多かったので、忘れな</description>
     </item>
     
     <item>
@@ -107,25 +44,7 @@ SSHポートフォワーディングの機能を利用する。&lt;/p&gt;
       <pubDate>Tue, 28 Feb 2017 16:55:07 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/aws-change-timezone-on-linux/</guid>
-      <description>
-
-&lt;p&gt;EC2インスタンスを作成した際に、タイムゾーンをUTC -&amp;gt; JSTに変更する方法。&lt;br /&gt;
-（Amazon Linux限定ではない。）&lt;/p&gt;
-
-&lt;h2 id=&#34;タイムゾーンを変更する&#34;&gt;タイムゾーンを変更する&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;# 確認
-$ date
-2017年  2月 28日 火曜日 01:06:29 UTC
-
-# UTC -&amp;gt; JSTに変更
-$ sudo cp /usr/share/zoneinfo/Japan /etc/localtime
-
-# 確認
-$ date
-2017年  2月 28日 火曜日 10:07:48 JST
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>EC2インスタンスを作成した際に、タイムゾーンをUTC -&amp;gt; JSTに変更する方法。 （Amazon Linux限定ではない。） タイムゾーンを変更する</description>
     </item>
     
     <item>
@@ -134,137 +53,7 @@ $ date
       <pubDate>Tue, 28 Feb 2017 16:28:32 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/aws-automatically-create-snapshot-of-ec2/</guid>
-      <description>
-
-&lt;p&gt;EC2のスナップショットを自動（AWS CLI + Cron）で採取するための設定方法。&lt;/p&gt;
-
-&lt;h2 id=&#34;手順&#34;&gt;手順&lt;/h2&gt;
-
-&lt;ol&gt;
-&lt;li&gt;アクセス権（EC2FullAccess）があるIAMユーザーで、AWS CLIをセットアップ&lt;/li&gt;
-&lt;li&gt;EC2上でawsコマンドを実行して、スナップショットが作成されていることを確認&lt;/li&gt;
-&lt;li&gt;awsコマンドをシェルスクリプトファイルにして、EC2のcrontabに設定&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&#34;1-aws-cliのセットアップ&#34;&gt;1. AWS CLIのセットアップ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;IAMダッシュボードで、使用するIAMユーザーを選択&lt;/li&gt;
-&lt;li&gt;認証情報タブ -&amp;gt; アクセスキーの作成 -&amp;gt; 新規アクセスキーが作成され、.csvのダウンロードができる&lt;/li&gt;
-&lt;li&gt;EC2にsshでログイン&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;# EC2（Amazon Linux）上で、AWS CLIの初期設定
-$ aws configure
-AWS Access Key ID [None]: .csvのAccess key ID
-AWS Secret Access Key [None]: .csvのSecret access key
-Default region name [None]: ap-northeast-1
-Default output format [None]: json
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;2-ec2のスナップショットを採取確認&#34;&gt;2. EC2のスナップショットを採取確認&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;EC2ダッシュボードで対象インスタンスの情報を確認する
-
-&lt;ul&gt;
-&lt;li&gt;EC2.Name : 対象のEC2インスタンス&lt;/li&gt;
-&lt;li&gt;EBS.ID : vol-xxxxxxxxxc0c&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;対象のEC2にssh接続をする&lt;/li&gt;
-&lt;li&gt;以下のawsコマンドを実行する&lt;/li&gt;
-&lt;li&gt;コマンド実行後に、EC2ダッシュボードでスナップショットを確認すると作成を実行している&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;# スナップショットを作成する
-$ aws ec2 create-snapshot --volume-id vol-xxxxxxxxxc0c --description &amp;quot;説明&amp;quot;
-
-# 結果が返ってくる
-{
-    &amp;quot;Description&amp;quot;: &amp;quot;入力した説明&amp;quot;,
-    &amp;quot;Encrypted&amp;quot;: false,
-    &amp;quot;VolumeId&amp;quot;: &amp;quot;vol-xxxxxxxxxc0c&amp;quot;,
-    &amp;quot;State&amp;quot;: &amp;quot;pending&amp;quot;,
-    &amp;quot;VolumeSize&amp;quot;: 8,
-    &amp;quot;Progress&amp;quot;: &amp;quot;&amp;quot;,
-    &amp;quot;StartTime&amp;quot;: &amp;quot;2017-02-28T01:39:43.000Z&amp;quot;,
-    &amp;quot;SnapshotId&amp;quot;: &amp;quot;snap-021be12d0fc9abf3a&amp;quot;,
-    &amp;quot;OwnerId&amp;quot;: &amp;quot;xxxxxx&amp;quot;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;3-crontabを設定&#34;&gt;3. crontabを設定&lt;/h2&gt;
-
-&lt;h3 id=&#34;採取コマンドをシェルスクリプト化&#34;&gt;採取コマンドをシェルスクリプト化&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;backup.shというファイル名で保存する&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;#!/bin/sh
-aws ec2 create-snapshot --volume-id vol-xxxxxxxxxc0c --description &amp;quot;説明&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;crontab-txtを作成&#34;&gt;crontab.txtを作成&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;毎朝４時にスナップショットを作成する設定&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;ファイルの最後は改行をいれること&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;0 4 * * * /bin/sh /home/ec2-user/backup.sh
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;ec2へのアップロードと設定&#34;&gt;EC2へのアップロードと設定&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;作成した２ファイルをEC2のホーム直下にアップロード&lt;/li&gt;
-&lt;li&gt;EC2上でbackup.shにec2-userのアクセス権を付与&lt;/li&gt;
-&lt;li&gt;crontabに設定&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;# MacからSCPコマンドでファイルをアップロード
-$ scp -i ~/.ssh/キーペアファイル.pem backup.sh crontab.txt ec2-user@EC2.IP:~/
-backup.sh  100%  115    19.9KB/s   00:00
-crontab.txt  100%   37     7.1KB/s   00:00
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;# EC2上で
-# 実行権限を付与
-$ chmod 700 backup.sh
-
-# crontabに設定
-$ crontab crontab.txt
-
-# 確認
-$ crontab -l
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;実行確認&#34;&gt;実行確認&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;実行されるとEC2上でCronからec2-user宛てにメールが届く&lt;/li&gt;
-&lt;li&gt;EC2ダッシュボードでもスナップショット作成が確認できる&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;# EC2にmailコマンドをインストール
-$ sudo yum install -y mailx
-
-# mailを確認
-$ mail
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;停止-crontabの削除&#34;&gt;停止（crontabの削除）&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;定期実行を停止するにはcrontabから削除を行う&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;# 削除
-$ crontab -r
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>EC2のスナップショットを自動（AWS CLI + Cron）で採取するための設定方法。 手順 アクセス権（EC2FullAccess）があるIAMユーザ</description>
     </item>
     
     <item>
@@ -273,81 +62,7 @@ $ crontab -r
       <pubDate>Mon, 27 Feb 2017 16:16:35 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/aws-rds-restore-from-snapshot/</guid>
-      <description>
-
-&lt;p&gt;以前に取得されたスナップショットからRDSを復元して、現在のRDSと付け替える方法。&lt;br /&gt;
-&lt;br&gt;
-ポイントは以下。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;DBインスンタンス識別子の値は、EC2と接続するためのエンドポイントのprefixを兼ねている&lt;/li&gt;
-&lt;li&gt;同じ識別子で復元できない&lt;/li&gt;
-&lt;li&gt;別の識別子で復元 -&amp;gt; 既存の識別子を変更 -&amp;gt; 復元分の識別子を元々の識別子に変更&lt;/li&gt;
-&lt;li&gt;これでエンドポイントの値は変更されないので、Webサーバー側との接続に影響を与えない&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;復元したインスタンスのセキュリティグループを既存と同様にセットし直す&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;スナップショットからインスタンスを復元&#34;&gt;スナップショットからインスタンスを復元&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;RDSダッシュボード - スナップショット - 復元したいスナップショットを選択&lt;/li&gt;
-&lt;li&gt;スナップショットのアクション - スナップショットの復元&lt;/li&gt;
-&lt;li&gt;DBインスタンスの復元画面が表示されるので、情報を入力
-
-&lt;ul&gt;
-&lt;li&gt;デフォルトになっている部分を抜粋&lt;/li&gt;
-&lt;li&gt;マルチAZ配置 : 選択&lt;/li&gt;
-&lt;li&gt;DBインスタンス識別子 : &lt;strong&gt;復元して置き換えたい既存インスタンスの値とは別の値&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;アベイラビリティゾーン : 選択&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;DBインスタンスの復元 - 復元される（作業状況はインスタンスで確認）&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;既存のインスタンス&#34;&gt;既存のインスタンス&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;復元したインスタンスで置き換えたいインスタンス&lt;/li&gt;
-&lt;li&gt;DBインスタンス識別子を変更して、エンドポイントを復元インスタンスにゆずる&lt;/li&gt;
-&lt;li&gt;変更作業
-
-&lt;ul&gt;
-&lt;li&gt;インスタンスの操作 - 変更&lt;/li&gt;
-&lt;li&gt;DBインスタンス識別子 : 変更&lt;/li&gt;
-&lt;li&gt;すぐに適用 : チェック&lt;/li&gt;
-&lt;li&gt;次へ - DBインスタンスの変更&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;変更中 -&amp;gt; 名前変更中 -&amp;gt; 再起動 -&amp;gt; 利用可能&lt;/li&gt;
-&lt;li&gt;この時点でWebサーバーからDBが参照されなくなる&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;復元インスタンス&#34;&gt;復元インスタンス&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;復元したインスタンスのDB識別子を既存の値に変更する（エンドポイント値の復元）&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;セキュリティグループを既存同様に付け直す&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;変更作業
-
-&lt;ul&gt;
-&lt;li&gt;インスタンスの操作 - 変更&lt;/li&gt;
-&lt;li&gt;DBインスタンス識別子 : 変更&lt;/li&gt;
-&lt;li&gt;セキュリティグループ : 既存と同様のSGをセット&lt;/li&gt;
-&lt;li&gt;すぐに適用 : チェック&lt;/li&gt;
-&lt;li&gt;次へ - DBインスタンスの変更&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;変更中 -&amp;gt; 名前変更中 -&amp;gt; 再起動 -&amp;gt; 利用可能&lt;/li&gt;
-&lt;li&gt;これで復元されたDBで置き換えられる&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;rds削除時の注意-スナップショット&#34;&gt;RDS削除時の注意（スナップショット）&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;RDSを削除する際に、過去にとった自動スナップショットは削除されてしまう&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;復元したい場合、削除時に聞かれる「最終スナップショット」は作成しておくこと&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;br&gt;&lt;br&gt;
-以上&lt;/p&gt;
-</description>
+      <description>以前に取得されたスナップショットからRDSを復元して、現在のRDSと付け替える方法。 ポイントは以下。 DBインスンタンス識別子の値は、EC2と</description>
     </item>
     
     <item>
@@ -356,377 +71,7 @@ $ crontab -r
       <pubDate>Mon, 27 Feb 2017 13:33:52 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/aws-elb-ec2-rds-wordpress/</guid>
-      <description>
-
-&lt;h2 id=&#34;0-環境&#34;&gt;0. 環境&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;異なるAZにロードバランシングされるWordPress環境を構築する&lt;/li&gt;
-&lt;li&gt;VPC・Subnet（4）・Internet Gateway・Route Table・Security Group&lt;/li&gt;
-&lt;li&gt;ロードバランサー
-
-&lt;ul&gt;
-&lt;li&gt;異なるAZに配置されたEC2に接続&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Webサーバー
-
-&lt;ul&gt;
-&lt;li&gt;異なるAZにEC2を1台づつ配置&lt;/li&gt;
-&lt;li&gt;Public Subnet&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;DBサーバー
-
-&lt;ul&gt;
-&lt;li&gt;テスト用なのでSingle-AZ&lt;/li&gt;
-&lt;li&gt;EC2からアクセス&lt;/li&gt;
-&lt;li&gt;Private Subnet&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;アクセス制御
-
-&lt;ul&gt;
-&lt;li&gt;各インスタンス用にSecurity Groupを作成して制御&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;1-ネットワーク領域の作成&#34;&gt;1. ネットワーク領域の作成&lt;/h2&gt;
-
-&lt;h3 id=&#34;vpc&#34;&gt;VPC&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Sample_VPC
-
-&lt;ul&gt;
-&lt;li&gt;20.0.0.0/16&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;subnet&#34;&gt;Subnet&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;WebAP用（AZ-A）
-
-&lt;ul&gt;
-&lt;li&gt;Sample_Public_1A&lt;/li&gt;
-&lt;li&gt;ap-northeast-1a&lt;/li&gt;
-&lt;li&gt;20.0.1.0/24&lt;/li&gt;
-&lt;li&gt;パブリックIP : はい&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;WebAP用（AZ-C）
-
-&lt;ul&gt;
-&lt;li&gt;Sample_Public_1C&lt;/li&gt;
-&lt;li&gt;ap-northeast-1c&lt;/li&gt;
-&lt;li&gt;20.0.2.0/24&lt;/li&gt;
-&lt;li&gt;パブリックIP : はい&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;DB用（AZ-A）
-
-&lt;ul&gt;
-&lt;li&gt;Sample_Private_1A&lt;/li&gt;
-&lt;li&gt;ap-northeast-1a&lt;/li&gt;
-&lt;li&gt;20.0.10.0/24&lt;/li&gt;
-&lt;li&gt;パブリックIP : いいえ&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;DB用（AZ-C）
-
-&lt;ul&gt;
-&lt;li&gt;Sample_Private_1C&lt;/li&gt;
-&lt;li&gt;ap-northeast-1c&lt;/li&gt;
-&lt;li&gt;20.0.20.0/24&lt;/li&gt;
-&lt;li&gt;パブリックIP : いいえ&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;internet-gateway&#34;&gt;Internet Gateway&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Sample_IGW
-
-&lt;ul&gt;
-&lt;li&gt;アタッチ : Sample_VPC&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;route-table&#34;&gt;Route Table&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Sample_IGW_RTB&lt;/li&gt;
-&lt;li&gt;VPC : Sample_VPC&lt;/li&gt;
-&lt;li&gt;ルート
-
-&lt;ul&gt;
-&lt;li&gt;送信先 : 0.0.0.0/0&lt;/li&gt;
-&lt;li&gt;ターゲット : Sample_IGW&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;サブネットの関連付け
-
-&lt;ul&gt;
-&lt;li&gt;Sample_Public_1A&lt;/li&gt;
-&lt;li&gt;Sample_Public_1C&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;security-group&#34;&gt;Security Group&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;EC2ダッシュボードから作成すると、送信元の設定が楽。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Sample_ELB_Sec
-
-&lt;ul&gt;
-&lt;li&gt;InBound : HTTP, 80, MyIP（本来は0.0.0.0/0）&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Sample_WebAP_Sec
-
-&lt;ul&gt;
-&lt;li&gt;InBound : HTTP, 80, Sample_ELB_Sec.ID&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Sample_DB_Sec
-
-&lt;ul&gt;
-&lt;li&gt;InBound : MySQL, 3306, Sample_WebAP_Sec.ID&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Sample_Maintenance_Sec
-
-&lt;ul&gt;
-&lt;li&gt;InBound : SSH, 22, MyIP&lt;/li&gt;
-&lt;li&gt;InBound : HTTP, 80, MyIP&lt;/li&gt;
-&lt;li&gt;InBound : MySQL, 3306, MyIP -&amp;gt; いらないかも&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;2-インスタンスの作成&#34;&gt;2. インスタンスの作成&lt;/h2&gt;
-
-&lt;h3 id=&#34;rdsサブネットグループ&#34;&gt;RDSサブネットグループ&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Sample_DB_SubnetG
-
-&lt;ul&gt;
-&lt;li&gt;VPC : Sample_VPC&lt;/li&gt;
-&lt;li&gt;Subnet : Sample_Private_1A, Sample_Private_1C&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;rds&#34;&gt;RDS&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Sample_DB_Master
-
-&lt;ul&gt;
-&lt;li&gt;Multi-AZ用のマスターDB&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;エンジンの選択
-
-&lt;ul&gt;
-&lt;li&gt;MySQL&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;本番稼働用？
-
-&lt;ul&gt;
-&lt;li&gt;開発／テスト&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;詳細の指定
-
-&lt;ul&gt;
-&lt;li&gt;DBエンジン :  mysql&lt;/li&gt;
-&lt;li&gt;ライセンスモデル : General Public License&lt;/li&gt;
-&lt;li&gt;DBエンジンのバージョン : 5.6.27&lt;/li&gt;
-&lt;li&gt;DBインスタンスのクラス : db.t2.micro&lt;/li&gt;
-&lt;li&gt;マルチAZ配置 : いいえ &lt;strong&gt;（開発のため）&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;ストレージタイプ : 汎用（SSD）&lt;/li&gt;
-&lt;li&gt;ストレージ割り当て : 5GB&lt;/li&gt;
-&lt;li&gt;DBインスタンス識別子 : Sample-DB&lt;/li&gt;
-&lt;li&gt;マスターユーザーの名前 : Sample_DB_User&lt;/li&gt;
-&lt;li&gt;マスターパスワード : Sample_DB_Password&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;詳細設定の設定
-
-&lt;ul&gt;
-&lt;li&gt;VPC : Sample_VPC&lt;/li&gt;
-&lt;li&gt;サブネットグループ : Sample_DB_SubnetG&lt;/li&gt;
-&lt;li&gt;パブリックアクセス可能 : いいえ&lt;/li&gt;
-&lt;li&gt;アベイラビリティーゾーン : ap-northeast-1a&lt;/li&gt;
-&lt;li&gt;VPCセキュリティーグループ : Sample_DB_Sec, Sample_Maintenance_Sec&lt;/li&gt;
-&lt;li&gt;データベースの名前 : Sample_DB&lt;/li&gt;
-&lt;li&gt;データベースのポート : 3306&lt;/li&gt;
-&lt;li&gt;DBパラメータグループ : default.mysql5.6&lt;/li&gt;
-&lt;li&gt;オプショングループ : default:mysql-5-6&lt;/li&gt;
-&lt;li&gt;その他はデフォルトのまま&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;ec2-1&#34;&gt;EC2-1&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Sample_Web_01
-
-&lt;ul&gt;
-&lt;li&gt;AMI : Amazon Linux&lt;/li&gt;
-&lt;li&gt;t2.micro&lt;/li&gt;
-&lt;li&gt;EBS : 8GB&lt;/li&gt;
-&lt;li&gt;ネットワーク : Sample_VPC&lt;/li&gt;
-&lt;li&gt;サブネット : Sample_Public_1A&lt;/li&gt;
-&lt;li&gt;自動割り当てパブリックIP : 有効化&lt;/li&gt;
-&lt;li&gt;その他はデフォルト&lt;/li&gt;
-&lt;li&gt;セキュリティグループ : Sample_WebAP_Sec, Sample_Maintenance_Sec&lt;/li&gt;
-&lt;li&gt;キーペア : 作成&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;3-ミドルウェアのセットアップ&#34;&gt;3. ミドルウェアのセットアップ&lt;/h2&gt;
-
-&lt;h3 id=&#34;ec2-sample-web-01&#34;&gt;EC2 : Sample_Web_01&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;基本設定
-
-&lt;ul&gt;
-&lt;li&gt;MacからSSHログイン&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ sudo yum update -y&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ sudo yum install -y httpd&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ sudo chkconfig httpd on&lt;/code&gt; &lt;strong&gt;#EC2起動時に合わせてApacheも起動させる&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ sudo service httpd start&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Macからブラウザ経由でアクセスし、Apacheぺージが表示されること&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ sudo yum install -y php&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ sudo yum install -y php-mysql&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;WordPress
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;$ mkdir ~/ttmp;cd ttmp&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ wget https://ja.wordpress.org/latest-ja.tar.gz&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ tar xzvf latest-ja.tar.gz&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ cd wordpress&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ cp wp-config-sample.php wp-config.PHP&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ vi wp-config.php&lt;/code&gt;
-
-&lt;ul&gt;
-&lt;li&gt;DB_NAME : Sample_DB&lt;/li&gt;
-&lt;li&gt;DB_USER : Sample_DB_User&lt;/li&gt;
-&lt;li&gt;DB_PASSWORD : Sample_DB_Password&lt;/li&gt;
-&lt;li&gt;DB_HOST : Sample_DB_Masterのエンドポイント:3306&lt;/li&gt;
-&lt;li&gt;認証キー : &lt;a href=&#34;https://api.wordpress.org/secret-key/1.1/salt/&#34;&gt;https://api.wordpress.org/secret-key/1.1/salt/&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ sudo mv * /var/www/html/&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ sudo service httpd restart&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;ブラウザからSample_Web_01のパブリックIPにアクセスして、wordpressの設定を行う&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;4-elbの適用&#34;&gt;4. ELBの適用&lt;/h2&gt;
-
-&lt;h3 id=&#34;elbの作成&#34;&gt;ELBの作成&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Sample-ELB
-
-&lt;ul&gt;
-&lt;li&gt;ロードバランサーの種類 : Classic Load Balancer&lt;/li&gt;
-&lt;li&gt;ロードバランサーを作成する場所 : Sample_VPC&lt;/li&gt;
-&lt;li&gt;リスナー : HTTP 80&lt;/li&gt;
-&lt;li&gt;サブネットの選択 : Sample_Public_1A, Sample_Public_1C&lt;/li&gt;
-&lt;li&gt;セキュリティグループ : Sample_ELB_Sec&lt;/li&gt;
-&lt;li&gt;ヘルスチェック
-
-&lt;ul&gt;
-&lt;li&gt;pingプロトコル : HTTP&lt;/li&gt;
-&lt;li&gt;pingポート : 80&lt;/li&gt;
-&lt;li&gt;pingパス : /&lt;/li&gt;
-&lt;li&gt;正常の閾値 : 5 -&amp;gt; 2&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;EC2インスタンス
-
-&lt;ul&gt;
-&lt;li&gt;Sample_Web_01（Sample_Web_02はAMI作成後）&lt;/li&gt;
-&lt;li&gt;クロスゾーン負荷分散の有効化 : チェック&lt;/li&gt;
-&lt;li&gt;接続のストリーミングの有効化 : 300 -&amp;gt; 30 &lt;strong&gt;（WordPressの場合は必須）&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;タグ
-
-&lt;ul&gt;
-&lt;li&gt;Name : Sample_ELB&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;作成後の確認&#34;&gt;作成後の確認&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;インスタンス タブ : インスタンスがInServiceになっていること&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;wordpressの設定変更&#34;&gt;WordPressの設定変更&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Sample_Web_01のパブリックIPでWordPressにアクセス&lt;/li&gt;
-&lt;li&gt;設定画面にて以下の内容をSample_ELBの「http:// + DNS名」に変更
-
-&lt;ul&gt;
-&lt;li&gt;WordPressアドレス&lt;/li&gt;
-&lt;li&gt;サイトアドレス&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;elb経由での接続確認&#34;&gt;ELB経由での接続確認&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;ブラウザからSample_ELBのDNSでアクセスし、WordPressが表示されることを確認&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;5-ec2の追加&#34;&gt;5. EC2の追加&lt;/h2&gt;
-
-&lt;h3 id=&#34;ami作成&#34;&gt;AMI作成&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Sample_Web_01からAMIを作成する
-
-&lt;ul&gt;
-&lt;li&gt;停止 -&amp;gt; イメージの作成&lt;/li&gt;
-&lt;li&gt;イメージ名 : Sample-WebAP-AMI&lt;/li&gt;
-&lt;li&gt;AMI、スナップショットが作成される&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;ec2の作成&#34;&gt;EC2の作成&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Sample_Web_02
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Sample_Web_01のAMIから作成&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;ネットワーク : Sample_VPC&lt;/li&gt;
-&lt;li&gt;サブネット : Sample_Public_1C&lt;/li&gt;
-&lt;li&gt;自動割り当てパブリックIP : 有効化&lt;/li&gt;
-&lt;li&gt;その他はデフォルト&lt;/li&gt;
-&lt;li&gt;セキュリティグループ : Sample_WebAP_Sec, Sample_Maintenance_Sec&lt;/li&gt;
-&lt;li&gt;キーペア : 先に作成したもの&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;ロードバランサー配下に追加&#34;&gt;ロードバランサー配下に追加&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;インスタンス タブ -&amp;gt; インスタンスの編集 -&amp;gt; Sample_Web_02を追加&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;バランシングの確認&#34;&gt;バランシングの確認&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;各EC2上の/var/log/httpd/access_logを確認&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ sudo tail -f /var/log/httpd/access_log&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>0. 環境 異なるAZにロードバランシングされるWordPress環境を構築する VPC・Subnet（4）・Internet Gateway・Rou</description>
     </item>
     
     <item>
@@ -735,66 +80,7 @@ $ crontab -r
       <pubDate>Tue, 21 Feb 2017 11:51:56 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/attach-ebs-as-rootdevice-of-ec2/</guid>
-      <description>
-
-&lt;p&gt;どこにもアタッチされていないボリューム（EBS）が存在したので、EC2にアタッチして使いたい。&lt;br&gt;
-EC2インスタンスの作成中に、アタッチしたいボリュームを選択できるかと思っていたが、既存ボリュームの追加ができなかった。&lt;br&gt;
-なので、EC2インスタンス作成 -&amp;gt; EBSデタッチ -&amp;gt; 対象EBSアタッチの手順を踏んだ際の備忘録。&lt;br&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;EC2インスタンスとアタッチしたいボリューム（EBS）が、同じAZ内であることが前提。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;手順&#34;&gt;手順&lt;/h2&gt;
-
-&lt;ol&gt;
-&lt;li&gt;EC2インスタンスを作成
-
-&lt;ul&gt;
-&lt;li&gt;作成時にEBSも作成する（後ほどデタッチ -&amp;gt; 削除）&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;EC2が起動
-
-&lt;ul&gt;
-&lt;li&gt;ルートデバイスの値を控える /dev/xvdaとか&lt;/li&gt;
-&lt;li&gt;ルートデバイスをクリックして表示されるEBS IDを控える&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;EC2を停止
-
-&lt;ul&gt;
-&lt;li&gt;ルートデバイスをクリックして表示されるEBS IDをクリック&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;ボリュームのデタッチ
-
-&lt;ul&gt;
-&lt;li&gt;ボリュームが表示される&lt;/li&gt;
-&lt;li&gt;アクション（or 右クリック）-&amp;gt; ボリュームのデタッチ&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;ボリュームのアタッチ
-
-&lt;ul&gt;
-&lt;li&gt;左ペイン -&amp;gt; ボリューム&lt;/li&gt;
-&lt;li&gt;アタッチしたいボリュームを選択&lt;/li&gt;
-&lt;li&gt;アクション（or 右クリック）-&amp;gt; ボリュームのアタッチ&lt;/li&gt;
-&lt;li&gt;インスタンス : アタッチしたいEC2インスタンスを選択&lt;/li&gt;
-&lt;li&gt;デバイス : &lt;strong&gt;2.で控えたルートデバイスの値に変更&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;アタッチ&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;確認
-
-&lt;ul&gt;
-&lt;li&gt;左ペイン -&amp;gt; インスタンス&lt;/li&gt;
-&lt;li&gt;対象のインスタンスを選択&lt;/li&gt;
-&lt;li&gt;ルートデバイスをクリック -&amp;gt; アタッチしたEBSであること&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;デタッチしたEBSを削除&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&#34;注意事項&#34;&gt;注意事項&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;アタッチするEC2とEBSが同じAZであること&lt;/li&gt;
-&lt;li&gt;EC2削除時のEBS合わせて削除がオフになるので、EBSは個別で削除すること&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>どこにもアタッチされていないボリューム（EBS）が存在したので、EC2にアタッチして使いたい。 EC2インスタンスの作成中に、アタッチしたいボ</description>
     </item>
     
     <item>
@@ -803,216 +89,7 @@ EC2インスタンスの作成中に、アタッチしたいボリュームを�
       <pubDate>Thu, 27 Oct 2016 19:14:50 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/git-change-commit/</guid>
-      <description>
-
-&lt;p&gt;コミットをミスった時の対処方法。&lt;br /&gt;
-&lt;strong&gt;コミットのハッシュ値が変わるので、push前のコミットに対して行うこと。&lt;/strong&gt;&lt;br /&gt;
-独り開発の場合は、$ git push -f &amp;lt;リモート&amp;gt; &amp;lt;ブランチ&amp;gt; で強制pushもできるが&amp;hellip;&lt;/p&gt;
-
-&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Git 2.10.1&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;ハッシュ値&#34;&gt;ハッシュ値&lt;/h2&gt;
-
-&lt;p&gt;ハッシュ値の指定部分は以下でも置き換えが可能。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;現在のコミット : HEAD&lt;/li&gt;
-&lt;li&gt;１つ前のコミット : HEAD~, HEAD^&lt;/li&gt;
-&lt;li&gt;２つ前のコミット : HEAD~2, HEAD^^&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;メッセージを直したい&#34;&gt;メッセージを直したい&lt;/h2&gt;
-
-&lt;h3 id=&#34;直前のコミットの場合&#34;&gt;直前のコミットの場合&lt;/h3&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;code&gt;$ git commit --amend&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;コミットメッセージ入力画面で編集・保存・終了&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&#34;いくつか前のコミットの場合&#34;&gt;いくつか前のコミットの場合&lt;/h3&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;code&gt;$ git log --oneline&lt;/code&gt; : 対象コミットの特定&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ git rebase -i &amp;lt;対象コミットの**１つ前**のハッシュ値&amp;gt;&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;変更するコミットのコマンドを「pick → r」に編集・保存・終了&lt;/li&gt;
-&lt;li&gt;コミットメッセージの編集・保存・終了&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ git rebase --continue&lt;/code&gt; : 対象が複数ある場合&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&#34;コミットに漏れの追加や内容修正をしたい&#34;&gt;コミットに漏れの追加や内容修正をしたい&lt;/h2&gt;
-
-&lt;h3 id=&#34;直前のコミットの場合-1&#34;&gt;直前のコミットの場合&lt;/h3&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;code&gt;$ git add A.txt&lt;/code&gt; : 変更や漏れをステージング&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ git commit --amend --no-edit&lt;/code&gt; : メッセージ変更しない場合&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ git commit --amend&lt;/code&gt; : メッセージも変更する場合&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&#34;いくつか前のコミットの場合-1&#34;&gt;いくつか前のコミットの場合&lt;/h3&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;code&gt;$ git log --oneline&lt;/code&gt; : 対象コミットの特定&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ git rebase -i &amp;lt;対象コミットの**１つ前**のハッシュ値&amp;gt;&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;変更するコミットのコマンドを「pick → e」に編集・保存・終了&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ git add A.txt&lt;/code&gt; : 変更や漏れをステージング&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ git commit --amend (--no-edit)&lt;/code&gt; : コミット&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ git rebase --continue&lt;/code&gt; : 対象が複数ある場合&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&#34;今のコミットを取り消したい&#34;&gt;今のコミットを取り消したい&lt;/h2&gt;
-
-&lt;h3 id=&#34;soft-リポジトリだけ変更&#34;&gt;&amp;ndash;soft : リポジトリだけ変更&lt;/h3&gt;
-
-&lt;p&gt;コミットは取り消したいけど、インデックス・ワーキングエリアはそのままにしたい。&lt;br /&gt;
-1. &lt;code&gt;$ git reset --soft HEAD~&lt;/code&gt; : HEADの１つ前の状態に巻き戻す&lt;/p&gt;
-
-&lt;h3 id=&#34;mixed-リポジトリ-インデックスを変更&#34;&gt;&amp;ndash;mixed : リポジトリ・インデックスを変更&lt;/h3&gt;
-
-&lt;p&gt;コミットは取り消したいけど、ワーキングエリアだけはそのままにしたい。&lt;br /&gt;
-1. &lt;code&gt;$ git reset --mixed HEAD~&lt;/code&gt; : HEADの１つ前の状態に巻き戻す&lt;/p&gt;
-
-&lt;h3 id=&#34;hard-まったくなかったことにしたい&#34;&gt;&amp;ndash;hard : まったくなかったことにしたい&lt;/h3&gt;
-
-&lt;p&gt;コミットも取り消して、ワーキングエリアの状態も戻したい。&lt;br /&gt;
-1. &lt;code&gt;$ git reset --hard 40eeb32&lt;/code&gt; : HEADの１つ前のハッシュ値でも可&lt;/p&gt;
-
-&lt;h2 id=&#34;直近のいくつかのコミットを取り消したい-途中のいくつかだけはrebaseで&#34;&gt;直近のいくつかのコミットを取り消したい（途中のいくつかだけはrebaseで）&lt;/h2&gt;
-
-&lt;h3 id=&#34;soft-リポジトリだけ変更-1&#34;&gt;&amp;ndash;soft : リポジトリだけ変更&lt;/h3&gt;
-
-&lt;p&gt;コミットは取り消したいけど、インデックス・ワーキングエリアはそのままにしたい。&lt;br /&gt;
-1. &lt;code&gt;$ git reset --soft HEAD~3&lt;/code&gt; : HEADの3つ前の状態に巻き戻す&lt;/p&gt;
-
-&lt;h3 id=&#34;mixed-リポジトリ-インデックスを変更-1&#34;&gt;&amp;ndash;mixed : リポジトリ・インデックスを変更&lt;/h3&gt;
-
-&lt;p&gt;コミットは取り消したいけど、ワーキングエリアだけはそのままにしたい。&lt;br /&gt;
-1. &lt;code&gt;$ git reset --mixed HEAD~3&lt;/code&gt; : HEADの3つ前の状態に巻き戻す&lt;/p&gt;
-
-&lt;h3 id=&#34;hard-全エリアを変更&#34;&gt;&amp;ndash;hard : 全エリアを変更&lt;/h3&gt;
-
-&lt;p&gt;コミットも取り消して、ワーキングエリアの状態も戻したい。&lt;br /&gt;
-1. &lt;code&gt;$ git reset --hard 40eeb32&lt;/code&gt; : その状態にしたいコミットのハッシュ値でも可&lt;/p&gt;
-
-&lt;h2 id=&#34;あのコミットをなくしたい&#34;&gt;あのコミットをなくしたい&lt;/h2&gt;
-
-&lt;p&gt;途中のあのコミットだけを削除したい場合。&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;code&gt;$ git log --oneline&lt;/code&gt; : 対象コミットの特定&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ git rebase -i &amp;lt;対象コミットの**１つ前**のハッシュ値&amp;gt;&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;対象のコミットの行のコマンドを「pick → d」に変更して、保存・終了&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;pre&gt;&lt;code&gt;$ git log --decorate --oneline
-1588243 (HEAD -&amp;gt; master) 3 bye
-2620a4a 2 morning ← このコミットを削除したい
-40eeb32 1st hello
-
-// rebase
-$ git rebase -i HEAD~2（or 40eeb32）
-... エディタが起動
-pick 2620a4a 2 morning
-pick 1588243 3 bye
-
-... 対象コミットのpickをdに編集して、保存・終了
-d 2620a4a 2 morning ← 削除 : d
-pick 1588243 3 bye
-
-// コンフリクトが発生した場合は、解消して
-$ git add .
-$ git rebase --continue
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;コミットをまとめたい&#34;&gt;コミットをまとめたい&lt;/h2&gt;
-
-&lt;p&gt;いくつかのコミットをまとめて、１つのコミットにしたい場合。&lt;br /&gt;
-&lt;strong&gt;１つ前&lt;/strong&gt; のコミットと統合される。&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;code&gt;$ git log --oneline&lt;/code&gt; : 対象コミットの特定&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ git rebase -i &amp;lt;対象コミットの**１つ前**のハッシュ値&amp;gt;&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;（メッセージ変更あり）まとめたいコミット行のコマンドを「s」に変更して、保存・終了&lt;/li&gt;
-&lt;li&gt;（メッセージ変更なし）まとめたいコミット行のコマンドを「f」に変更して、保存・終了&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@git&#34;&gt;$ git log --oneline
-a990297 4 commit
-72698fd 3 commit ← これと
-38517d7 2 commit ← これを統合したい
-1736724 1 commit
-
-// rebase開始
-$ git rebase -i HEAD~3
-pick 38517d7 2 commit
-pick 72698fd 3 commit　← これを２に統合（１つ前に統合されるので）
-pick a990297 4 commit
-
-// 編集して、保存・終了
-pick 38517d7 2 commit
-s 72698fd 3 commit → s:メッセージ編集あり／f:なし（１つ前のメッセージが適用）
-pick a990297 4 commit
-
-// メッセージ編集が表示される
-# This is a combination of 2 commits.
-# This is the 1st commit message:
-
-2 commit
-
-# This is the commit message #2:
-
-3 commit
-
-// 編集して、保存・終了
-2-3 commit
-
-// 確認
-$ git log --oneline
-f91881d 4 commit
-a7c420d 2-3 commit
-1736724 1 commit
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;コミットの順番を変更したい&#34;&gt;コミットの順番を変更したい&lt;/h2&gt;
-
-&lt;p&gt;コミットの順番を入れ替えたい場合。&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;code&gt;$ git log --oneline&lt;/code&gt; : 対象コミットの特定&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ git rebase -i &amp;lt;対象コミットの**１つ前**のハッシュ値&amp;gt;&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;コミットの行を入れ替えて、保存・終了&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@git&#34;&gt;$ git log --oneline
-f02a616 4 commit
-9b399bc 3 commit file add ← これと
-12f55d3 2 commit          ← これの順番を入れ替えたい
-8a337e8 1 commit
-
-// rebase開始
-$ git rebase -i HEAD~3
-pick 12f55d3 2 commit
-pick 9b399bc 3 commit file add ← この行を2 commitの上に移動する
-pick f02a616 4 commit
-
-// 編集し、保存・終了
-pick 9b399bc 3 commit file add
-pick 12f55d3 2 commit
-pick f02a616 4 commit
-
-// 結果
-$ git log --oneline
-d7f14ec 4 commit
-00d216a 2 commit
-a22ab93 3 commit file add
-8a337e8 1 commit
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>コミットをミスった時の対処方法。 コミットのハッシュ値が変わるので、push前のコミットに対して行うこと。 独り開発の場合は、$ git push -f &amp;lt;リ</description>
     </item>
     
     <item>
@@ -1021,71 +98,7 @@ a22ab93 3 commit file add
       <pubDate>Fri, 16 Sep 2016 16:21:06 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/linux-login-user-management/</guid>
-      <description>
-
-&lt;p&gt;Linuxにはrootユーザーが必ず存在するため、外部からのログインは一般ユーザーのみに限定し、rootユーザーを禁止する。&lt;/p&gt;
-
-&lt;h2 id=&#34;sshでのrootログインの禁止&#34;&gt;SSHでのrootログインの禁止&lt;/h2&gt;
-
-&lt;p&gt;/etc/ssh/sshd_configファイルを以下に変更。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;PermitRootLogin no
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;ログイン可能なユーザーを限定&#34;&gt;ログイン可能なユーザーを限定&lt;/h2&gt;
-
-&lt;p&gt;/etc/ssh/sshd_configファイルに以下を追記。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# AllowUsers [ユーザー名]
-AllowUsers centuser
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;おまけ-sshポートの変更&#34;&gt;（おまけ）SSHポートの変更&lt;/h2&gt;
-
-&lt;p&gt;/etc/ssh/sshd_configファイルを以下に変更。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# Port [ポート番号]
-Port 10022
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;変更後はsshサーバーの再起動&#34;&gt;変更後はSSHサーバーの再起動&lt;/h2&gt;
-
-&lt;p&gt;設定ファイルの変更後は、SSKサーバーを再起動させる。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo systemctl restart sshd.service
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;過去のログイン情報を確認する&#34;&gt;過去のログイン情報を確認する&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;$ last&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ last
-centuser pts/0        219.118.174.90   Fri Sep 16 15:59   still logged in
-centuser pts/0        219.118.174.90   Fri Sep 16 15:54 - 15:54  (00:00)
-centuser pts/1        219.118.174.90   Thu Sep 15 19:20 - 19:35  (00:15)
-centuser pts/0        219.118.174.90   Thu Sep 15 16:06 - 21:01  (04:54)
-centuser pts/1        219.118.174.90   Tue Sep 13 17:34 - 19:50  (02:16)
-centuser pts/0        219.118.174.90   Tue Sep 13 16:57 - 19:08  (02:11)
-reboot   system boot  3.10.0-327.28.3. Tue Sep 13 16:56 - 16:16 (2+23:19)
-centuser pts/0        219.118.174.90   Tue Sep 13 16:48 - 16:56  (00:07)
-...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;ユーザーごとの最終ログインを確認する&#34;&gt;ユーザーごとの最終ログインを確認する&lt;/h2&gt;
-
-&lt;p&gt;ユーザーごとの最終ログインを表示することによって、覚えのないユーザーのログインを発見できる。&lt;br /&gt;
-&lt;code&gt;$ lastlog&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ lastlog
-ユーザ名         ポート   場所             最近のログイン
-root             pts/0                     金  9月 16 15:54:17 +0900 2016
-bin                                        **一度もログインしていません**
-...
-centuser         pts/0    219.118.174.90   金  9月 16 15:59:23 +0900 2016
-apache                                     **一度もログインしていません**
-mysql                                      **一度もログインしていません**
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>Linuxにはrootユーザーが必ず存在するため、外部からのログインは一般ユーザーのみに限定し、rootユーザーを禁止する。 SSHでのroo</description>
     </item>
     
     <item>
@@ -1094,120 +107,7 @@ mysql                                      **一度もログインしていま�
       <pubDate>Thu, 15 Sep 2016 19:08:29 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/linux-port-confirm/</guid>
-      <description>
-
-&lt;p&gt;開いているポートの確認方法。&lt;br /&gt;
-&lt;br&gt;
-ポートはサービス（ソフトウェア）が使用し、そのポートを通る通信をFireWallが監視（制御）している。&lt;br /&gt;
-なので、サービスの登録（ソフトのインストール）をするとポートが使用され、FireWallでそのポートを開放してやると、外部との通信が可能になる。&lt;/p&gt;
-
-&lt;h2 id=&#34;netstat-ss&#34;&gt;netstat（ss）&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;$ netstat&lt;/code&gt;　または &lt;code&gt;$ ss&lt;/code&gt;コマンドで、現在開いているポートを一覧表示することができる。&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;オプション&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;-l&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Listenしているポートのみ表示&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;-t&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;TCPを表示&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;-u&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;UDPを表示&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;-n&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;ポートやホストを数値で表示&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;-p&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;ポートを開いているプロセスを表示（sudo）&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;-4&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;IPv4のみ&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;-6&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;IPv6のみ&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 開いているポートと使用しているプロセス（IPv4）
-$ sudo netstat -ltup4
-sudo netstat -ltup4
-Active Internet connections (only servers)
-Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
-tcp        0      0 0.0.0.0:mysql           0.0.0.0:*               LISTEN      2015/mysqld
-tcp        0      0 localhost:smtp          0.0.0.0:*               LISTEN      2282/master
-tcp        0      0 0.0.0.0:10022           0.0.0.0:*               LISTEN      1274/sshd
-udp        0      0 localhost:323           0.0.0.0:*                           658/chronyd
-
-# 上記を数値で
-sudo netstat -ltunp4
-Active Internet connections (only servers)
-Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
-tcp        0      0 0.0.0.0:3306            0.0.0.0:*               LISTEN      2015/mysqld
-tcp        0      0 127.0.0.1:25            0.0.0.0:*               LISTEN      2282/master
-tcp        0      0 0.0.0.0:10022           0.0.0.0:*               LISTEN      1274/sshd
-udp        0      0 127.0.0.1:323           0.0.0.0:*                           658/chronyd
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;例えば&#34;&gt;例えば&lt;/h2&gt;
-
-&lt;p&gt;例えばhttps通信を許可してやるには、&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;mod_sslをインストール
-
-&lt;ul&gt;
-&lt;li&gt;$ sudo yum install mod_ssl&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;SSLの設定
-
-&lt;ul&gt;
-&lt;li&gt;/etc/httpd/conf.d/sl.conf&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Apaceを再起動する
-
-&lt;ul&gt;
-&lt;li&gt;$ sudo systemctl restart httpd&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;ポート状態を確認する
-
-&lt;ul&gt;
-&lt;li&gt;$ sudo netstat -ltupn&lt;/li&gt;
-&lt;li&gt;443がLISTEN状態になっているか？&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;FireWallにサービスの許可を追加
-
-&lt;ul&gt;
-&lt;li&gt;$ sudo firewall-cmd &amp;ndash;add-service=https&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;関連&#34;&gt;関連&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://mzgkworks.com/post/network-protocol-ipadress/&#34;&gt;ネットワークの基礎知識（プロトコル・IPアドレス・サブネットマスク・ポート）&lt;/a&gt;&lt;/p&gt;
-</description>
+      <description>開いているポートの確認方法。 ポートはサービス（ソフトウェア）が使用し、そのポートを通る通信をFireWallが監視（制御）している。 なので、</description>
     </item>
     
     <item>
@@ -1216,191 +116,7 @@ udp        0      0 127.0.0.1:323           0.0.0.0:*                           
       <pubDate>Thu, 15 Sep 2016 18:57:14 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/centos7-systemctl-service/</guid>
-      <description>
-
-&lt;p&gt;CentOS 7のsystemdサービス管理のメモ。&lt;br /&gt;
-サービスの稼働状態や自動起動設定の確認・操作。　　&lt;/p&gt;
-
-&lt;h2 id=&#34;unitの状態&#34;&gt;UNITの状態&lt;/h2&gt;
-
-&lt;h3 id=&#34;確認-一覧&#34;&gt;確認 : 一覧&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;$ systemctl list-unit&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;ACTIVE, SUBが実行状態を表している。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# UNITのタイプがServiceのみを確認
-$ systemctl list-units -t service
-UNIT                 LOAD   ACTIVE SUB     DESCRIPTION
-auditd.service       loaded active running Security Auditing Service
-chronyd.service      loaded active running NTP client/server
-...
-● kdump.service      loaded failed failed  Crash recovery kernel arming
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;確認-個別&#34;&gt;確認 : 個別&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;$ systemctl is-active [UNIT名]&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ systemctl is-active yum-cron
-active
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;確認-個別詳細&#34;&gt;確認 : 個別詳細&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;$ systemctl status [UNIT名]&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ systemctl status yum-cron
-● yum-cron.service - Run automatic yum updates as a cron job
-   Loaded: loaded (/usr/lib/systemd/system/yum-cron.service; enabled; vendor preset: disabled)
-   Active: active (exited) since 火 2016-09-13 16:56:49 JST; 2 days ago
-  Process: 644 ExecStart=/bin/touch /var/lock/subsys/yum-cron (code=exited, status=0/SUCCESS)
- Main PID: 644 (code=exited, status=0/SUCCESS)
-   CGroup: /system.slice/yum-cron.service
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;操作-起動-停止-再起動-強制終了&#34;&gt;操作（起動・停止・再起動・強制終了）&lt;/h3&gt;
-
-&lt;p&gt;UNITの操作。&lt;br /&gt;
-&lt;code&gt;$ sudo systemctl [UNITコマンド] [UNIT名]&lt;/code&gt;&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;UNITコマンド&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;start&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;起動させる&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;stop&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;停止させる&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;restart&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;再起動させる&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;kill&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;強制終了させる&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&#34;自動起動設定&#34;&gt;自動起動設定&lt;/h2&gt;
-
-&lt;h3 id=&#34;確認-一覧-1&#34;&gt;確認 : 一覧&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;$ systemctl list-unit-files&lt;/code&gt;&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;STATE&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;enabled&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;自動起動 : 有効&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;disabled&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;自動起動 : 無効&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;static&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;自動起動 : 設定不可&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# UNITのタイプがServiceのみを確認
-$ systemctl list-unit-files -t service
-UNIT FILE                                   STATE
-arp-ethers.service                          disabled
-auditd.service                              enabled
-chrony-dnssrv@.service                      static
-dbus-org.freedesktop.hostname1.service      static
-...
-
-# grepへパイプで繋いで「enabled」のみを表示させる
-$ systemctl list-unit-files -t service | grep enabled
-UNIT FILE                                   STATE
-auditd.service                              enabled
-chronyd.service                             enabled
-...
-tuned.service                               enabled
-yum-cron.service                            enabled
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;確認-個別-1&#34;&gt;確認 : 個別&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;$ sudo systemctl is-enabled [Unit名]&lt;/code&gt;&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;状態&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;enabled&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;自動起動が有効&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;disabled&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;自動起動が無効&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# yum-cronの状態確認
-$ sudo systemctl is-active yum-cron
-enabled
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;操作-有効化-無効化&#34;&gt;操作（有効化・無効化）&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;$ sudo systemctl [UNITコマンド] [UNIT名]&lt;/code&gt;&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;UNITコマンド&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;enable&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;自動起動 : 有効化&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;disable&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;自動起動 : 無効化&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-</description>
+      <description>CentOS 7のsystemdサービス管理のメモ。 サービスの稼働状態や自動起動設定の確認・操作。 UNITの状態 確認 : 一覧 $ systemctl list-unit ACTIVE, SUBが実行状態を表し</description>
     </item>
     
     <item>
@@ -1409,48 +125,7 @@ enabled
       <pubDate>Mon, 12 Sep 2016 19:00:43 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/mac-symbolic-link/</guid>
-      <description>
-
-&lt;p&gt;Macで使えるシンボリックリンクの操作メモ。&lt;br /&gt;
-ディレクトリやファイルを別の場所で管理したいが、ディレクトリ構成上の制約がある時とかに便利。&lt;/p&gt;
-
-&lt;h2 id=&#34;シンボリックリンク&#34;&gt;シンボリックリンク&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;元ファイル・ディレクトリと同様の操作ができる&lt;/li&gt;
-&lt;li&gt;エイリアスを違って &lt;code&gt;$ cd&lt;/code&gt; も可能&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;作成&#34;&gt;作成&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;絶対パス&lt;/strong&gt; が重要。&lt;br /&gt;
-&lt;code&gt;$ ln -s 元ファイル・ディレクトリの絶対パス リンク作成先のパス&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# ~/dotsfiles/.editorconfigファイルのシンボリックリンクを
-# ホームディレクトリに作成する
-$ ln -s ~/dotsfiles/.editorconfig ~
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;確認&#34;&gt;確認&lt;/h2&gt;
-
-&lt;p&gt;こんな感じで作成される。&lt;br /&gt;
-ファイル種類の「l」はシンボリックリンクを表す。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ ls -la ~
-...
-lrwxr-xr-x    1 usr  staff     35  9 12 18:29 .editorconfig -&amp;gt; /Users/usr/dotsfiles/.editorconfig
-...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;削除&#34;&gt;削除&lt;/h2&gt;
-
-&lt;p&gt;作成されたシンボリックリンクを削除する。&lt;br /&gt;
-&lt;code&gt;$ unlink シンボリックリンクのパス&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# 削除
-$ unlink ~/.editorconfig
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>Macで使えるシンボリックリンクの操作メモ。 ディレクトリやファイルを別の場所で管理したいが、ディレクトリ構成上の制約がある時とかに便利。 シン</description>
     </item>
     
     <item>
@@ -1459,137 +134,7 @@ $ unlink ~/.editorconfig
       <pubDate>Fri, 09 Sep 2016 17:35:24 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/linux-service-systemctl/</guid>
-      <description>
-
-&lt;h2 id=&#34;サービスの管理&#34;&gt;サービスの管理&lt;/h2&gt;
-
-&lt;p&gt;サービス : OSから切り離し可能な、何らかの役割を持ったサブシステム。&lt;br /&gt;
-&lt;code&gt;$ systemctl サブコマンド サービス名&lt;/code&gt; で操作を行う。&lt;br /&gt;
-CentOS 6までだと &lt;code&gt;$ service&lt;/code&gt; コマンド。&lt;/p&gt;
-
-&lt;h3 id=&#34;主なサブコマンド&#34;&gt;主なサブコマンド&lt;/h3&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;サブコマンド&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;start&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;サービスを開始する&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;stop&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;サービスを停止する&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;restart&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;サービスを再起動する&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;enable&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;システム起動時にサービスを自動開始する&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;disable&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;システム起動時にサービスが自動開始しないようにする&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;status&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;サービスの状態を表示する&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&#34;主なサービス&#34;&gt;主なサービス&lt;/h3&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;サービス名&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;firewalld.service&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;ファイヤーウォールサービス&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;crond.service&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;スケジュール処理サービス&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;cups.service&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;印刷サービス&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;postfix.service&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Postfix（メール）サービス&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;rsyslog.service&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;システムログサービス&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;sshd.service&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;SSHサーバー&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;httpd.service&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Webサーバー&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# postfixサービスの状態を確認
-$ systemctl status postfix.service
-● postfix.service - Postfix Mail Transport Agent
-   Loaded: loaded (/usr/lib/systemd/system/postfix.service; enabled; vendor preset: disabled)
-   Active: active (running) since 金 2016-09-09 16:17:13 JST; 1h 12min ago
-...
-...
-
-# postfixサービスを停止
-sudo systemctl stop postfix.service
-[sudo] password for centuser:
-
-# 確認
-systemctl status postfix.service
-● postfix.service - Postfix Mail Transport Agent
-   Loaded: loaded (/usr/lib/systemd/system/postfix.service; enabled; vendor preset: disabled)
-   Active: inactive (dead) since 金 2016-09-09 17:31:09 JST; 17s ago
-...
-
-# 開始
-# postfixサービスを停止
-sudo systemctl start postfix.service
-[sudo] password for centuser:
-
-# 確認
-systemctl status postfix.service
-● postfix.service - Postfix Mail Transport Agent
-   Loaded: loaded (/usr/lib/systemd/system/postfix.service; enabled; vendor preset: disabled)
-   Active: active (running) since 金 2016-09-09 17:32:26 JST; 33s ago
-...
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>サービスの管理 サービス : OSから切り離し可能な、何らかの役割を持ったサブシステム。 $ systemctl サブコマンド サービス名 で操作を行う。 CentOS 6までだと $ service コ</description>
     </item>
     
     <item>
@@ -1598,164 +143,7 @@ systemctl status postfix.service
       <pubDate>Fri, 09 Sep 2016 17:06:23 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/linux-check-system-status/</guid>
-      <description>
-
-&lt;h2 id=&#34;システム負荷の確認&#34;&gt;システム負荷の確認&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;uptime&lt;/code&gt; コマンドを使用して、システム負荷を確認することができる。&lt;br /&gt;
-「load average:」部分が１分、５分、１５分の平均負荷を表す。&lt;br /&gt;
-この数値がCPU数（コア数）以下であれば、CPU処理待ちなく特に問題ない状態。&lt;br /&gt;
-オーバーが一時的ではなく継続しているようなら、処理見直し or スケールアップを検討。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ uptime
-# 現在時刻・稼働時間・ログインユーザー数・１分、５分、１５分の平均負荷
- 16:19:01 up 2 min,  1 user,  load average: 0.09, 0.08, 0.04
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;ディスクの使用状況&#34;&gt;ディスクの使用状況&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;$ df -h&lt;/code&gt; コマンドを使用して、ディスクの使用状況を確認することができる。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# -h : サイズを見やすくしてくれる
-# tmpfs : この文字列がつくものは仮想ファイルシステムなので無視してよい
-$ df -h
-ファイルシス                            サイズ  使用  残り 使用% マウント位置
-/dev/mapper/centos_xxx-root    50G  1.4G   49G    3% /  # ← /ディレクトリ
-devtmpfs                                  486M     0  486M    0% /dev
-tmpfs                                     497M     0  497M    0% /dev/shm
-tmpfs                                     497M  6.6M  490M    2% /run
-tmpfs                                     497M     0  497M    0% /sys/fs/cgroup
-/dev/vda1                                 497M  126M  371M   26% /boot
-/dev/mapper/centos_xxx-home    48G   33M   48G    1% /home  # ← /homeディレクトリ
-tmpfs                                     100M     0  100M    0% /run/user/1000
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;メモリとスワップの確認&#34;&gt;メモリとスワップの確認&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;$ free -h&lt;/code&gt; コマンドを使用して、メモリとスワップの使用状況が確認できる。&lt;br /&gt;
-スワップが常態で使われているような場合、メモリが不足していると考えられる。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ free -h
-              total        used        free      shared  buff/cache   available
-Mem:           992M         85M        786M        6.5M        121M        777M
-Swap:          2.0G          0B        2.0G
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;項目&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;total&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;合計&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;used&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;利用中&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;free&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;未使用&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;shared&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;仮想的な共有メモリ&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;buff/cache&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;バッファ及びキャッシュ&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;available&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;アプリケーション起動時にスワップなしで使えるメモリ&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;メモリとディスクのアクセス速度の差を小さくするための仕組みとして、バッファとキャッシュがある。&lt;/p&gt;
-
-&lt;h3 id=&#34;バッファ&#34;&gt;バッファ&lt;/h3&gt;
-
-&lt;p&gt;ディスクへデータを書き込む際に、いったんメモリ上のバッファ領域に書き込んだ時点で書き込み完了とし、後からバックグランドで実際にディスクへ書き込みを行う。&lt;/p&gt;
-
-&lt;h3 id=&#34;キャッシュ&#34;&gt;キャッシュ&lt;/h3&gt;
-
-&lt;p&gt;ディスクからいったん読み出したデータをメモリ上のキャッシュ領域に残しておき、同じデータが再度アクセスされた場合はメモリ上のデータを利用する。&lt;/p&gt;
-
-&lt;h2 id=&#34;実行中のプロセスを確認&#34;&gt;実行中のプロセスを確認&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;$ ps aux&lt;/code&gt; コマンドで現在実行中のプログラム（プロセス）の確認ができる。&lt;br /&gt;
-&lt;code&gt;| less&lt;/code&gt; コマンドへパイプしたり、&lt;code&gt;| grep 検索名&lt;/code&gt; コマンドへパイプして確認する。&lt;br /&gt;
-&lt;strong&gt;オプションには「-」をつけない&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# sshdを含むプロセスを表示する
-# ユーザー・プロセスID・CPU占有率・メモリ占有率・仮想メモリ使用サイズ・物理メモリ使用サイズ
-# 端末・状態・開始・稼働時間・コマンド
-$ ps aux | grep sshd
-root      1268  0.0  0.3  82560  3600 ?        Ss   16:17   0:00 /usr/sbin/sshd -D
-root      2408  0.0  0.4 140788  5004 ?        Ss   16:17   0:00 sshd: centuser [priv]
-centuser  2412  0.0  0.2 140788  2148 ?        S    16:17   0:00 sshd: centuser@pts/0
-centuser  2446  0.0  0.0 112668   980 pts/0    S+   16:46   0:00 grep --color=auto sshd
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;プロセスの操作&#34;&gt;プロセスの操作&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;$ kill&lt;/code&gt; コマンドで、不要なプロセスであったりエラーで終了しないプロセスを停止することができる。&lt;br /&gt;
-TEAMを送ってもプロセスが反応しない場合は、KILLシグナルを送る。&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;シグナルID&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;シグナル名&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;動作&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;9&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;KILL&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;強制終了&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;15&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;TERM&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;終了&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;18&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;CONT&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;再開&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;19&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;STOP&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;一時停止&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# kill シグナルID プロセスID
-$ kill -15 2412
-
-# kill -s  シグナル名 プロセスID
-$ kill -s KILL 2412
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>システム負荷の確認 uptime コマンドを使用して、システム負荷を確認することができる。 「load average:」部分が１分、５分、１５分の平均負荷を</description>
     </item>
     
     <item>
@@ -1764,148 +152,70 @@ $ kill -s KILL 2412
       <pubDate>Fri, 09 Sep 2016 15:51:31 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/linux-package-management-yum/</guid>
-      <description>
-
-&lt;h2 id=&#34;パッケージ&#34;&gt;パッケージ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Linuxでは「パッケージ」という単位でソフトウェアを管理している&lt;/li&gt;
-&lt;li&gt;実行プログラム・設定ファイル・ドキュメントなどが格納されている&lt;/li&gt;
-&lt;li&gt;形式はディストリビューションによって複数存在するが、互換性はない
-
-&lt;ul&gt;
-&lt;li&gt;RPM : Red Hat系（RHEL、CentOS、Fedora、openSUSEなど）&lt;/li&gt;
-&lt;li&gt;deb : Debian系（Debian GNU/Linux、Ubuntuなど）&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;パッケージ間で依存関係がある&lt;/li&gt;
-&lt;li&gt;手動で依存関係を管理するのは大変なので、通常は「パッケージ管理システム」を使う
-
-&lt;ul&gt;
-&lt;li&gt;RPM系 : YUM&lt;/li&gt;
-&lt;li&gt;deb系 : APT&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;yum&#34;&gt;YUM&lt;/h2&gt;
-
-&lt;p&gt;CentOSのRPMパッケージを管理するパッケージ管理システム。&lt;br /&gt;
-主な機能としては&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;面倒な依存関係等を制御&lt;/li&gt;
-&lt;li&gt;パッケージをインターネット上で検索&lt;/li&gt;
-&lt;li&gt;必要なパッケージをインターネット上から自動でダウンロード&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;yumコマンド&#34;&gt;yumコマンド&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;$ sudo yum サブコマンド パッケージ名&lt;/code&gt;&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;サブコマンド&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;説明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;update&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;システム全体をアップデートする&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;install パッケージ名&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;指定したパッケージをインストールする&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;remove パッケージ名&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;指定したパッケージをアンインストールする&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;update パッケージ名&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;指定パッケージをアップデートする&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;list&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;パッケージを一覧表示する（未インストールも含む）&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;info パッケージ名&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;指定したパッケージの情報を表示する&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;search &amp;ldquo;キーワード&amp;rdquo;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;指定したキーワードでパッケージを検索する&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&#34;システムの自動アップデート&#34;&gt;システムの自動アップデート&lt;/h2&gt;
-
-&lt;p&gt;yumコマンドを使ったアップデートを自動で行う設定。&lt;br /&gt;
-「yum-cron」というパッケージを使用する。&lt;/p&gt;
-
-&lt;h3 id=&#34;インストール&#34;&gt;インストール&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;$ sudo yum install yum-cron
-[sudo] password for centuser:
-...
-...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;設定&#34;&gt;設定&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;/etc/yum/yun-cron.conf&lt;/code&gt; ファイルの編集を行う。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;自動更新する内容
-
-&lt;ul&gt;
-&lt;li&gt;全部・セキュリティーのみなど&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;自動更新するか
-
-&lt;ul&gt;
-&lt;li&gt;する・しない&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;[commands]
-#  What kind of update to use:
-# default                            = yum upgrade
-# security                           = yum --security upgrade
-# security-severity:Critical         = yum --sec-severity=Critical upgrade
-# minimal                            = yum --bugfix update-minimal
-# minimal-security                   = yum --security update-minimal
-# minimal-security-severity:Critical =  --sec-severity=Critical update-minimal
-update_cmd = default  # ← 範囲を指定（default 〜 minimal-security-severity:Critical）
-
-...
-...
-
-# Whether updates should be applied when they are available.  Note
-# that download_updates must also be yes for the update to be applied.
-apply_updates = no    # ← yes / no : するしない
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;実行と次回自動起動&#34;&gt;実行と次回自動起動&lt;/h3&gt;
-
-&lt;p&gt;yum-cronサービスの起動と、次回からのシステム起動時に自動起動するように設定する。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@bash&#34;&gt;# yum-cron.serviceの起動
-$ sudo systemctl start yum-cron.service
-
-# システム起動時の自動起動設定
-$ sudo systemctl enable yum-cron.service
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>パッケージ Linuxでは「パッケージ」という単位でソフトウェアを管理している 実行プログラム・設定ファイル・ドキュメントなどが格納されている 形</description>
+    </item>
+    
+    <item>
+      <title>Linuxでrootユーザーへの切替えやroot権限で実行する方法</title>
+      <link>http://mzgkworks.com/post/linux-su-sudo/</link>
+      <pubDate>Fri, 09 Sep 2016 14:39:27 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-su-sudo/</guid>
+      <description>rootユーザーに切り替える ログイン中のユーザーをrootユーザーに切り替える。 管理者のパスワードが必要。 オプション「-」をつけると、カレン</description>
+    </item>
+    
+    <item>
+      <title>CentOS 7でのネットワーク設定・確認方法</title>
+      <link>http://mzgkworks.com/post/linux-centos7-network-setting/</link>
+      <pubDate>Thu, 08 Sep 2016 18:45:54 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-centos7-network-setting/</guid>
+      <description>ネットワークインターフェース CentOS 7では、ネットワークの処理を「NetworkManager」というサービスが担っている。 NetworkMana</description>
+    </item>
+    
+    <item>
+      <title>パーミッションの操作方法（記号と数値）</title>
+      <link>http://mzgkworks.com/post/linux-permission-operation/</link>
+      <pubDate>Wed, 07 Sep 2016 19:35:21 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-permission-operation/</guid>
+      <description>所有者と所有グループ 基本的にファイルやディレクトリを作成したユーザーが所有者となる。 所有グループは、ユーザーを作成した際に同じ名前で作成され</description>
+    </item>
+    
+    <item>
+      <title>bashでの圧縮と展開（zip, gz, bz2, xz, tar）</title>
+      <link>http://mzgkworks.com/post/bash-zip-unzip/</link>
+      <pubDate>Wed, 07 Sep 2016 17:18:07 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/bash-zip-unzip/</guid>
+      <description>圧縮と展開 よく使われる拡張子とコマンド。 圧縮率 : .zip &amp;lt; .gz &amp;lt; .bz2 &amp;lt; .xz 拡張子 圧縮コマンド 展開コマンド .zip zip unzip .gz gzip gunzip .bz2 bzip2 bunzip2 .xz xz xz -d ファイルの圧縮と展開 基</description>
+    </item>
+    
+    <item>
+      <title>bashでディレクトリ・ファイルのコピー・移動・削除を行う</title>
+      <link>http://mzgkworks.com/post/bash-directory-operation/</link>
+      <pubDate>Wed, 07 Sep 2016 17:09:45 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/bash-directory-operation/</guid>
+      <description>cd : ディレクトリ移動 引数で指定したディレクトリへ移動する。 他に便利な使い方としては、 # 引数なし : ホームディレクトリに移動 $ cd # - : １つ前の作</description>
+    </item>
+    
+    <item>
+      <title>シェルでコマンドを打つ際の基本的な機能</title>
+      <link>http://mzgkworks.com/post/shell-command-basic/</link>
+      <pubDate>Tue, 06 Sep 2016 18:50:36 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/shell-command-basic/</guid>
+      <description>bashでコマンドを打つ際の基本的な操作のメモ。 入力 補完（コマンド・ファイル名） tabキー : 補完 tabキー２回 : 候補の一覧を表示 履歴 Ctrl + P or</description>
+    </item>
+    
+    <item>
+      <title>Atom（vim-mode-plus）で、ノーマルモード移行時に日本語オフにする方法。</title>
+      <link>http://mzgkworks.com/post/atom-vim-normalmode-with-eisuu/</link>
+      <pubDate>Thu, 01 Sep 2016 15:34:24 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/atom-vim-normalmode-with-eisuu/</guid>
+      <description>Atomにvim-mode-plusをインストールして使っているが、ノーマルモードに移行する時に日本語入力モードを引きずったままになるのが面</description>
     </item>
     
   </channel>

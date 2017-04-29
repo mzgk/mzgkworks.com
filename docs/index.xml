@@ -2,12 +2,23 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>mzgkworks.com</title>
-    <link>http://mzgkworks.com/index.xml</link>
+    <link>http://mzgkworks.com/</link>
     <description>Recent content on mzgkworks.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Sat, 18 Mar 2017 11:47:00 +0900</lastBuildDate>
-    <atom:link href="http://mzgkworks.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 29 Apr 2017 18:01:49 +0900</lastBuildDate>
+    
+	<atom:link href="http://mzgkworks.com/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>AWS EBSスナップショットからのEC2リストア</title>
+      <link>http://mzgkworks.com/post/ec2-restore-from-ebs-snapshot/</link>
+      <pubDate>Sat, 29 Apr 2017 18:01:49 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/ec2-restore-from-ebs-snapshot/</guid>
+      <description>EC2の状態をある時点に巻き戻したい（ある時点のEC2を再現したい）時に、EBSのスナップショットからリストアする方法。 復元したい時点のスナ</description>
+    </item>
     
     <item>
       <title>SSHポートフォワーディングで、Windows → Linux → WindowsServerにRDP接続する</title>
@@ -15,49 +26,7 @@
       <pubDate>Sat, 18 Mar 2017 11:47:00 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/aws-windows-ssh-portfowarding/</guid>
-      <description>
-
-&lt;h2 id=&#34;やりたいこと&#34;&gt;やりたいこと&lt;/h2&gt;
-
-&lt;p&gt;作業PC（Windows7）のTeraTermを使って、AWS上のEC2（WindowsServer2016）へ踏み台サーバー（Linux:EC2）経由でRDP接続をする。&lt;br&gt;
-SSHポートフォワーディングの機能を利用する。&lt;/p&gt;
-
-&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;AWS EC2 : AmazonLinux -&amp;gt; 踏み台サーバー&lt;/li&gt;
-&lt;li&gt;AWS EC2 : Windows Server 2016 -&amp;gt; RDP接続先&lt;/li&gt;
-&lt;li&gt;Windows7 : ローカル作業PC TeraTerm4.9.4&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;準備&#34;&gt;準備&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;RDP接続先のWindowsServer（EC2）は、&lt;strong&gt;パブリックIPでなくても可&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;事前に、AWSコンソールから接続ボタンでWindowsServerのパスワードを取得しておく&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://mzgkworks.com/post/aws-ec2-windows-rdp/&#34;&gt;AWS EC2でWindowsインスタンスの起動とRDP接続&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;やり方&#34;&gt;やり方&lt;/h2&gt;
-
-&lt;ol&gt;
-&lt;li&gt;TeraTermで、踏み台EC2（Linux）にSSH接続&lt;/li&gt;
-&lt;li&gt;接続したら、上部メニューの［設定］-&amp;gt; ［SSH転送］を選択&lt;/li&gt;
-&lt;li&gt;SSHポート転送のダイアログが表示される -&amp;gt; ［追加］ボタン&lt;/li&gt;
-&lt;li&gt;［ローカルポート］: 適当なポート（13389）を入力&lt;/li&gt;
-&lt;li&gt;［リモート側ホスト］: RDP接続先のIP（WindowsServer EC2のプライベートIP）&lt;/li&gt;
-&lt;li&gt;［ポート］: RDP接続先のポート（3389）&lt;/li&gt;
-&lt;li&gt;［OK］&lt;/li&gt;
-&lt;li&gt;リモートデスクトップクライアント（mstsc）を起動&lt;/li&gt;
-&lt;li&gt;［コンピュータ］127.0.0.1:13389 -&amp;gt; ［接続］&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;strong&gt;※RDP中はTeraTermで踏み台に接続されている必要がある。&lt;/strong&gt;
-&lt;br&gt;&lt;br&gt;&lt;/p&gt;
-
-&lt;p&gt;久々に開発クライアントでWindows7 32bitを使わざるをえないことになったのでメモ。作業効率が悪い。&lt;br&gt;&lt;br&gt;
-以上&lt;/p&gt;
-</description>
+      <description>やりたいこと 作業PC（Windows7）のTeraTermを使って、AWS上のEC2（WindowsServer2016）へ踏み台サーバー（</description>
     </item>
     
     <item>
@@ -66,40 +35,7 @@ SSHポートフォワーディングの機能を利用する。&lt;/p&gt;
       <pubDate>Wed, 01 Mar 2017 14:37:33 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/aws-ec2-windows-rdp/</guid>
-      <description>
-
-&lt;p&gt;EC2インスタンスのOSをWindowsで作成し、RDP（リモートデスクトップ）接続する手順。&lt;br /&gt;
-いつもEC2はLinuxが多かったので、忘れないようにメモ。&lt;/p&gt;
-
-&lt;h2 id=&#34;インスタンス起動&#34;&gt;インスタンス起動&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;他OSと変わらず&lt;/li&gt;
-&lt;li&gt;Active Directory関係でいくつか追加項目あり&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;接続&#34;&gt;接続&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;EC2ダシュボード -&amp;gt; インスタンスを選択 -&amp;gt; 上部の「接続ボタン」&lt;/li&gt;
-&lt;li&gt;「インスタンスへの接続」画面が表示される&lt;/li&gt;
-&lt;li&gt;「パスワードの取得」ボタンを押下&lt;/li&gt;
-&lt;li&gt;インスタンス作成時に指定したキーペアファイルの場所を指定&lt;/li&gt;
-&lt;li&gt;「パスワードの復号」ボタンを押下&lt;/li&gt;
-&lt;li&gt;パスワードが表示される -&amp;gt; メモ or コピー&lt;/li&gt;
-&lt;li&gt;「リモートデスクトップファイルのダウンロード」ボタンを押下&lt;/li&gt;
-&lt;li&gt;.rdpファイルがダウンロードされる -&amp;gt; ダブルクリック -&amp;gt; 接続ボタンを押下&lt;/li&gt;
-&lt;li&gt;パスワードを入力　-&amp;gt; 接続&lt;/li&gt;
-&lt;li&gt;リモートコンピューターのIDを識別できません -&amp;gt; はい&lt;/li&gt;
-&lt;li&gt;インスタンスにリモートデスクトップ接続される&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;リモートデスクトップ環境でのctrl-alt-delete&#34;&gt;リモートデスクトップ環境でのCtrl + Alt + Delete&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Ctrl + Alt + End&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>EC2インスタンスのOSをWindowsで作成し、RDP（リモートデスクトップ）接続する手順。 いつもEC2はLinuxが多かったので、忘れな</description>
     </item>
     
     <item>
@@ -108,68 +44,7 @@ SSHポートフォワーディングの機能を利用する。&lt;/p&gt;
       <pubDate>Tue, 28 Feb 2017 17:53:18 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/aws-install-cli/</guid>
-      <description>
-
-&lt;p&gt;AWS CLI（コマンドラインインターフェイス）をインストールする方法。&lt;/p&gt;
-
-&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;macOS Sierra 10.12.3&lt;/li&gt;
-&lt;li&gt;Windows10&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;mac&#34;&gt;Mac&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Homebrewを使ってインストールする&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;# Homebrewアップデート
-$ brew update
-
-# Homebrewに存在するか確認
-$ brew search awscli
-awscli
-
-# インストール
-$ brew install awscli
-...
-==&amp;gt; Summary
-🍺  /usr/local/Cellar/awscli/1.11.55: 3,780 files, 32.7M
-
-# 確認
-$ aws --version
-aws-cli/1.11.55 Python/2.7.10 Darwin/16.4.0 botocore/1.5.18
-
-# 設定
-$ aws configure
-AWS Access Key ID [None]: accessKeys.csvの値
-AWS Secret Access Key [None]: accessKeys.csvの値
-Default region name [None]: ap-northeast-1
-Default output format [None]: json
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;windows&#34;&gt;Windows&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;アマゾンWebサービスのツール : &lt;a href=&#34;https://aws.amazon.com/jp/tools/&#34;&gt;https://aws.amazon.com/jp/tools/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;コマンドラインツール -&amp;gt; インストール&lt;/li&gt;
-&lt;li&gt;左ペイン : Installing the AWS CLIをクリック&lt;/li&gt;
-&lt;li&gt;左ペイン : Windowsをクリック&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://docs.aws.amazon.com/cli/latest/userguide/awscli-install-windows.html&#34;&gt;Download the AWS CLI MSI installer for Windows (64-bit)&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;AWSCLI64.msiがダウンロードされる&lt;/li&gt;
-&lt;li&gt;ダブルクリックしてインストール&lt;/li&gt;
-&lt;li&gt;完了後に再起動&lt;/li&gt;
-&lt;li&gt;コマンドプロンプトから &lt;code&gt;&amp;gt; aws configure&lt;/code&gt; で初期設定を行う&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;aws-cliリファレンス&#34;&gt;AWS CLIリファレンス&lt;/h2&gt;
-
-&lt;p&gt;リファレンスの場所は以下。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://docs.aws.amazon.com/cli/latest/reference/&#34;&gt;http://docs.aws.amazon.com/cli/latest/reference/&lt;/a&gt;&lt;/p&gt;
-</description>
+      <description>AWS CLI（コマンドラインインターフェイス）をインストールする方法。 環境 macOS Sierra 10.12.3 Windows10 Mac Homebrewを使ってインストールする # Homebrewア</description>
     </item>
     
     <item>
@@ -178,25 +53,7 @@ Default output format [None]: json
       <pubDate>Tue, 28 Feb 2017 16:55:07 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/aws-change-timezone-on-linux/</guid>
-      <description>
-
-&lt;p&gt;EC2インスタンスを作成した際に、タイムゾーンをUTC -&amp;gt; JSTに変更する方法。&lt;br /&gt;
-（Amazon Linux限定ではない。）&lt;/p&gt;
-
-&lt;h2 id=&#34;タイムゾーンを変更する&#34;&gt;タイムゾーンを変更する&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;# 確認
-$ date
-2017年  2月 28日 火曜日 01:06:29 UTC
-
-# UTC -&amp;gt; JSTに変更
-$ sudo cp /usr/share/zoneinfo/Japan /etc/localtime
-
-# 確認
-$ date
-2017年  2月 28日 火曜日 10:07:48 JST
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>EC2インスタンスを作成した際に、タイムゾーンをUTC -&amp;gt; JSTに変更する方法。 （Amazon Linux限定ではない。） タイムゾーンを変更する</description>
     </item>
     
     <item>
@@ -205,137 +62,7 @@ $ date
       <pubDate>Tue, 28 Feb 2017 16:28:32 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/aws-automatically-create-snapshot-of-ec2/</guid>
-      <description>
-
-&lt;p&gt;EC2のスナップショットを自動（AWS CLI + Cron）で採取するための設定方法。&lt;/p&gt;
-
-&lt;h2 id=&#34;手順&#34;&gt;手順&lt;/h2&gt;
-
-&lt;ol&gt;
-&lt;li&gt;アクセス権（EC2FullAccess）があるIAMユーザーで、AWS CLIをセットアップ&lt;/li&gt;
-&lt;li&gt;EC2上でawsコマンドを実行して、スナップショットが作成されていることを確認&lt;/li&gt;
-&lt;li&gt;awsコマンドをシェルスクリプトファイルにして、EC2のcrontabに設定&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&#34;1-aws-cliのセットアップ&#34;&gt;1. AWS CLIのセットアップ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;IAMダッシュボードで、使用するIAMユーザーを選択&lt;/li&gt;
-&lt;li&gt;認証情報タブ -&amp;gt; アクセスキーの作成 -&amp;gt; 新規アクセスキーが作成され、.csvのダウンロードができる&lt;/li&gt;
-&lt;li&gt;EC2にsshでログイン&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;# EC2（Amazon Linux）上で、AWS CLIの初期設定
-$ aws configure
-AWS Access Key ID [None]: .csvのAccess key ID
-AWS Secret Access Key [None]: .csvのSecret access key
-Default region name [None]: ap-northeast-1
-Default output format [None]: json
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;2-ec2のスナップショットを採取確認&#34;&gt;2. EC2のスナップショットを採取確認&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;EC2ダッシュボードで対象インスタンスの情報を確認する
-
-&lt;ul&gt;
-&lt;li&gt;EC2.Name : 対象のEC2インスタンス&lt;/li&gt;
-&lt;li&gt;EBS.ID : vol-xxxxxxxxxc0c&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;対象のEC2にssh接続をする&lt;/li&gt;
-&lt;li&gt;以下のawsコマンドを実行する&lt;/li&gt;
-&lt;li&gt;コマンド実行後に、EC2ダッシュボードでスナップショットを確認すると作成を実行している&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;# スナップショットを作成する
-$ aws ec2 create-snapshot --volume-id vol-xxxxxxxxxc0c --description &amp;quot;説明&amp;quot;
-
-# 結果が返ってくる
-{
-    &amp;quot;Description&amp;quot;: &amp;quot;入力した説明&amp;quot;,
-    &amp;quot;Encrypted&amp;quot;: false,
-    &amp;quot;VolumeId&amp;quot;: &amp;quot;vol-xxxxxxxxxc0c&amp;quot;,
-    &amp;quot;State&amp;quot;: &amp;quot;pending&amp;quot;,
-    &amp;quot;VolumeSize&amp;quot;: 8,
-    &amp;quot;Progress&amp;quot;: &amp;quot;&amp;quot;,
-    &amp;quot;StartTime&amp;quot;: &amp;quot;2017-02-28T01:39:43.000Z&amp;quot;,
-    &amp;quot;SnapshotId&amp;quot;: &amp;quot;snap-021be12d0fc9abf3a&amp;quot;,
-    &amp;quot;OwnerId&amp;quot;: &amp;quot;xxxxxx&amp;quot;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;3-crontabを設定&#34;&gt;3. crontabを設定&lt;/h2&gt;
-
-&lt;h3 id=&#34;採取コマンドをシェルスクリプト化&#34;&gt;採取コマンドをシェルスクリプト化&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;backup.shというファイル名で保存する&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;#!/bin/sh
-aws ec2 create-snapshot --volume-id vol-xxxxxxxxxc0c --description &amp;quot;説明&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;crontab-txtを作成&#34;&gt;crontab.txtを作成&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;毎朝４時にスナップショットを作成する設定&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;ファイルの最後は改行をいれること&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;0 4 * * * /bin/sh /home/ec2-user/backup.sh
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;ec2へのアップロードと設定&#34;&gt;EC2へのアップロードと設定&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;作成した２ファイルをEC2のホーム直下にアップロード&lt;/li&gt;
-&lt;li&gt;EC2上でbackup.shにec2-userのアクセス権を付与&lt;/li&gt;
-&lt;li&gt;crontabに設定&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;# MacからSCPコマンドでファイルをアップロード
-$ scp -i ~/.ssh/キーペアファイル.pem backup.sh crontab.txt ec2-user@EC2.IP:~/
-backup.sh  100%  115    19.9KB/s   00:00
-crontab.txt  100%   37     7.1KB/s   00:00
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;# EC2上で
-# 実行権限を付与
-$ chmod 700 backup.sh
-
-# crontabに設定
-$ crontab crontab.txt
-
-# 確認
-$ crontab -l
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;実行確認&#34;&gt;実行確認&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;実行されるとEC2上でCronからec2-user宛てにメールが届く&lt;/li&gt;
-&lt;li&gt;EC2ダッシュボードでもスナップショット作成が確認できる&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;# EC2にmailコマンドをインストール
-$ sudo yum install -y mailx
-
-# mailを確認
-$ mail
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;停止-crontabの削除&#34;&gt;停止（crontabの削除）&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;定期実行を停止するにはcrontabから削除を行う&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;# 削除
-$ crontab -r
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>EC2のスナップショットを自動（AWS CLI + Cron）で採取するための設定方法。 手順 アクセス権（EC2FullAccess）があるIAMユーザ</description>
     </item>
     
     <item>
@@ -344,81 +71,7 @@ $ crontab -r
       <pubDate>Mon, 27 Feb 2017 16:16:35 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/aws-rds-restore-from-snapshot/</guid>
-      <description>
-
-&lt;p&gt;以前に取得されたスナップショットからRDSを復元して、現在のRDSと付け替える方法。&lt;br /&gt;
-&lt;br&gt;
-ポイントは以下。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;DBインスンタンス識別子の値は、EC2と接続するためのエンドポイントのprefixを兼ねている&lt;/li&gt;
-&lt;li&gt;同じ識別子で復元できない&lt;/li&gt;
-&lt;li&gt;別の識別子で復元 -&amp;gt; 既存の識別子を変更 -&amp;gt; 復元分の識別子を元々の識別子に変更&lt;/li&gt;
-&lt;li&gt;これでエンドポイントの値は変更されないので、Webサーバー側との接続に影響を与えない&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;復元したインスタンスのセキュリティグループを既存と同様にセットし直す&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;スナップショットからインスタンスを復元&#34;&gt;スナップショットからインスタンスを復元&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;RDSダッシュボード - スナップショット - 復元したいスナップショットを選択&lt;/li&gt;
-&lt;li&gt;スナップショットのアクション - スナップショットの復元&lt;/li&gt;
-&lt;li&gt;DBインスタンスの復元画面が表示されるので、情報を入力
-
-&lt;ul&gt;
-&lt;li&gt;デフォルトになっている部分を抜粋&lt;/li&gt;
-&lt;li&gt;マルチAZ配置 : 選択&lt;/li&gt;
-&lt;li&gt;DBインスタンス識別子 : &lt;strong&gt;復元して置き換えたい既存インスタンスの値とは別の値&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;アベイラビリティゾーン : 選択&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;DBインスタンスの復元 - 復元される（作業状況はインスタンスで確認）&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;既存のインスタンス&#34;&gt;既存のインスタンス&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;復元したインスタンスで置き換えたいインスタンス&lt;/li&gt;
-&lt;li&gt;DBインスタンス識別子を変更して、エンドポイントを復元インスタンスにゆずる&lt;/li&gt;
-&lt;li&gt;変更作業
-
-&lt;ul&gt;
-&lt;li&gt;インスタンスの操作 - 変更&lt;/li&gt;
-&lt;li&gt;DBインスタンス識別子 : 変更&lt;/li&gt;
-&lt;li&gt;すぐに適用 : チェック&lt;/li&gt;
-&lt;li&gt;次へ - DBインスタンスの変更&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;変更中 -&amp;gt; 名前変更中 -&amp;gt; 再起動 -&amp;gt; 利用可能&lt;/li&gt;
-&lt;li&gt;この時点でWebサーバーからDBが参照されなくなる&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;復元インスタンス&#34;&gt;復元インスタンス&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;復元したインスタンスのDB識別子を既存の値に変更する（エンドポイント値の復元）&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;セキュリティグループを既存同様に付け直す&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;変更作業
-
-&lt;ul&gt;
-&lt;li&gt;インスタンスの操作 - 変更&lt;/li&gt;
-&lt;li&gt;DBインスタンス識別子 : 変更&lt;/li&gt;
-&lt;li&gt;セキュリティグループ : 既存と同様のSGをセット&lt;/li&gt;
-&lt;li&gt;すぐに適用 : チェック&lt;/li&gt;
-&lt;li&gt;次へ - DBインスタンスの変更&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;変更中 -&amp;gt; 名前変更中 -&amp;gt; 再起動 -&amp;gt; 利用可能&lt;/li&gt;
-&lt;li&gt;これで復元されたDBで置き換えられる&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;rds削除時の注意-スナップショット&#34;&gt;RDS削除時の注意（スナップショット）&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;RDSを削除する際に、過去にとった自動スナップショットは削除されてしまう&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;復元したい場合、削除時に聞かれる「最終スナップショット」は作成しておくこと&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;br&gt;&lt;br&gt;
-以上&lt;/p&gt;
-</description>
+      <description>以前に取得されたスナップショットからRDSを復元して、現在のRDSと付け替える方法。 ポイントは以下。 DBインスンタンス識別子の値は、EC2と</description>
     </item>
     
     <item>
@@ -427,377 +80,7 @@ $ crontab -r
       <pubDate>Mon, 27 Feb 2017 13:33:52 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/aws-elb-ec2-rds-wordpress/</guid>
-      <description>
-
-&lt;h2 id=&#34;0-環境&#34;&gt;0. 環境&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;異なるAZにロードバランシングされるWordPress環境を構築する&lt;/li&gt;
-&lt;li&gt;VPC・Subnet（4）・Internet Gateway・Route Table・Security Group&lt;/li&gt;
-&lt;li&gt;ロードバランサー
-
-&lt;ul&gt;
-&lt;li&gt;異なるAZに配置されたEC2に接続&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Webサーバー
-
-&lt;ul&gt;
-&lt;li&gt;異なるAZにEC2を1台づつ配置&lt;/li&gt;
-&lt;li&gt;Public Subnet&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;DBサーバー
-
-&lt;ul&gt;
-&lt;li&gt;テスト用なのでSingle-AZ&lt;/li&gt;
-&lt;li&gt;EC2からアクセス&lt;/li&gt;
-&lt;li&gt;Private Subnet&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;アクセス制御
-
-&lt;ul&gt;
-&lt;li&gt;各インスタンス用にSecurity Groupを作成して制御&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;1-ネットワーク領域の作成&#34;&gt;1. ネットワーク領域の作成&lt;/h2&gt;
-
-&lt;h3 id=&#34;vpc&#34;&gt;VPC&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Sample_VPC
-
-&lt;ul&gt;
-&lt;li&gt;20.0.0.0/16&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;subnet&#34;&gt;Subnet&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;WebAP用（AZ-A）
-
-&lt;ul&gt;
-&lt;li&gt;Sample_Public_1A&lt;/li&gt;
-&lt;li&gt;ap-northeast-1a&lt;/li&gt;
-&lt;li&gt;20.0.1.0/24&lt;/li&gt;
-&lt;li&gt;パブリックIP : はい&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;WebAP用（AZ-C）
-
-&lt;ul&gt;
-&lt;li&gt;Sample_Public_1C&lt;/li&gt;
-&lt;li&gt;ap-northeast-1c&lt;/li&gt;
-&lt;li&gt;20.0.2.0/24&lt;/li&gt;
-&lt;li&gt;パブリックIP : はい&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;DB用（AZ-A）
-
-&lt;ul&gt;
-&lt;li&gt;Sample_Private_1A&lt;/li&gt;
-&lt;li&gt;ap-northeast-1a&lt;/li&gt;
-&lt;li&gt;20.0.10.0/24&lt;/li&gt;
-&lt;li&gt;パブリックIP : いいえ&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;DB用（AZ-C）
-
-&lt;ul&gt;
-&lt;li&gt;Sample_Private_1C&lt;/li&gt;
-&lt;li&gt;ap-northeast-1c&lt;/li&gt;
-&lt;li&gt;20.0.20.0/24&lt;/li&gt;
-&lt;li&gt;パブリックIP : いいえ&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;internet-gateway&#34;&gt;Internet Gateway&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Sample_IGW
-
-&lt;ul&gt;
-&lt;li&gt;アタッチ : Sample_VPC&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;route-table&#34;&gt;Route Table&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Sample_IGW_RTB&lt;/li&gt;
-&lt;li&gt;VPC : Sample_VPC&lt;/li&gt;
-&lt;li&gt;ルート
-
-&lt;ul&gt;
-&lt;li&gt;送信先 : 0.0.0.0/0&lt;/li&gt;
-&lt;li&gt;ターゲット : Sample_IGW&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;サブネットの関連付け
-
-&lt;ul&gt;
-&lt;li&gt;Sample_Public_1A&lt;/li&gt;
-&lt;li&gt;Sample_Public_1C&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;security-group&#34;&gt;Security Group&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;EC2ダッシュボードから作成すると、送信元の設定が楽。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Sample_ELB_Sec
-
-&lt;ul&gt;
-&lt;li&gt;InBound : HTTP, 80, MyIP（本来は0.0.0.0/0）&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Sample_WebAP_Sec
-
-&lt;ul&gt;
-&lt;li&gt;InBound : HTTP, 80, Sample_ELB_Sec.ID&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Sample_DB_Sec
-
-&lt;ul&gt;
-&lt;li&gt;InBound : MySQL, 3306, Sample_WebAP_Sec.ID&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Sample_Maintenance_Sec
-
-&lt;ul&gt;
-&lt;li&gt;InBound : SSH, 22, MyIP&lt;/li&gt;
-&lt;li&gt;InBound : HTTP, 80, MyIP&lt;/li&gt;
-&lt;li&gt;InBound : MySQL, 3306, MyIP -&amp;gt; いらないかも&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;2-インスタンスの作成&#34;&gt;2. インスタンスの作成&lt;/h2&gt;
-
-&lt;h3 id=&#34;rdsサブネットグループ&#34;&gt;RDSサブネットグループ&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Sample_DB_SubnetG
-
-&lt;ul&gt;
-&lt;li&gt;VPC : Sample_VPC&lt;/li&gt;
-&lt;li&gt;Subnet : Sample_Private_1A, Sample_Private_1C&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;rds&#34;&gt;RDS&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Sample_DB_Master
-
-&lt;ul&gt;
-&lt;li&gt;Multi-AZ用のマスターDB&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;エンジンの選択
-
-&lt;ul&gt;
-&lt;li&gt;MySQL&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;本番稼働用？
-
-&lt;ul&gt;
-&lt;li&gt;開発／テスト&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;詳細の指定
-
-&lt;ul&gt;
-&lt;li&gt;DBエンジン :  mysql&lt;/li&gt;
-&lt;li&gt;ライセンスモデル : General Public License&lt;/li&gt;
-&lt;li&gt;DBエンジンのバージョン : 5.6.27&lt;/li&gt;
-&lt;li&gt;DBインスタンスのクラス : db.t2.micro&lt;/li&gt;
-&lt;li&gt;マルチAZ配置 : いいえ &lt;strong&gt;（開発のため）&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;ストレージタイプ : 汎用（SSD）&lt;/li&gt;
-&lt;li&gt;ストレージ割り当て : 5GB&lt;/li&gt;
-&lt;li&gt;DBインスタンス識別子 : Sample-DB&lt;/li&gt;
-&lt;li&gt;マスターユーザーの名前 : Sample_DB_User&lt;/li&gt;
-&lt;li&gt;マスターパスワード : Sample_DB_Password&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;詳細設定の設定
-
-&lt;ul&gt;
-&lt;li&gt;VPC : Sample_VPC&lt;/li&gt;
-&lt;li&gt;サブネットグループ : Sample_DB_SubnetG&lt;/li&gt;
-&lt;li&gt;パブリックアクセス可能 : いいえ&lt;/li&gt;
-&lt;li&gt;アベイラビリティーゾーン : ap-northeast-1a&lt;/li&gt;
-&lt;li&gt;VPCセキュリティーグループ : Sample_DB_Sec, Sample_Maintenance_Sec&lt;/li&gt;
-&lt;li&gt;データベースの名前 : Sample_DB&lt;/li&gt;
-&lt;li&gt;データベースのポート : 3306&lt;/li&gt;
-&lt;li&gt;DBパラメータグループ : default.mysql5.6&lt;/li&gt;
-&lt;li&gt;オプショングループ : default:mysql-5-6&lt;/li&gt;
-&lt;li&gt;その他はデフォルトのまま&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;ec2-1&#34;&gt;EC2-1&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Sample_Web_01
-
-&lt;ul&gt;
-&lt;li&gt;AMI : Amazon Linux&lt;/li&gt;
-&lt;li&gt;t2.micro&lt;/li&gt;
-&lt;li&gt;EBS : 8GB&lt;/li&gt;
-&lt;li&gt;ネットワーク : Sample_VPC&lt;/li&gt;
-&lt;li&gt;サブネット : Sample_Public_1A&lt;/li&gt;
-&lt;li&gt;自動割り当てパブリックIP : 有効化&lt;/li&gt;
-&lt;li&gt;その他はデフォルト&lt;/li&gt;
-&lt;li&gt;セキュリティグループ : Sample_WebAP_Sec, Sample_Maintenance_Sec&lt;/li&gt;
-&lt;li&gt;キーペア : 作成&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;3-ミドルウェアのセットアップ&#34;&gt;3. ミドルウェアのセットアップ&lt;/h2&gt;
-
-&lt;h3 id=&#34;ec2-sample-web-01&#34;&gt;EC2 : Sample_Web_01&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;基本設定
-
-&lt;ul&gt;
-&lt;li&gt;MacからSSHログイン&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ sudo yum update -y&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ sudo yum install -y httpd&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ sudo chkconfig httpd on&lt;/code&gt; &lt;strong&gt;#EC2起動時に合わせてApacheも起動させる&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ sudo service httpd start&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Macからブラウザ経由でアクセスし、Apacheぺージが表示されること&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ sudo yum install -y php&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ sudo yum install -y php-mysql&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;WordPress
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;$ mkdir ~/ttmp;cd ttmp&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ wget https://ja.wordpress.org/latest-ja.tar.gz&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ tar xzvf latest-ja.tar.gz&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ cd wordpress&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ cp wp-config-sample.php wp-config.PHP&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ vi wp-config.php&lt;/code&gt;
-
-&lt;ul&gt;
-&lt;li&gt;DB_NAME : Sample_DB&lt;/li&gt;
-&lt;li&gt;DB_USER : Sample_DB_User&lt;/li&gt;
-&lt;li&gt;DB_PASSWORD : Sample_DB_Password&lt;/li&gt;
-&lt;li&gt;DB_HOST : Sample_DB_Masterのエンドポイント:3306&lt;/li&gt;
-&lt;li&gt;認証キー : &lt;a href=&#34;https://api.wordpress.org/secret-key/1.1/salt/&#34;&gt;https://api.wordpress.org/secret-key/1.1/salt/&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ sudo mv * /var/www/html/&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ sudo service httpd restart&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;ブラウザからSample_Web_01のパブリックIPにアクセスして、wordpressの設定を行う&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;4-elbの適用&#34;&gt;4. ELBの適用&lt;/h2&gt;
-
-&lt;h3 id=&#34;elbの作成&#34;&gt;ELBの作成&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Sample-ELB
-
-&lt;ul&gt;
-&lt;li&gt;ロードバランサーの種類 : Classic Load Balancer&lt;/li&gt;
-&lt;li&gt;ロードバランサーを作成する場所 : Sample_VPC&lt;/li&gt;
-&lt;li&gt;リスナー : HTTP 80&lt;/li&gt;
-&lt;li&gt;サブネットの選択 : Sample_Public_1A, Sample_Public_1C&lt;/li&gt;
-&lt;li&gt;セキュリティグループ : Sample_ELB_Sec&lt;/li&gt;
-&lt;li&gt;ヘルスチェック
-
-&lt;ul&gt;
-&lt;li&gt;pingプロトコル : HTTP&lt;/li&gt;
-&lt;li&gt;pingポート : 80&lt;/li&gt;
-&lt;li&gt;pingパス : /&lt;/li&gt;
-&lt;li&gt;正常の閾値 : 5 -&amp;gt; 2&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;EC2インスタンス
-
-&lt;ul&gt;
-&lt;li&gt;Sample_Web_01（Sample_Web_02はAMI作成後）&lt;/li&gt;
-&lt;li&gt;クロスゾーン負荷分散の有効化 : チェック&lt;/li&gt;
-&lt;li&gt;接続のストリーミングの有効化 : 300 -&amp;gt; 30 &lt;strong&gt;（WordPressの場合は必須）&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;タグ
-
-&lt;ul&gt;
-&lt;li&gt;Name : Sample_ELB&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;作成後の確認&#34;&gt;作成後の確認&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;インスタンス タブ : インスタンスがInServiceになっていること&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;wordpressの設定変更&#34;&gt;WordPressの設定変更&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Sample_Web_01のパブリックIPでWordPressにアクセス&lt;/li&gt;
-&lt;li&gt;設定画面にて以下の内容をSample_ELBの「http:// + DNS名」に変更
-
-&lt;ul&gt;
-&lt;li&gt;WordPressアドレス&lt;/li&gt;
-&lt;li&gt;サイトアドレス&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;elb経由での接続確認&#34;&gt;ELB経由での接続確認&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;ブラウザからSample_ELBのDNSでアクセスし、WordPressが表示されることを確認&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;5-ec2の追加&#34;&gt;5. EC2の追加&lt;/h2&gt;
-
-&lt;h3 id=&#34;ami作成&#34;&gt;AMI作成&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Sample_Web_01からAMIを作成する
-
-&lt;ul&gt;
-&lt;li&gt;停止 -&amp;gt; イメージの作成&lt;/li&gt;
-&lt;li&gt;イメージ名 : Sample-WebAP-AMI&lt;/li&gt;
-&lt;li&gt;AMI、スナップショットが作成される&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;ec2の作成&#34;&gt;EC2の作成&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Sample_Web_02
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Sample_Web_01のAMIから作成&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;ネットワーク : Sample_VPC&lt;/li&gt;
-&lt;li&gt;サブネット : Sample_Public_1C&lt;/li&gt;
-&lt;li&gt;自動割り当てパブリックIP : 有効化&lt;/li&gt;
-&lt;li&gt;その他はデフォルト&lt;/li&gt;
-&lt;li&gt;セキュリティグループ : Sample_WebAP_Sec, Sample_Maintenance_Sec&lt;/li&gt;
-&lt;li&gt;キーペア : 先に作成したもの&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;ロードバランサー配下に追加&#34;&gt;ロードバランサー配下に追加&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;インスタンス タブ -&amp;gt; インスタンスの編集 -&amp;gt; Sample_Web_02を追加&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;バランシングの確認&#34;&gt;バランシングの確認&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;各EC2上の/var/log/httpd/access_logを確認&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ sudo tail -f /var/log/httpd/access_log&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>0. 環境 異なるAZにロードバランシングされるWordPress環境を構築する VPC・Subnet（4）・Internet Gateway・Rou</description>
     </item>
     
     <item>
@@ -806,29 +89,7 @@ $ crontab -r
       <pubDate>Sun, 26 Feb 2017 12:36:02 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/drag-with-three-fingers-to-select/</guid>
-      <description>
-
-&lt;p&gt;Webサイトの文章とかを選択する時、マウスだと左クリックしたままでドラッグすれば選択できる。&lt;br /&gt;
-あれをトラックパッド上の３本指ドラッグでやる方法。&lt;br /&gt;
-PopClipを使う時とかにとても便利。&lt;br /&gt;
-たまにしかしない設定なので、忘れないようにメモ。&lt;/p&gt;
-
-&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;macOS Sierra 10.12.3&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;アクセシビリティから&#34;&gt;アクセシビリティから&lt;/h2&gt;
-
-&lt;ol&gt;
-&lt;li&gt;システム環境設定 → アクセシビリティ&lt;/li&gt;
-&lt;li&gt;左側から「マウスとトラックパッド」 → トラックパッドオプション&lt;/li&gt;
-&lt;li&gt;「ドラッグを有効にする」をチェック → 「３本指のドラッグ」を選択&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://support.apple.com/ja-jp/HT204609&#34;&gt;Apple公式サイト&lt;/a&gt;&lt;/p&gt;
-</description>
+      <description>Webサイトの文章とかを選択する時、マウスだと左クリックしたままでドラッグすれば選択できる。 あれをトラックパッド上の３本指ドラッグでやる方法</description>
     </item>
     
     <item>
@@ -837,66 +98,7 @@ PopClipを使う時とかにとても便利。&lt;br /&gt;
       <pubDate>Tue, 21 Feb 2017 11:51:56 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/attach-ebs-as-rootdevice-of-ec2/</guid>
-      <description>
-
-&lt;p&gt;どこにもアタッチされていないボリューム（EBS）が存在したので、EC2にアタッチして使いたい。&lt;br&gt;
-EC2インスタンスの作成中に、アタッチしたいボリュームを選択できるかと思っていたが、既存ボリュームの追加ができなかった。&lt;br&gt;
-なので、EC2インスタンス作成 -&amp;gt; EBSデタッチ -&amp;gt; 対象EBSアタッチの手順を踏んだ際の備忘録。&lt;br&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;EC2インスタンスとアタッチしたいボリューム（EBS）が、同じAZ内であることが前提。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;手順&#34;&gt;手順&lt;/h2&gt;
-
-&lt;ol&gt;
-&lt;li&gt;EC2インスタンスを作成
-
-&lt;ul&gt;
-&lt;li&gt;作成時にEBSも作成する（後ほどデタッチ -&amp;gt; 削除）&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;EC2が起動
-
-&lt;ul&gt;
-&lt;li&gt;ルートデバイスの値を控える /dev/xvdaとか&lt;/li&gt;
-&lt;li&gt;ルートデバイスをクリックして表示されるEBS IDを控える&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;EC2を停止
-
-&lt;ul&gt;
-&lt;li&gt;ルートデバイスをクリックして表示されるEBS IDをクリック&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;ボリュームのデタッチ
-
-&lt;ul&gt;
-&lt;li&gt;ボリュームが表示される&lt;/li&gt;
-&lt;li&gt;アクション（or 右クリック）-&amp;gt; ボリュームのデタッチ&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;ボリュームのアタッチ
-
-&lt;ul&gt;
-&lt;li&gt;左ペイン -&amp;gt; ボリューム&lt;/li&gt;
-&lt;li&gt;アタッチしたいボリュームを選択&lt;/li&gt;
-&lt;li&gt;アクション（or 右クリック）-&amp;gt; ボリュームのアタッチ&lt;/li&gt;
-&lt;li&gt;インスタンス : アタッチしたいEC2インスタンスを選択&lt;/li&gt;
-&lt;li&gt;デバイス : &lt;strong&gt;2.で控えたルートデバイスの値に変更&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;アタッチ&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;確認
-
-&lt;ul&gt;
-&lt;li&gt;左ペイン -&amp;gt; インスタンス&lt;/li&gt;
-&lt;li&gt;対象のインスタンスを選択&lt;/li&gt;
-&lt;li&gt;ルートデバイスをクリック -&amp;gt; アタッチしたEBSであること&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;デタッチしたEBSを削除&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&#34;注意事項&#34;&gt;注意事項&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;アタッチするEC2とEBSが同じAZであること&lt;/li&gt;
-&lt;li&gt;EC2削除時のEBS合わせて削除がオフになるので、EBSは個別で削除すること&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>どこにもアタッチされていないボリューム（EBS）が存在したので、EC2にアタッチして使いたい。 EC2インスタンスの作成中に、アタッチしたいボ</description>
     </item>
     
     <item>
@@ -905,41 +107,7 @@ EC2インスタンスの作成中に、アタッチしたいボリュームを�
       <pubDate>Fri, 10 Feb 2017 17:26:44 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/windows-imemode-like-mac/</guid>
-      <description>
-
-&lt;p&gt;WindowsのIME変換（日本語／英数）の切り替えを、Mac同様にスペースキーの両隣のキーで切り替えたい。&lt;br&gt;
-そうすることによって、今が日本語入力なのか英数なのかを判断する必要がなくなって、半角/全角キーの連打をしなくてよくなる。&lt;/p&gt;
-
-&lt;h2 id=&#34;目標&#34;&gt;目標&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;変換キー　：日本語入力&lt;/li&gt;
-&lt;li&gt;無変換キー：英数入力&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Windows10 Pro&lt;/li&gt;
-&lt;li&gt;Google日本語入力 -&amp;gt; 未インストール&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;設定方法&#34;&gt;設定方法&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;タスクバーに表示されているIME入力モード（あ／Aとか）を右クリック&lt;/li&gt;
-&lt;li&gt;プロパティ -&amp;gt; 詳細設定&lt;/li&gt;
-&lt;li&gt;「全般」タブ -&amp;gt; 編集操作のキー設定 Microsoft IME -&amp;gt; 変更&lt;/li&gt;
-&lt;li&gt;「キー設定」タブ&lt;/li&gt;
-&lt;li&gt;キー欄の「英数」 -&amp;gt; 「入力/変換済み文字なし」欄をクリック&lt;/li&gt;
-&lt;li&gt;「IME-オン」を選択 -&amp;gt; OK&lt;/li&gt;
-&lt;li&gt;キー欄の「無変換」 -&amp;gt; 「入力/変換済み文字なし」欄をクリック&lt;/li&gt;
-&lt;li&gt;「IME-オフ」を選択 -&amp;gt; OK&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;br&gt;
-以上&lt;/p&gt;
-</description>
+      <description>WindowsのIME変換（日本語／英数）の切り替えを、Mac同様にスペースキーの両隣のキーで切り替えたい。 そうすることによって、今が日本語</description>
     </item>
     
     <item>
@@ -948,66 +116,7 @@ EC2インスタンスの作成中に、アタッチしたいボリュームを�
       <pubDate>Wed, 01 Feb 2017 17:06:48 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/atom-vimmodeplus-autocomplete-esc/</guid>
-      <description>
-
-&lt;p&gt;ATOMでvim-mode-plusとautocomplete-plusを導入済み。&lt;br&gt;
-入力中にautocomplete-plusのポップアップをESCで閉じた際に、Vimのモードをそのままにしたい。&lt;br&gt;
-何も設定しないと、ポップアップが閉じると同時にinsert-mode -&amp;gt; normal-modeになってしまう。&lt;br&gt;&lt;br&gt;&lt;/p&gt;
-
-&lt;p&gt;追加で、autocomplete-plusの変換候補の移動／確定をTab/Enterに割り当てる。&lt;/p&gt;
-
-&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;macOS Sierra 10.12.3&lt;/li&gt;
-&lt;li&gt;ATOM 1.13.1&lt;/li&gt;
-&lt;li&gt;vim-mode-plus 0.82.0&lt;/li&gt;
-&lt;li&gt;autocomplete-plus 2.33.1&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;症状&#34;&gt;症状&lt;/h2&gt;
-
-&lt;p&gt;ATOMには「vim-mode-plus」を導入済み（autocomplete-plusはデフォルトインストール）&lt;br&gt;
-↓&lt;br&gt;
-insert-modeで入力中に、autocomplete-plusのポップアップが表示される&lt;br&gt;
-↓&lt;br&gt;
-候補の中に必要なものがないので、ESCでポップアップを閉じる&lt;br&gt;
-↓&lt;br&gt;
-ポップアップは閉じるが、insert-modeも抜けてnormal-modeになってしまう&lt;br&gt;
-↓&lt;br&gt;
-insert-modeのままにしたい&lt;/p&gt;
-
-&lt;h2 id=&#34;対応方法&#34;&gt;対応方法&lt;/h2&gt;
-
-&lt;p&gt;ここを参照。&lt;br /&gt;
-&lt;a href=&#34;https://github.com/t9md/atom-vim-mode-plus/wiki/TIPS#in-insert-mode-hitting-escape-to-close-autocomplete-popup-result-in-normal-mode-but-want-to-remain-in-insert-mode&#34;&gt;atom-vim-mode-plus TIPS&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;keymap-csonへの追加&#34;&gt;keymap.csonへの追加&lt;/h2&gt;
-
-&lt;p&gt;以下をkeymap.csonに追加する。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&#39;atom-text-editor.vim-mode-plus.insert-mode.autocomplete-active&#39;:
-  &#39;escape&#39;: &#39;autocomplete-plus:cancel&#39;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;追加-autocomplete-plusで-tab-次候補-enter-確定-を有効にする&#34;&gt;追加：autocomplete-plusで「Tab：次候補」「Enter：確定」を有効にする&lt;/h2&gt;
-
-&lt;p&gt;以下をkeymap.csonに追加する。&lt;br&gt;
-&lt;strong&gt;ATOM上で、autocomplete-plusの設定から「Use Core Movement Commands」のチェックを外す。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;# autocomplete-plusでtab:次候補 Enter:確定にする
-# autocomplete-plusの設定で「Use Core Movement Commandsのチェックを外す
-&#39;body atom-text-editor.autocomplete-active&#39;:
-  &#39;ctrl-p&#39;: &#39;autocomplete-plus:move-up&#39;
-  &#39;ctrl-n&#39;: &#39;autocomplete-plus:move-down&#39;
-  &#39;tab&#39;: &#39;autocomplete-plus:move-down&#39;
-  &#39;shift-tab&#39;: &#39;autocomplete-plus:move-up&#39;
-  &#39;enter&#39;: &#39;autocomplete-plus:confirm&#39;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br&gt;
- 以上&lt;/p&gt;
-</description>
+      <description>ATOMでvim-mode-plusとautocomplete-plusを導入済み。 入力中にautocomplete-plusのポップアップ</description>
     </item>
     
     <item>
@@ -1016,122 +125,7 @@ insert-modeのままにしたい&lt;/p&gt;
       <pubDate>Wed, 01 Feb 2017 16:27:09 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/ssh-connction-to-github/</guid>
-      <description>
-
-&lt;p&gt;SSH鍵を作成・登録し、GitHubとのSSH接続を可能にする。&lt;br /&gt;
-たまにやる作業で、いつも忘れて検索するのでメモ。&lt;/p&gt;
-
-&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;MacBook Pro (15-inch, Mid 2012)&lt;/li&gt;
-&lt;li&gt;macOS Sierra 10.12.3&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;ssh鍵の作成-mac&#34;&gt;SSH鍵の作成（Mac）&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;ターミナルを起動し、Mac上でSSH鍵を作成する&lt;/li&gt;
-&lt;li&gt;秘密鍵・公開鍵の２つが作成される
-
-&lt;ul&gt;
-&lt;li&gt;id_rsa_xxx : 秘密鍵（Mac上へ）&lt;/li&gt;
-&lt;li&gt;id_rsa_xxx.pub : 公開鍵（GitHubに登録）&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;SSH鍵は &lt;code&gt;~/.ssh&lt;/code&gt; 配下に格納する&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;# 鍵の作成
-# -t 鍵の種類
-# -b 鍵の長さ（GitHubは4096を推奨）
-$ ssh-keygen -t rsa -b 4096 -C &amp;quot;鍵のコメント&amp;quot;
-Generating public/private rsa key pair.
-
-# 鍵の出力場所と鍵名の入力を求められる
-# 鍵名 -&amp;gt; id_rsa_github
-Enter file in which to save the key (/Users/USER名/.ssh/id_rsa): ここに入力
-
-# 鍵のパスフレーズの入力を求められる
-Enter passphrase (empty for no passphrase): ここに新規パスワードを入力
-Enter same passphrase again:
-
-# 鍵が作成される
-...
-+---[RSA 4096]----+
-...
-+----[SHA256]-----+
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;ssh鍵の確認&#34;&gt;SSH鍵の確認&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;鍵ファイルが作成されたことを確認する&lt;/li&gt;
-&lt;li&gt;秘密鍵のパーミッションを変更（600になっていない場合）&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;# 作成されたかを確認する
-$ ls -la ~/.ssh
--rw-------   1 xxxx  staff  3326  2  1 15:37 id_rsa_github     # 秘密鍵
--rw-r--r--   1 xxxx  staff   742  2  1 15:37 id_rsa_github.pub # 公開鍵
-
-# 秘密鍵のパーミッションを変更する（600以外の場合）
-$ chomod 600 ~/.ssh/id_rsa_github
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;sshの設定ファイルへの追記&#34;&gt;SSHの設定ファイルへの追記&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;~/.ssh/config&lt;/code&gt; ファイルに、SSHの接続情報を記述する&lt;/li&gt;
-&lt;li&gt;今後、ターミナル上で &lt;code&gt;$ ssh github&lt;/code&gt; を入力することで接続できるようになる&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;# エディタで開く
-$ vim ~/.ssh/config
-
-# 以下を追加する
-HOST github
-  HostName github.com
-  User git
-  IdentityFile ~/.ssh/id_rsa_github
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;githubに公開鍵を登録する&#34;&gt;GitHubに公開鍵を登録する&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;ブラウザでGitHubにログインし、公開鍵を登録する&lt;/li&gt;
-&lt;li&gt;アカウントメニュー -&amp;gt; Settings -&amp;gt; SSH and GPG keys&lt;/li&gt;
-&lt;li&gt;SSH Keys -&amp;gt; New SSH Key&lt;/li&gt;
-&lt;li&gt;Title : 任意の名前（どのPCからの鍵なのかなど）&lt;/li&gt;
-&lt;li&gt;Key : 以下で公開鍵をコピーした内容を貼り付ける&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;# 公開鍵の内容をコピーする
-$ pbcopy &amp;lt; ~/.ssh/id_rsa_github.pub
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;githubとのssh接続を確認する&#34;&gt;GitHubとのSSH接続を確認する&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;GitHubへSSH接続の確認を行う&lt;/li&gt;
-&lt;li&gt;途中で秘密鍵を作成した際に入力したパスフレーズの入力を求められる&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;# 接続（github -&amp;gt; configに設定したHOSTの値）
-$ ssh github
-The authenticity of host &#39;github.com (192.30.253.112)&#39; can&#39;t be established.
-...
-Are you sure you want to continue connecting (yes/no)? yes
-...
-Warning: Permanently added &#39;github.com,192.30.253.112&#39; (RSA) to the list of known hosts.
-Enter passphrase for key &#39;/Users/xxxx/.ssh/id_rsa_github&#39;: 鍵作成時のパスフレーズを入力
-PTY allocation request failed on channel 0
-Hi ユーザー名! You&#39;ve successfully authenticated, but GitHub does not provide shell access.
-Connection to github.com closed.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br&gt;
-以上&lt;/p&gt;
-</description>
+      <description>SSH鍵を作成・登録し、GitHubとのSSH接続を可能にする。 たまにやる作業で、いつも忘れて検索するのでメモ。 環境 MacBook Pro (15-inch, Mid 2012) macOS Sierra 10.12.3 SSH鍵</description>
     </item>
     
     <item>
@@ -1140,124 +134,7 @@ Connection to github.com closed.
       <pubDate>Fri, 27 Jan 2017 17:19:47 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/golang-vscode-setting/</guid>
-      <description>
-
-&lt;p&gt;Visual Studio CodeにGolang向けの開発環境の設定をする。&lt;br /&gt;
-補完・デバッグ実行までできるのは便利。&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;VSCodeのインストール&lt;/li&gt;
-&lt;li&gt;Golangの拡張機能をインストール&lt;/li&gt;
-&lt;li&gt;Golangのデバッグ実行ができるようにする&lt;/li&gt;
-&lt;li&gt;おまけ&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;MacBook Pro (15-inch, Mid 2012)&lt;/li&gt;
-&lt;li&gt;macOS Sierra 10.12.3&lt;/li&gt;
-&lt;li&gt;Golang 1.7.4 darwin/amd64&lt;/li&gt;
-&lt;li&gt;Visual Studio Code 1.8.1&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;1-visual-studio-codeのインストール&#34;&gt;1. Visual Studio Codeのインストール&lt;/h2&gt;
-
-&lt;h3 id=&#34;インストール&#34;&gt;インストール&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;公式 : &lt;a href=&#34;https://code.visualstudio.com/&#34;&gt;https://code.visualstudio.com/&lt;/a&gt;&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;Mac版をダウンロードしてインストール&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;vscodeをターミナルから起動できるように設定する&#34;&gt;VSCodeをターミナルから起動できるように設定する&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;公式 : &lt;a href=&#34;https://code.visualstudio.com/docs/setup/mac&#34;&gt;https://code.visualstudio.com/docs/setup/mac&lt;/a&gt;&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;VSCode起動 -&amp;gt; Shift+Cmd+P -&amp;gt; Shell Command: Install &amp;lsquo;code&amp;rsquo; command in PATH command.&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;ターミナルを起動&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;$ code&lt;/code&gt; でVSCodeが起動するか確認&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;2-golangの拡張機能をインストール&#34;&gt;2. Golangの拡張機能をインストール&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://marketplace.visualstudio.com/items?itemName=lukehoban.Go&#34;&gt;https://marketplace.visualstudio.com/items?itemName=lukehoban.Go&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;必要パッケージが不足している場合は、VSCodeの上部からInstallを促すダイアログが都度表示される&lt;/li&gt;
-&lt;li&gt;もしくは、右下にメッセージ「Analysis Tools Missing」が表示されるので、クリックして不足分をインストール&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;golangのデバッグ実行を可能にする&#34;&gt;Golangのデバッグ実行を可能にする&lt;/h2&gt;
-
-&lt;h3 id=&#34;delve公式サイト&#34;&gt;Delve公式サイト&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/derekparker/delve/blob/master/Documentation/installation/osx/install.md&#34;&gt;https://github.com/derekparker/delve/blob/master/Documentation/installation/osx/install.md&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;公式サイトにHomebrewでいけるとあったけど、ダメだった（証明書作成とHomebrew領域へのインストールはされた）&lt;/li&gt;
-&lt;li&gt;たぶん$GOPATH配下に生成されたdlvを移さないとダメだったのかも（未検証）&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;基本的にはここを参照&#34;&gt;基本的にはここを参照&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://dev.classmethod.jp/go/visual-studio-code-golang-debug/&#34;&gt;http://dev.classmethod.jp/go/visual-studio-code-golang-debug/&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;証明書の作成&#34;&gt;証明書の作成&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;MacでDELVEを使う場合は証明書の作成が必要とのことなので、KeyChainで証明書を作成&lt;/li&gt;
-&lt;li&gt;証明書名はDELVEインストール時に使用する（今回はdlv-certで作成）。&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://dev.classmethod.jp/go/visual-studio-code-golang-debug/&#34;&gt;http://dev.classmethod.jp/go/visual-studio-code-golang-debug/&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;delveのインストール&#34;&gt;DELVEのインストール&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;ここも上記に同じ。もしくは公式サイトの「Manual install -&amp;gt; 2)Install the binary」を参照&lt;/li&gt;
-&lt;li&gt;MacにXcodeがインストールされていない場合は、Command Line Toolのインストールが必要かも&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;# 必要に応じて
-$ xcode-select --install
-
-# ディレクトリ作成と移動
-$ mkdir $GOPATH/src/github.com/derekparker &amp;amp;&amp;amp; cd $GOPATH/src/github.com/derekparker
-
-# GitHubからcloneして、移動
-$ git clone https://github.com/derekparker/delve.git &amp;amp;&amp;amp; cd delve
-
-# 証明書と紐付けてmake。dlv-certは証明書の名前
-$ CERT=dlv-cert make install
-
-# KeyChainの変更を有効化
-$ sudo kill `pgrep taskgated`
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;vscodeでのデバッグ&#34;&gt;VSCodeでのデバッグ&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;デバッグをしたい場合は、プロジェクトのフォルダーを指定する必要あり&lt;/li&gt;
-&lt;li&gt;フォルダーを作成 -&amp;gt; VSCodeで開く -&amp;gt; main.goファイルを作成の流れ&lt;/li&gt;
-&lt;li&gt;ブレークポイント張って、F5で実行&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;おまけ&#34;&gt;おまけ&lt;/h2&gt;
-
-&lt;h3 id=&#34;vscode内でターミナルを開く&#34;&gt;VSCode内でターミナルを開く&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;メニューバー -&amp;gt; 表示 -&amp;gt; 統合ターミナルでターミナルを表示できる&lt;/li&gt;
-&lt;li&gt;使用するターミナルは、基本設定 -&amp;gt; ユーザー設定 -&amp;gt; 外部ターミナルで変更ができる&lt;/li&gt;
-&lt;li&gt;&amp;ldquo;terminal.external.osxExec&amp;rdquo;: &amp;ldquo;iTerm.app&amp;rdquo;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;vscodeの使い方&#34;&gt;VSCodeの使い方&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.atmarkit.co.jp/ait/subtop/features/dotnet/all.html#xe789b9e99b86efbc9aVisualStudioCodee697a9e58886e3818be3828ae382ace382a4e38389&#34;&gt;@IT 特集：Visual Studio Code早分かりガイド&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>Visual Studio CodeにGolang向けの開発環境の設定をする。 補完・デバッグ実行までできるのは便利。 VSCodeのインストール Golangの拡張機能</description>
     </item>
     
     <item>
@@ -1266,74 +143,7 @@ $ sudo kill `pgrep taskgated`
       <pubDate>Thu, 26 Jan 2017 18:00:25 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/golang-install-mac/</guid>
-      <description>
-
-&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;MacBook Pro (15-inch, Mid 2012)&lt;/li&gt;
-&lt;li&gt;macOS Sierra 10.12.3&lt;/li&gt;
-&lt;li&gt;Homebrew 1.1.8&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;goインストール&#34;&gt;Goインストール&lt;/h2&gt;
-
-&lt;p&gt;Homebrewを利用してインストール&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;# Homebrewのメンテ
-$ brew update
-$ brew upgrade
-$ brew doctor
-Your system is ready to brew.
-
-
-# Golangのインストール
-$ brew install go
-==&amp;gt; Downloading https://homebrew.bintray.com/bottles/go-1.7.4_2.sierra.bottle.tar.gz
-######################################################################## 100.0%
-==&amp;gt; Pouring go-1.7.4_2.sierra.bottle.tar.gz
-==&amp;gt; Caveats
-As of go 1.2, a valid GOPATH is required to use the `go get` command:
-  https://golang.org/doc/code.html#GOPATH
-
-You may wish to add the GOROOT-based install location to your PATH:
-  export PATH=$PATH:/usr/local/opt/go/libexec/bin
-==&amp;gt; Summary
-🍺  /usr/local/Cellar/go/1.7.4_2: 6,438 files, 250.7M
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;インストールの確認&#34;&gt;インストールの確認&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;$ go version
-go version go1.7.4 darwin/amd64
-
-$ go env GOROOT
-/usr/local/Cellar/go/1.7.4_2/libexec
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;gopathの設定&#34;&gt;GOPATHの設定&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Go言語で開発するためのワークスペース&lt;/li&gt;
-&lt;li&gt;Goが外部のライブラリが格納されている場所を知るために必要&lt;/li&gt;
-&lt;li&gt;今回は「$HOME/Development/Go」&lt;/li&gt;
-&lt;li&gt;設定は必須&lt;/li&gt;
-&lt;li&gt;~/.bash_profileに設定する&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;# ~/.bash_profileを開く
-$ vim ~/.bash_profile
-
-
-# 以下を追記する
-export GOPATH=$HOME/Development/Go
-export PATH=$PATH:$GOPATH/bin
-
-
-# 保存後に反映
-$ source ~/.bash_profile
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>環境 MacBook Pro (15-inch, Mid 2012) macOS Sierra 10.12.3 Homebrew 1.1.8 Goインストール Homebrewを利用してインストール # Homebrewのメンテ $ brew update $ brew upgrade $ brew doctor Your system is ready to brew. # Go</description>
     </item>
     
     <item>
@@ -1342,84 +152,331 @@ $ source ~/.bash_profile
       <pubDate>Tue, 22 Nov 2016 18:19:42 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/iso-transition-segue-modal/</guid>
-      <description>
-
-&lt;p&gt;Single ViewController間の画面遷移に関して、以下の再確認のためのサンプル。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;遷移方法（Segue・Modal）の使用方針&lt;/li&gt;
-&lt;li&gt;VC間のデータを受け渡す方法&lt;/li&gt;
-&lt;li&gt;ライフサイクルの確認&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Xcode 8.1&lt;/li&gt;
-&lt;li&gt;Swift 3.0&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;使用方針&#34;&gt;使用方針&lt;/h2&gt;
-
-&lt;h3 id=&#34;segue&#34;&gt;Segue&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Viewが提供する機能が完全に切り替わる場合に使用&lt;/li&gt;
-&lt;li&gt;遷移のアクションを発火させるUIから、遷移先のViewControllerへ直接Segueを接続しない
-
-&lt;ul&gt;
-&lt;li&gt;遷移の発火がStoryBoardに埋もれるため&lt;/li&gt;
-&lt;li&gt;Triggered Segues : manualを使用してVC間を接続&lt;/li&gt;
-&lt;li&gt;発火させるUIからは、コードでSegueを実行する&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;戻る処理はunwind Segueを使用&lt;/li&gt;
-&lt;li&gt;データの受け渡し
-
-&lt;ul&gt;
-&lt;li&gt;各VCのprepare(for:sender:)にて、インスタンスを生成して行う&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;サンプル
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/mzgk/ManualSegue&#34;&gt;GitHub&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;modal&#34;&gt;Modal&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;元のViewから一時的に別機能を提供する場合に使用&lt;/li&gt;
-&lt;li&gt;Segueを使用しないで、コードで表示させる
-
-&lt;ul&gt;
-&lt;li&gt;機能の切り替えではないため&lt;/li&gt;
-&lt;li&gt;storyboard?.instantiateViewController(withIdentifier:) as! ModalのVCクラス名&lt;/li&gt;
-&lt;li&gt;self.present(_:animated:completion:)&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;閉じるのは表示元の責務とし、Modal側でDelegateプロトコルを定義する
-
-&lt;ul&gt;
-&lt;li&gt;表示元でDelegateプロトコルを実装し、Modalを閉じる&lt;/li&gt;
-&lt;li&gt;self.dismiss(animated: true, completion: nil)&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;データの受け渡し
-
-&lt;ul&gt;
-&lt;li&gt;元 → Modal : self.present(_:animated:completion:)前に生成したModalのインスタンスに設定&lt;/li&gt;
-&lt;li&gt;Modal → 元 : Modal側でDelegateプロトコルを定義し、その引数を使用&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;サンプル
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/mzgk/ModalWithCode&#34;&gt;GitHub&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;br&gt;
-&lt;br&gt;
-SegueとModalの使い分け方針とデータの受け渡し方法をすっきりさせるためのアウトプット。&lt;br /&gt;
-ライフサイクルに関しては、シュミュレーターで実行したからなのかLayoutSubView()系が複数回コールされているのが、ちょっと違和感を感じる。&lt;/p&gt;
-</description>
+      <description>Single ViewController間の画面遷移に関して、以下の再確認のためのサンプル。 遷移方法（Segue・Modal）の使用方針 VC間のデータ</description>
+    </item>
+    
+    <item>
+      <title>Swift3 ViewControllerのライフサイクル</title>
+      <link>http://mzgkworks.com/post/swift3-viewcontroller-lifecycle/</link>
+      <pubDate>Mon, 21 Nov 2016 17:42:49 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/swift3-viewcontroller-lifecycle/</guid>
+      <description>ViewControllerのルートViewのライフサイクルを再確認。 各メソッドに以下のようなデバッグログを埋め込んで確認。 override func loadView() { super.loadView() print(&amp;quot;VC1 :&amp;quot;, #function)</description>
+    </item>
+    
+    <item>
+      <title>才能について　吉本隆明</title>
+      <link>http://mzgkworks.com/post/201611092223_words-yoshimoto-takaaki/</link>
+      <pubDate>Wed, 09 Nov 2016 22:23:56 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/201611092223_words-yoshimoto-takaaki/</guid>
+      <description>吉本隆明が『15歳の寺小屋 ひとり』の中で、才能について語った言葉。 才能があるとかないとか、そんなものは認めない。 そんなのは嘘だ。 本当なのは、</description>
+    </item>
+    
+    <item>
+      <title>Git コミットをミスった時の操作</title>
+      <link>http://mzgkworks.com/post/git-change-commit/</link>
+      <pubDate>Thu, 27 Oct 2016 19:14:50 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/git-change-commit/</guid>
+      <description>コミットをミスった時の対処方法。 コミットのハッシュ値が変わるので、push前のコミットに対して行うこと。 独り開発の場合は、$ git push -f &amp;lt;リ</description>
+    </item>
+    
+    <item>
+      <title>Swiftの引数についてのメモ</title>
+      <link>http://mzgkworks.com/post/swift-argument/</link>
+      <pubDate>Wed, 26 Oct 2016 16:27:37 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/swift-argument/</guid>
+      <description>Swiftの引数について、1.x時代から変わったりうろ覚えだった部分もあったのでメモ。 環境 Swift 3.0 ラベル argument label : 関数呼び出し用（呼び出し時に使用）</description>
+    </item>
+    
+    <item>
+      <title>products</title>
+      <link>http://mzgkworks.com/products/products/</link>
+      <pubDate>Wed, 19 Oct 2016 19:14:47 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/products/products/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>about</title>
+      <link>http://mzgkworks.com/about/about/</link>
+      <pubDate>Wed, 19 Oct 2016 19:12:09 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/about/about/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>MacにSass環境を構築する（Ruby gem）</title>
+      <link>http://mzgkworks.com/post/ruby-gem-install-sass/</link>
+      <pubDate>Tue, 04 Oct 2016 18:57:07 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/ruby-gem-install-sass/</guid>
+      <description>環境 OS X 10.11.6 El Capitan 望むこと scssで書いて、動的にcssにコンパイル 環境周りのコストを少なく 選択肢は gulp : 使うほどタスクないし、プラグインや設定フ</description>
+    </item>
+    
+    <item>
+      <title>CSS1〜CSS3までのセレクタのまとめ</title>
+      <link>http://mzgkworks.com/post/css-selector-list/</link>
+      <pubDate>Wed, 21 Sep 2016 18:28:09 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/css-selector-list/</guid>
+      <description>全称・タイプ・ID・クラスセレクタ パターン セレクタ名 適用範囲 * 全称 すべての要素 E タイプ E要素 例 E, F EとFの要素 #id_name ID id_nameというIDを</description>
+    </item>
+    
+    <item>
+      <title>CSSの適用優先度の考え方</title>
+      <link>http://mzgkworks.com/post/css-applying-priority/</link>
+      <pubDate>Tue, 20 Sep 2016 18:09:36 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/css-applying-priority/</guid>
+      <description>CSSが適用される優先度 詳細度の大きい順（点数例）に適用が優先される。 セレクタ名 セレクタ例 ページ内での複数指定 詳細度 点数例 idセレクタ #id １度</description>
+    </item>
+    
+    <item>
+      <title>MacからLinux（CentOS7）にSSH公開鍵認証で接続する</title>
+      <link>http://mzgkworks.com/post/mac-linux-ssh-rsa-connection/</link>
+      <pubDate>Fri, 16 Sep 2016 18:32:16 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/mac-linux-ssh-rsa-connection/</guid>
+      <description>MacからSSHの公開鍵認証でLinux（CentOS7）に接続する方法。 Linux : 公開鍵の設置場所作成 Linux側で公開鍵ファイルを設置する場所</description>
+    </item>
+    
+    <item>
+      <title>Linuxでのログインユーザの確認や制御の方法</title>
+      <link>http://mzgkworks.com/post/linux-login-user-management/</link>
+      <pubDate>Fri, 16 Sep 2016 16:21:06 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-login-user-management/</guid>
+      <description>Linuxにはrootユーザーが必ず存在するため、外部からのログインは一般ユーザーのみに限定し、rootユーザーを禁止する。 SSHでのroo</description>
+    </item>
+    
+    <item>
+      <title>Linuxで開いているポートを確認する方法</title>
+      <link>http://mzgkworks.com/post/linux-port-confirm/</link>
+      <pubDate>Thu, 15 Sep 2016 19:08:29 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-port-confirm/</guid>
+      <description>開いているポートの確認方法。 ポートはサービス（ソフトウェア）が使用し、そのポートを通る通信をFireWallが監視（制御）している。 なので、</description>
+    </item>
+    
+    <item>
+      <title>CentOS7のsystemctlコマンドの使い方</title>
+      <link>http://mzgkworks.com/post/centos7-systemctl-service/</link>
+      <pubDate>Thu, 15 Sep 2016 18:57:14 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/centos7-systemctl-service/</guid>
+      <description>CentOS 7のsystemdサービス管理のメモ。 サービスの稼働状態や自動起動設定の確認・操作。 UNITの状態 確認 : 一覧 $ systemctl list-unit ACTIVE, SUBが実行状態を表し</description>
+    </item>
+    
+    <item>
+      <title>SELinuxの基礎知識と確認・設定方法</title>
+      <link>http://mzgkworks.com/post/linux-selinux/</link>
+      <pubDate>Tue, 13 Sep 2016 17:57:08 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-selinux/</guid>
+      <description>SELinux Security-Enhanced Linuxの略。 米NSA（National Security Agency＝米国国家安全保障局）が中心となって、不正侵入の被害を極力少なくすることを目的に</description>
+    </item>
+    
+    <item>
+      <title>Macでシンボリックリンクを活用する : ln -s</title>
+      <link>http://mzgkworks.com/post/mac-symbolic-link/</link>
+      <pubDate>Mon, 12 Sep 2016 19:00:43 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/mac-symbolic-link/</guid>
+      <description>Macで使えるシンボリックリンクの操作メモ。 ディレクトリやファイルを別の場所で管理したいが、ディレクトリ構成上の制約がある時とかに便利。 シン</description>
+    </item>
+    
+    <item>
+      <title>ApacheにBasic認証を設定する</title>
+      <link>http://mzgkworks.com/post/apache-basic-auth/</link>
+      <pubDate>Mon, 12 Sep 2016 16:28:46 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/apache-basic-auth/</guid>
+      <description>CentOS7・Apacheで基本認証（Basic認証）を設定する方法。 基本認証は、あらかじめApacheにユーザー名とパスワードを登録して</description>
+    </item>
+    
+    <item>
+      <title>CentOS 7へのWebサーバー（Apache）のインストールと基本設定</title>
+      <link>http://mzgkworks.com/post/centos7-apache-install/</link>
+      <pubDate>Mon, 12 Sep 2016 15:42:13 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/centos7-apache-install/</guid>
+      <description>CentOS7への、Webサーバー（Apache）のインストールから設定まで。 Apacheのインストール $ yumコマンドを使用して関連あるパ</description>
+    </item>
+    
+    <item>
+      <title>Linux（CentOS7）のサービス操作（systemctlコマンド）</title>
+      <link>http://mzgkworks.com/post/linux-service-systemctl/</link>
+      <pubDate>Fri, 09 Sep 2016 17:35:24 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-service-systemctl/</guid>
+      <description>サービスの管理 サービス : OSから切り離し可能な、何らかの役割を持ったサブシステム。 $ systemctl サブコマンド サービス名 で操作を行う。 CentOS 6までだと $ service コ</description>
+    </item>
+    
+    <item>
+      <title>Linuxでシステムの状態を確認する方法（uptime・df・free・ps）</title>
+      <link>http://mzgkworks.com/post/linux-check-system-status/</link>
+      <pubDate>Fri, 09 Sep 2016 17:06:23 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-check-system-status/</guid>
+      <description>システム負荷の確認 uptime コマンドを使用して、システム負荷を確認することができる。 「load average:」部分が１分、５分、１５分の平均負荷を</description>
+    </item>
+    
+    <item>
+      <title>Linuxのパッケージ管理システム（YUM）</title>
+      <link>http://mzgkworks.com/post/linux-package-management-yum/</link>
+      <pubDate>Fri, 09 Sep 2016 15:51:31 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-package-management-yum/</guid>
+      <description>パッケージ Linuxでは「パッケージ」という単位でソフトウェアを管理している 実行プログラム・設定ファイル・ドキュメントなどが格納されている 形</description>
+    </item>
+    
+    <item>
+      <title>Linuxでrootユーザーへの切替えやroot権限で実行する方法</title>
+      <link>http://mzgkworks.com/post/linux-su-sudo/</link>
+      <pubDate>Fri, 09 Sep 2016 14:39:27 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-su-sudo/</guid>
+      <description>rootユーザーに切り替える ログイン中のユーザーをrootユーザーに切り替える。 管理者のパスワードが必要。 オプション「-」をつけると、カレン</description>
+    </item>
+    
+    <item>
+      <title>CentOS 7でのネットワーク設定・確認方法</title>
+      <link>http://mzgkworks.com/post/linux-centos7-network-setting/</link>
+      <pubDate>Thu, 08 Sep 2016 18:45:54 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-centos7-network-setting/</guid>
+      <description>ネットワークインターフェース CentOS 7では、ネットワークの処理を「NetworkManager」というサービスが担っている。 NetworkMana</description>
+    </item>
+    
+    <item>
+      <title>ネットワークの基礎知識（プロトコル・IPアドレス・サブネットマスク・ポート）</title>
+      <link>http://mzgkworks.com/post/network-protocol-ipadress/</link>
+      <pubDate>Thu, 08 Sep 2016 16:59:13 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/network-protocol-ipadress/</guid>
+      <description>プロトコル 通信規約のこと。 TCP/IPは１つのプロトコルではなく、TCP及びIPという２つのプロトコルと、関連する多数のプロトコルを含めたプ</description>
+    </item>
+    
+    <item>
+      <title>パーミッションの操作方法（記号と数値）</title>
+      <link>http://mzgkworks.com/post/linux-permission-operation/</link>
+      <pubDate>Wed, 07 Sep 2016 19:35:21 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-permission-operation/</guid>
+      <description>所有者と所有グループ 基本的にファイルやディレクトリを作成したユーザーが所有者となる。 所有グループは、ユーザーを作成した際に同じ名前で作成され</description>
+    </item>
+    
+    <item>
+      <title>bashでの圧縮と展開（zip, gz, bz2, xz, tar）</title>
+      <link>http://mzgkworks.com/post/bash-zip-unzip/</link>
+      <pubDate>Wed, 07 Sep 2016 17:18:07 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/bash-zip-unzip/</guid>
+      <description>圧縮と展開 よく使われる拡張子とコマンド。 圧縮率 : .zip &amp;lt; .gz &amp;lt; .bz2 &amp;lt; .xz 拡張子 圧縮コマンド 展開コマンド .zip zip unzip .gz gzip gunzip .bz2 bzip2 bunzip2 .xz xz xz -d ファイルの圧縮と展開 基</description>
+    </item>
+    
+    <item>
+      <title>bashでディレクトリ・ファイルのコピー・移動・削除を行う</title>
+      <link>http://mzgkworks.com/post/bash-directory-operation/</link>
+      <pubDate>Wed, 07 Sep 2016 17:09:45 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/bash-directory-operation/</guid>
+      <description>cd : ディレクトリ移動 引数で指定したディレクトリへ移動する。 他に便利な使い方としては、 # 引数なし : ホームディレクトリに移動 $ cd # - : １つ前の作</description>
+    </item>
+    
+    <item>
+      <title>Linuxのディレクトリとパスについてのメモ</title>
+      <link>http://mzgkworks.com/post/linux-directory-memo/</link>
+      <pubDate>Wed, 07 Sep 2016 17:02:18 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/linux-directory-memo/</guid>
+      <description>環境 CentOS 7 ディレクトリ Linuxの主なディレクトリ。 ディレクトリ名 使われ方 / ルートディレクトリ /bin 一般ユーザーが利用できるLinuxの基本コマン</description>
+    </item>
+    
+    <item>
+      <title>シェルでコマンドを打つ際の基本的な機能</title>
+      <link>http://mzgkworks.com/post/shell-command-basic/</link>
+      <pubDate>Tue, 06 Sep 2016 18:50:36 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/shell-command-basic/</guid>
+      <description>bashでコマンドを打つ際の基本的な操作のメモ。 入力 補完（コマンド・ファイル名） tabキー : 補完 tabキー２回 : 候補の一覧を表示 履歴 Ctrl + P or</description>
+    </item>
+    
+    <item>
+      <title>CentOS 7でSSHのポート番号を変更する（SELinux・firewalld）</title>
+      <link>http://mzgkworks.com/post/cetos7-ssh-port-change/</link>
+      <pubDate>Mon, 05 Sep 2016 17:26:03 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/cetos7-ssh-port-change/</guid>
+      <description>CentOS 7でSSHのポート番号を変更する方法のメモ。 CentOS 7から、ファイヤウォールの設定が iptables → firewalld に変更となった。 SELinuxが有効で、iptable</description>
+    </item>
+    
+    <item>
+      <title>HTTPのリクエストとレスポンスのメモ</title>
+      <link>http://mzgkworks.com/post/http-request-response/</link>
+      <pubDate>Fri, 02 Sep 2016 16:00:48 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/http-request-response/</guid>
+      <description>HTTPプロトコルでやりとりしている中身のメモ。 HTTPリクエスト 構成 リクエストライン ヘッダ 空行 ボディ 例（ボディなし） # telnetコマンド</description>
+    </item>
+    
+    <item>
+      <title>Atom（vim-mode-plus）で、ノーマルモード移行時に日本語オフにする方法。</title>
+      <link>http://mzgkworks.com/post/atom-vim-normalmode-with-eisuu/</link>
+      <pubDate>Thu, 01 Sep 2016 15:34:24 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/atom-vim-normalmode-with-eisuu/</guid>
+      <description>Atomにvim-mode-plusをインストールして使っているが、ノーマルモードに移行する時に日本語入力モードを引きずったままになるのが面</description>
+    </item>
+    
+    <item>
+      <title>Hugo・GitHub Pages・独自ドメインでブログを構築 : 4</title>
+      <link>http://mzgkworks.com/post/build-a-blog-in-hugo-4/</link>
+      <pubDate>Tue, 30 Aug 2016 15:20:03 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/build-a-blog-in-hugo-4/</guid>
+      <description>手順通りにコマンドを叩いていくのが面倒なので、スクリプトにまとめる。 ~/.bash_profile または ~/.bash_rcに記述しておく。 記事作成〜確認 コミット〜公開</description>
+    </item>
+    
+    <item>
+      <title>Hugo・GitHub Pages・独自ドメインでブログを構築 : 3</title>
+      <link>http://mzgkworks.com/post/build-a-blog-in-hugo-3/</link>
+      <pubDate>Tue, 30 Aug 2016 15:08:35 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/build-a-blog-in-hugo-3/</guid>
+      <description>記事の作成 公開ファイルの生成 公開 記事の作成準備 記事作成時の雛形となるファイル（default.md）を「archetypes」ディレクトリに</description>
+    </item>
+    
+    <item>
+      <title>Hugo・GitHub Pages・独自ドメインでブログを構築 : 2</title>
+      <link>http://mzgkworks.com/post/build-a-blog-in-hugo-2/</link>
+      <pubDate>Tue, 30 Aug 2016 14:45:11 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/build-a-blog-in-hugo-2/</guid>
+      <description>GitHub側の設定と独自ドメインの適用を行う。 GitHubの設定 独自ドメインの適用 GitHub このリモートリポジトリの持つ意味は２つ。 ブログ作業環境</description>
+    </item>
+    
+    <item>
+      <title>Hugo・GitHub Pages・独自ドメインでブログを構築 : 1</title>
+      <link>http://mzgkworks.com/post/build-a-blog-in-hugo-1/</link>
+      <pubDate>Tue, 30 Aug 2016 14:20:11 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/build-a-blog-in-hugo-1/</guid>
+      <description>Hugoのインストール ブログ環境の構築 Git管理 テーマの適用 公開ファイルの生成 構築環境 OS X 10.11.6 Homebrew 0.9.9 Hugo 0.16 GitHubはアカウントを作成済み ドメイ</description>
+    </item>
+    
+    <item>
+      <title>Hugo・GitHub Pages・独自ドメインでブログを構築 : 0</title>
+      <link>http://mzgkworks.com/post/build-a-blog-in-hugo-0/</link>
+      <pubDate>Tue, 30 Aug 2016 13:58:05 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/build-a-blog-in-hugo-0/</guid>
+      <description>望むこと 静的なWebサイト 動的にするほどのコンテンツはないし、WordPressだといろいろ面倒 記事はエディタを使ってMarkdown形式で</description>
     </item>
     
   </channel>

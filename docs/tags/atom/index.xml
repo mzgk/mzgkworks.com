@@ -2,11 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Atom on mzgkworks.com</title>
-    <link>http://mzgkworks.com/tags/atom/index.xml</link>
+    <link>http://mzgkworks.com/tags/atom/</link>
     <description>Recent content in Atom on mzgkworks.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <atom:link href="http://mzgkworks.com/tags/atom/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 01 Feb 2017 17:06:48 +0900</lastBuildDate>
+    
+	<atom:link href="http://mzgkworks.com/tags/atom/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>ATOM vim-mode-plusのESCで、autocomplete-plusのポップアップのみ閉じる方法</title>
@@ -14,66 +17,7 @@
       <pubDate>Wed, 01 Feb 2017 17:06:48 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/atom-vimmodeplus-autocomplete-esc/</guid>
-      <description>
-
-&lt;p&gt;ATOMでvim-mode-plusとautocomplete-plusを導入済み。&lt;br&gt;
-入力中にautocomplete-plusのポップアップをESCで閉じた際に、Vimのモードをそのままにしたい。&lt;br&gt;
-何も設定しないと、ポップアップが閉じると同時にinsert-mode -&amp;gt; normal-modeになってしまう。&lt;br&gt;&lt;br&gt;&lt;/p&gt;
-
-&lt;p&gt;追加で、autocomplete-plusの変換候補の移動／確定をTab/Enterに割り当てる。&lt;/p&gt;
-
-&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;macOS Sierra 10.12.3&lt;/li&gt;
-&lt;li&gt;ATOM 1.13.1&lt;/li&gt;
-&lt;li&gt;vim-mode-plus 0.82.0&lt;/li&gt;
-&lt;li&gt;autocomplete-plus 2.33.1&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;症状&#34;&gt;症状&lt;/h2&gt;
-
-&lt;p&gt;ATOMには「vim-mode-plus」を導入済み（autocomplete-plusはデフォルトインストール）&lt;br&gt;
-↓&lt;br&gt;
-insert-modeで入力中に、autocomplete-plusのポップアップが表示される&lt;br&gt;
-↓&lt;br&gt;
-候補の中に必要なものがないので、ESCでポップアップを閉じる&lt;br&gt;
-↓&lt;br&gt;
-ポップアップは閉じるが、insert-modeも抜けてnormal-modeになってしまう&lt;br&gt;
-↓&lt;br&gt;
-insert-modeのままにしたい&lt;/p&gt;
-
-&lt;h2 id=&#34;対応方法&#34;&gt;対応方法&lt;/h2&gt;
-
-&lt;p&gt;ここを参照。&lt;br /&gt;
-&lt;a href=&#34;https://github.com/t9md/atom-vim-mode-plus/wiki/TIPS#in-insert-mode-hitting-escape-to-close-autocomplete-popup-result-in-normal-mode-but-want-to-remain-in-insert-mode&#34;&gt;atom-vim-mode-plus TIPS&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;keymap-csonへの追加&#34;&gt;keymap.csonへの追加&lt;/h2&gt;
-
-&lt;p&gt;以下をkeymap.csonに追加する。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&#39;atom-text-editor.vim-mode-plus.insert-mode.autocomplete-active&#39;:
-  &#39;escape&#39;: &#39;autocomplete-plus:cancel&#39;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;追加-autocomplete-plusで-tab-次候補-enter-確定-を有効にする&#34;&gt;追加：autocomplete-plusで「Tab：次候補」「Enter：確定」を有効にする&lt;/h2&gt;
-
-&lt;p&gt;以下をkeymap.csonに追加する。&lt;br&gt;
-&lt;strong&gt;ATOM上で、autocomplete-plusの設定から「Use Core Movement Commands」のチェックを外す。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;# autocomplete-plusでtab:次候補 Enter:確定にする
-# autocomplete-plusの設定で「Use Core Movement Commandsのチェックを外す
-&#39;body atom-text-editor.autocomplete-active&#39;:
-  &#39;ctrl-p&#39;: &#39;autocomplete-plus:move-up&#39;
-  &#39;ctrl-n&#39;: &#39;autocomplete-plus:move-down&#39;
-  &#39;tab&#39;: &#39;autocomplete-plus:move-down&#39;
-  &#39;shift-tab&#39;: &#39;autocomplete-plus:move-up&#39;
-  &#39;enter&#39;: &#39;autocomplete-plus:confirm&#39;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br&gt;
- 以上&lt;/p&gt;
-</description>
+      <description>ATOMでvim-mode-plusとautocomplete-plusを導入済み。 入力中にautocomplete-plusのポップアップ</description>
     </item>
     
     <item>
@@ -82,71 +26,7 @@ insert-modeのままにしたい&lt;/p&gt;
       <pubDate>Thu, 01 Sep 2016 15:34:24 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/atom-vim-normalmode-with-eisuu/</guid>
-      <description>
-
-&lt;p&gt;Atomにvim-mode-plusをインストールして使っているが、ノーマルモードに移行する時に日本語入力モードを引きずったままになるのが面倒。&lt;br /&gt;
-ノーマルモードになった時には、自動で英数入力モードになって、そのままカーソル移動とかしたい。&lt;/p&gt;
-
-&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;OS X 10.11.6&lt;/li&gt;
-&lt;li&gt;Atom 1.10.0&lt;/li&gt;
-&lt;li&gt;karabiner 10.21.0&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;方法&#34;&gt;方法&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://pqrs.org/osx/karabiner/index.html.ja&#34;&gt;Karabiner&lt;/a&gt;をMacにインストールする&lt;/li&gt;
-&lt;li&gt;private.xmlに設定を書く&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;設定方法&#34;&gt;設定方法&lt;/h2&gt;
-
-&lt;p&gt;設定の追加方法は、Karabiner公式サイトのマニュアルを参照のこと。&lt;br /&gt;
-&lt;a href=&#34;https://pqrs.org/osx/karabiner/document.html.ja#privatexml&#34;&gt;https://pqrs.org/osx/karabiner/document.html.ja#privatexml&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;private-xml&#34;&gt;private.xml&lt;/h3&gt;
-
-&lt;p&gt;記述する内容は以下。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-@xml&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt;
-&amp;lt;root&amp;gt;
-    &amp;lt;appdef&amp;gt;
-        &amp;lt;appname&amp;gt;ATOM&amp;lt;/appname&amp;gt;
-        &amp;lt;equal&amp;gt;com.github.atom&amp;lt;/equal&amp;gt;
-    &amp;lt;/appdef&amp;gt;
-    &amp;lt;item&amp;gt;
-        &amp;lt;name&amp;gt;Atom Into NormalMode With Eisuu&amp;lt;/name&amp;gt;
-        &amp;lt;identifier&amp;gt;private.app_atom_into_normalmode_with_eisuu&amp;lt;/identifier&amp;gt;
-        &amp;lt;only&amp;gt;ATOM&amp;lt;/only&amp;gt;
-        &amp;lt;autogen&amp;gt;
-            --KeyToKey--
-            KeyCode::ESCAPE,
-            KeyCode::ESCAPE, KeyCode::JIS_EISUU
-        &amp;lt;/autogen&amp;gt;
-        &amp;lt;autogen&amp;gt;
-            --KeyToKey--
-            KeyCode::BRACKET_LEFT, VK_CONTROL,
-            KeyCode::ESCAPE, KeyCode::JIS_EISUU
-        &amp;lt;/autogen&amp;gt;
-        &amp;lt;autogen&amp;gt;
-            --KeyToKey--
-            KeyCode::C, VK_CONTROL,
-            KeyCode::ESCAPE, KeyCode::JIS_EISUU
-        &amp;lt;/autogen&amp;gt;
-    &amp;lt;/item&amp;gt;
-&amp;lt;/root&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;おまけ&#34;&gt;おまけ&lt;/h2&gt;
-
-&lt;p&gt;Karabinerの設定で、jklhでの移動を他アプリでも使えるようにする方法。&lt;br /&gt;
-&lt;code&gt;s + jklh&lt;/code&gt; でカーソル移動ができるようになる。&lt;br /&gt;
-公式サイトのマニュアルにあった。&lt;br /&gt;
-&lt;a href=&#34;https://pqrs.org/osx/karabiner/gallery.html.ja#simple-vi-mode-v2&#34;&gt;Simple Vi Mode v2&lt;/a&gt;&lt;/p&gt;
-</description>
+      <description>Atomにvim-mode-plusをインストールして使っているが、ノーマルモードに移行する時に日本語入力モードを引きずったままになるのが面</description>
     </item>
     
   </channel>

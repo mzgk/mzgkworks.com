@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>http://mzgkworks.com/post/ec2-restore-from-ebs-snapshot/</loc>
+    <lastmod>2017-04-29T18:01:49+09:00</lastmod>
+  </url>
   
   <url>
     <loc>http://mzgkworks.com/post/aws-windows-ssh-portfowarding/</loc>
@@ -276,7 +282,7 @@
   
   <url>
     <loc>http://mzgkworks.com/tags/aws/</loc>
-    <lastmod>2017-03-18T11:47:00+09:00</lastmod>
+    <lastmod>2017-04-29T18:01:49+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -359,7 +365,7 @@
   
   <url>
     <loc>http://mzgkworks.com/post/</loc>
-    <lastmod>2017-03-18T11:47:00+09:00</lastmod>
+    <lastmod>2017-04-29T18:01:49+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -395,12 +401,13 @@
   
   <url>
     <loc>http://mzgkworks.com/tags/</loc>
+    <lastmod>2016-09-12T16:28:46+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://mzgkworks.com/categories/usage/</loc>
-    <lastmod>2017-03-18T11:47:00+09:00</lastmod>
+    <lastmod>2017-04-29T18:01:49+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -418,7 +425,7 @@
   
   <url>
     <loc>http://mzgkworks.com/</loc>
-    <lastmod>2017-03-18T11:47:00+09:00</lastmod>
+    <lastmod>2017-04-29T18:01:49+09:00</lastmod>
     <priority>0</priority>
   </url>
   

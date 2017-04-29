@@ -2,11 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Windows on mzgkworks.com</title>
-    <link>http://mzgkworks.com/tags/windows/index.xml</link>
+    <link>http://mzgkworks.com/tags/windows/</link>
     <description>Recent content in Windows on mzgkworks.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <atom:link href="http://mzgkworks.com/tags/windows/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 18 Mar 2017 11:47:00 +0900</lastBuildDate>
+    
+	<atom:link href="http://mzgkworks.com/tags/windows/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>SSHポートフォワーディングで、Windows → Linux → WindowsServerにRDP接続する</title>
@@ -14,49 +17,7 @@
       <pubDate>Sat, 18 Mar 2017 11:47:00 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/aws-windows-ssh-portfowarding/</guid>
-      <description>
-
-&lt;h2 id=&#34;やりたいこと&#34;&gt;やりたいこと&lt;/h2&gt;
-
-&lt;p&gt;作業PC（Windows7）のTeraTermを使って、AWS上のEC2（WindowsServer2016）へ踏み台サーバー（Linux:EC2）経由でRDP接続をする。&lt;br&gt;
-SSHポートフォワーディングの機能を利用する。&lt;/p&gt;
-
-&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;AWS EC2 : AmazonLinux -&amp;gt; 踏み台サーバー&lt;/li&gt;
-&lt;li&gt;AWS EC2 : Windows Server 2016 -&amp;gt; RDP接続先&lt;/li&gt;
-&lt;li&gt;Windows7 : ローカル作業PC TeraTerm4.9.4&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;準備&#34;&gt;準備&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;RDP接続先のWindowsServer（EC2）は、&lt;strong&gt;パブリックIPでなくても可&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;事前に、AWSコンソールから接続ボタンでWindowsServerのパスワードを取得しておく&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://mzgkworks.com/post/aws-ec2-windows-rdp/&#34;&gt;AWS EC2でWindowsインスタンスの起動とRDP接続&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;やり方&#34;&gt;やり方&lt;/h2&gt;
-
-&lt;ol&gt;
-&lt;li&gt;TeraTermで、踏み台EC2（Linux）にSSH接続&lt;/li&gt;
-&lt;li&gt;接続したら、上部メニューの［設定］-&amp;gt; ［SSH転送］を選択&lt;/li&gt;
-&lt;li&gt;SSHポート転送のダイアログが表示される -&amp;gt; ［追加］ボタン&lt;/li&gt;
-&lt;li&gt;［ローカルポート］: 適当なポート（13389）を入力&lt;/li&gt;
-&lt;li&gt;［リモート側ホスト］: RDP接続先のIP（WindowsServer EC2のプライベートIP）&lt;/li&gt;
-&lt;li&gt;［ポート］: RDP接続先のポート（3389）&lt;/li&gt;
-&lt;li&gt;［OK］&lt;/li&gt;
-&lt;li&gt;リモートデスクトップクライアント（mstsc）を起動&lt;/li&gt;
-&lt;li&gt;［コンピュータ］127.0.0.1:13389 -&amp;gt; ［接続］&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;strong&gt;※RDP中はTeraTermで踏み台に接続されている必要がある。&lt;/strong&gt;
-&lt;br&gt;&lt;br&gt;&lt;/p&gt;
-
-&lt;p&gt;久々に開発クライアントでWindows7 32bitを使わざるをえないことになったのでメモ。作業効率が悪い。&lt;br&gt;&lt;br&gt;
-以上&lt;/p&gt;
-</description>
+      <description>やりたいこと 作業PC（Windows7）のTeraTermを使って、AWS上のEC2（WindowsServer2016）へ踏み台サーバー（</description>
     </item>
     
     <item>
@@ -65,41 +26,7 @@ SSHポートフォワーディングの機能を利用する。&lt;/p&gt;
       <pubDate>Fri, 10 Feb 2017 17:26:44 +0900</pubDate>
       
       <guid>http://mzgkworks.com/post/windows-imemode-like-mac/</guid>
-      <description>
-
-&lt;p&gt;WindowsのIME変換（日本語／英数）の切り替えを、Mac同様にスペースキーの両隣のキーで切り替えたい。&lt;br&gt;
-そうすることによって、今が日本語入力なのか英数なのかを判断する必要がなくなって、半角/全角キーの連打をしなくてよくなる。&lt;/p&gt;
-
-&lt;h2 id=&#34;目標&#34;&gt;目標&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;変換キー　：日本語入力&lt;/li&gt;
-&lt;li&gt;無変換キー：英数入力&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Windows10 Pro&lt;/li&gt;
-&lt;li&gt;Google日本語入力 -&amp;gt; 未インストール&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;設定方法&#34;&gt;設定方法&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;タスクバーに表示されているIME入力モード（あ／Aとか）を右クリック&lt;/li&gt;
-&lt;li&gt;プロパティ -&amp;gt; 詳細設定&lt;/li&gt;
-&lt;li&gt;「全般」タブ -&amp;gt; 編集操作のキー設定 Microsoft IME -&amp;gt; 変更&lt;/li&gt;
-&lt;li&gt;「キー設定」タブ&lt;/li&gt;
-&lt;li&gt;キー欄の「英数」 -&amp;gt; 「入力/変換済み文字なし」欄をクリック&lt;/li&gt;
-&lt;li&gt;「IME-オン」を選択 -&amp;gt; OK&lt;/li&gt;
-&lt;li&gt;キー欄の「無変換」 -&amp;gt; 「入力/変換済み文字なし」欄をクリック&lt;/li&gt;
-&lt;li&gt;「IME-オフ」を選択 -&amp;gt; OK&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;br&gt;
-以上&lt;/p&gt;
-</description>
+      <description>WindowsのIME変換（日本語／英数）の切り替えを、Mac同様にスペースキーの両隣のキーで切り替えたい。 そうすることによって、今が日本語</description>
     </item>
     
   </channel>
