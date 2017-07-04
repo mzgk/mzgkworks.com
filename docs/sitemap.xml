@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://mzgkworks.com/post/aws-certified-solutions-architect-associate/</loc>
+    <lastmod>2017-07-04T11:47:00+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://mzgkworks.com/post/ec2-restore-from-ebs-snapshot/</loc>
     <lastmod>2017-04-29T18:01:49+09:00</lastmod>
   </url>
@@ -282,7 +287,7 @@
   
   <url>
     <loc>http://mzgkworks.com/tags/aws/</loc>
-    <lastmod>2017-04-29T18:01:49+09:00</lastmod>
+    <lastmod>2017-07-04T11:47:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -364,8 +369,14 @@
   </url>
   
   <url>
+    <loc>http://mzgkworks.com/categories/other/</loc>
+    <lastmod>2017-07-04T11:47:00+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://mzgkworks.com/post/</loc>
-    <lastmod>2017-04-29T18:01:49+09:00</lastmod>
+    <lastmod>2017-07-04T11:47:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -425,7 +436,7 @@
   
   <url>
     <loc>http://mzgkworks.com/</loc>
-    <lastmod>2017-04-29T18:01:49+09:00</lastmod>
+    <lastmod>2017-07-04T11:47:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   

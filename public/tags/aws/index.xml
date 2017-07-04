@@ -6,10 +6,19 @@
     <description>Recent content in Aws on mzgkworks.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Sat, 29 Apr 2017 18:01:49 +0900</lastBuildDate>
+    <lastBuildDate>Tue, 04 Jul 2017 11:47:00 +0900</lastBuildDate>
     
 	<atom:link href="http://mzgkworks.com/tags/aws/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>AWS認定ソリューションアーキテクト - アソシエイト</title>
+      <link>http://mzgkworks.com/post/aws-certified-solutions-architect-associate/</link>
+      <pubDate>Tue, 04 Jul 2017 11:47:00 +0900</pubDate>
+      
+      <guid>http://mzgkworks.com/post/aws-certified-solutions-architect-associate/</guid>
+      <description>とりました AWSが思いのほか楽しかったので『AWS認定ソリューションアーキテクト - アソシエイト』をとってみました。 今までは資格を取ることに消</description>
+    </item>
     
     <item>
       <title>AWS EBSスナップショットからのEC2リストア</title>
